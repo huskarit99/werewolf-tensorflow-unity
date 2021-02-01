@@ -217,7 +217,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            UHD Team
+            Team
           </Typography>
         </Toolbar>
       </AppBar>

@@ -35,11 +35,11 @@ const OnlineList = () => {
   const [users, setUsers] = useState([]);
   const socket = useContext(ThemeContext)
 
-  // useEffect(() => {
-  //   socket.on("getOnlineUsers", ({ users }) => {
-  //     setUsers(users);
-  //   });
-  // }, [socket])
+  useEffect(() => {
+    socket.on("getOnlineUsers", ({ users }) => {
+      setUsers(users);
+    });
+  }, [socket])
 
   return (
     <Hidden mdDown>
