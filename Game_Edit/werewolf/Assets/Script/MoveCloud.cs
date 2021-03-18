@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine;
 
 public class MoveCloud : MonoBehaviour
 {
@@ -30,6 +29,7 @@ public class MoveCloud : MonoBehaviour
         var endPoint_Cloud = new GameObject();
         endPoint_Cloud.transform.position = new Vector3(EndPoint_Cloud.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
         transform.LookAt(endPoint_Cloud.transform.position);
+        Destroy(endPoint_Cloud);
         var moveSpeed = Random.Range(MoveSpead_Min, MoveSpeed_Max);
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         if (EndPoint_Cloud.transform.position.x <= transform.position.x)
