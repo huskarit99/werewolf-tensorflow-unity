@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            target = new Vector3(hit.point.x, 0, 0);
+            target = hit.point;
         }
         transform.LookAt(target);
         anim.SetBool("isVote", true);
