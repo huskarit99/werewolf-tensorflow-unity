@@ -1,0 +1,7 @@
+Red: 0.953
+Green: 0.525
+Blue: 0.243
+Alpha: 1.0
+Hue: 0.066
+Sat: 0.745
+Value: 0.953
