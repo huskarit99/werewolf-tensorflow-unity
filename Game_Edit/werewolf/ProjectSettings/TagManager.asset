@@ -8,6 +8,10 @@ TagManager:
   - EndPoint_Cloud
   - Cloud
   - Main_Player
+  - Head
+  - UpperArm_Left
+  - UpperArm_Right
+  - Number
   layers:
   - Default
   - TransparentFX
