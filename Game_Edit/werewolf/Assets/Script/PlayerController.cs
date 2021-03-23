@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -57,7 +55,7 @@ public class PlayerController : MonoBehaviour
         {
             CancelVote("isVote");
         }
-        if(Input.GetKeyDown(KeyCode.A) && !anim.GetBool("isVote"))
+        if (Input.GetKeyDown(KeyCode.A) && !anim.GetBool("isVote"))
         {
             VoteYourSelf();
         }
@@ -65,7 +63,7 @@ public class PlayerController : MonoBehaviour
         {
             CancelVote("isVoteYourSelf");
         }
-        if(Input.GetKeyDown(KeyCode.Z) && !anim.GetBool("isVote") && !anim.GetBool("isVoteYourSelf"))
+        if (Input.GetKeyDown(KeyCode.Z) && !anim.GetBool("isVote") && !anim.GetBool("isVoteYourSelf"))
         {
             Dead();
         }
@@ -104,32 +102,40 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             target = hit.point;
+            if (hit.transform.tag.Equals("Player"))
+            {
+                /*
+                 * Tìm đầu của nhân vật và xoay theo hướng chọn
+                 */
+                head.transform.rotation = Quaternion.Euler(Head_Default);
+                float angle = (target.x - head.transform.position.x) % 90;
+                head.transform.Rotate(angle, 0, 0);
+                /*
+                 * Xoay tay theo hướng chỉ của nhân vật 
+                 *  - Nếu xoay theo góc dương  => chỉ tay trái
+                 *  - Nếu xoay theo góc âm  => chỉ tay phải
+                 */
+                UpperArm_Left.transform.rotation = Quaternion.Euler(UpperArm_Left_Default);
+                UpperArm_Right.transform.rotation = Quaternion.Euler(UpperArm_Right_Default);
+                if (angle >= 0)
+                {
+                    UpperArm_Left.transform.Rotate(-1 * angle, 0, 90);
+                }
+                else
+                {
+                    UpperArm_Right.transform.Rotate(-1 * angle, 0, 90);
+                }
+                anim.SetBool("isVote", true);
+                Animator animHit = hit.transform.gameObject.GetComponent<Animator>();
+                animHit.SetBool("isDead", true);
+                Destroy(hit.transform.gameObject, 3f);
+            }
         }
-        /*
-         * Tìm đầu của nhân vật và xoay theo hướng chọn
-         */
-        head.transform.rotation = Quaternion.Euler(Head_Default);
-        float angle = (target.x - head.transform.position.x) % 90;
-        head.transform.Rotate(angle,0,0);
-        /*
-         * Xoay tay theo hướng chỉ của nhân vật 
-         *  - Nếu xoay theo góc dương  => chỉ tay trái
-         *  - Nếu xoay theo góc âm  => chỉ tay phải
-         */
-        UpperArm_Left.transform.rotation = Quaternion.Euler(UpperArm_Left_Default);
-        UpperArm_Right.transform.rotation = Quaternion.Euler(UpperArm_Right_Default);
-        if (angle >= 0)
-        {
-            UpperArm_Left.transform.Rotate(-1*angle, 0,90 );
-        }
-        else
-        {
-            UpperArm_Right.transform.Rotate(-1*angle, 0, 90);
-        }
-        anim.SetBool("isVote", true);
+
     }
     void Dead()
     {
+
     }
     //void LookAtMainCamera()
     //{
