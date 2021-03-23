@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.7302238, g: 0.7889745, b: 0.8498578, a: 1}
+  m_IndirectSpecularColor: {r: 0.7302384, g: 0.7889801, b: 0.84985816, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -627,7 +627,7 @@ Transform:
   - {fileID: 283597873}
   - {fileID: 1269105608}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -719,7 +719,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &720875459 stripped
 GameObject:
@@ -2116,7 +2116,7 @@ PrefabInstance:
     - target: {fileID: 784153611252590568, guid: 797cc24e8db17c149904b3b5f0c5de52,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 784153611252590568, guid: 797cc24e8db17c149904b3b5f0c5de52,
         type: 3}
@@ -2190,7 +2190,7 @@ PrefabInstance:
     - target: {fileID: 3201595436574588947, guid: a581cbdc4803da940aa770bfa3aadc02,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3201595436574588947, guid: a581cbdc4803da940aa770bfa3aadc02,
         type: 3}
@@ -2273,7 +2273,7 @@ Transform:
   m_Children:
   - {fileID: 720875460}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9056249548323110585
 PrefabInstance:
@@ -2290,7 +2290,7 @@ PrefabInstance:
     - target: {fileID: 9056249546782729990, guid: 7f37fded96fd38b46a8b9cead1de1338,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9056249546782729990, guid: 7f37fded96fd38b46a8b9cead1de1338,
         type: 3}
