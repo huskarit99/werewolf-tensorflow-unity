@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Vector3 target;
+    GameObject Player;
     Animator anim;
     Vector3 main;
     //--- Đầu
@@ -26,7 +27,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //--- Lấy tọa độ góc ban đầu của nhân vật
-        anim = gameObject.GetComponent<Animator>();
+        Player = GameObject.FindGameObjectWithTag(Tags_4_Object.Player);
+        anim = Player.gameObject.GetComponent<Animator>();
         main = transform.rotation.eulerAngles;
         //--- Lấy tọa độ góc ban đầu của đầu
         head = GameObject.FindGameObjectWithTag(Tags_4_Object.Head);
@@ -39,12 +41,13 @@ public class PlayerController : MonoBehaviour
         UpperArm_Right_Default = UpperArm_Right.transform.rotation.eulerAngles;
         //--- Lấy tọa độ camera
         main_camera = Camera.main.transform;
+        plane.transform.rotation = Quaternion.Euler(Vector3.zero);
     }
 
     // Update is called once per frame
     void Update()
     {
-        LookAtMainCamera();
+        //LookAtMainCamera();
         if (Input.GetMouseButtonDown(0) && !anim.GetBool("isVoteYourSelf"))
         {
             //Vote();
@@ -83,7 +86,7 @@ public class PlayerController : MonoBehaviour
     void CancelVote(string param)
     {
         anim.SetBool(param, false);
-        transform.rotation = Quaternion.Euler(main);
+        Player.transform.rotation = Quaternion.Euler(main);
 
         head.transform.rotation = Quaternion.Euler(Head_Default);
         UpperArm_Left.transform.rotation = Quaternion.Euler(UpperArm_Left_Default);
@@ -130,8 +133,8 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(80, 0, 0);
         Destroy(gameObject, 1f);
     }
-    void LookAtMainCamera()
-    {
-        plane.transform.LookAt(main_camera.transform.position);
-    }
+    //void LookAtMainCamera()
+    //{
+    //    plane.transform.LookAt(main_camera.transform.position);
+    //}
 }
