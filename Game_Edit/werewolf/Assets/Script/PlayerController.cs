@@ -130,8 +130,6 @@ public class PlayerController : MonoBehaviour
     }
     void Dead()
     {
-        transform.rotation = Quaternion.Euler(80, 0, 0);
-        Destroy(gameObject, 1f);
     }
     //void LookAtMainCamera()
     //{

@@ -14,3 +14,10 @@ public static class Tags_4_Object
     public static string Cloud = "Cloud";
     public static string Player = "Player";
 }
+
+public static class Param_4_Anim
+{
+    public static string IsVote = "isVote";
+    public static string IsKill = "isKill";
+    public static string IsVoteYourSelf = "isVoteYourSelf";
+}
