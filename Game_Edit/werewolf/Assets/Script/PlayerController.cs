@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
     //--- Tay phải
     GameObject UpperArm_Right;
     Vector3 UpperArm_Right_Default;
+    //--- Camera
+    Transform main_camera;
+    //--- Plane
+    public GameObject plane;
 
     public int position;
     // Start is called before the first frame update
@@ -33,11 +37,14 @@ public class PlayerController : MonoBehaviour
         //--- Lấy tọa độ góc ban đầu của tay phải
         UpperArm_Right = GameObject.FindGameObjectWithTag(Tags_4_Object.UpperArm_Right);
         UpperArm_Right_Default = UpperArm_Right.transform.rotation.eulerAngles;
+        //--- Lấy tọa độ camera
+        main_camera = Camera.main.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        LookAtMainCamera();
         if (Input.GetMouseButtonDown(0) && !anim.GetBool("isVoteYourSelf"))
         {
             //Vote();
@@ -54,6 +61,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && anim.GetBool("isVoteYourSelf"))
         {
             CancelVote("isVoteYourSelf");
+        }
+        if(Input.GetKeyDown(KeyCode.Z) && !anim.GetBool("isVote") && !anim.GetBool("isVoteYourSelf"))
+        {
+            Dead();
         }
     }
     void Vote()
@@ -113,5 +124,14 @@ public class PlayerController : MonoBehaviour
             UpperArm_Right.transform.Rotate(-1*angle, 0, 90);
         }
         anim.SetBool("isVote", true);
+    }
+    void Dead()
+    {
+        transform.rotation = Quaternion.Euler(80, 0, 0);
+        Destroy(gameObject, 1f);
+    }
+    void LookAtMainCamera()
+    {
+        plane.transform.LookAt(main_camera.transform.position);
     }
 }
