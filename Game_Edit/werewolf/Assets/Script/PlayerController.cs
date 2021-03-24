@@ -7,14 +7,11 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     Vector3 main;
     //--- Đầu
-    GameObject head;
+    Transform Head;
     Vector3 Head_Default;
     //--- Tay trái
-    GameObject UpperArm_Left;
+    Transform UpperArm_Left;
     Vector3 UpperArm_Left_Default;
-    //--- Tay phải
-    GameObject UpperArm_Right;
-    Vector3 UpperArm_Right_Default;
     //--- Camera
     Transform main_camera;
     //--- Plane
@@ -29,14 +26,11 @@ public class PlayerController : MonoBehaviour
         anim = Player.gameObject.GetComponent<Animator>();
         main = transform.rotation.eulerAngles;
         //--- Lấy tọa độ góc ban đầu của đầu
-        head = GameObject.FindGameObjectWithTag(Tags_4_Object.Head);
-        Head_Default = head.transform.rotation.eulerAngles;
-        //---Lấy tọa độ góc ban đầu của tay trái
-        UpperArm_Left = GameObject.FindGameObjectWithTag(Tags_4_Object.UpperArm_Left);
+        Head = anim.GetBoneTransform(HumanBodyBones.Head);
+        Head_Default = Head.transform.rotation.eulerAngles;
+        //--- Lấy tọa độ tay trái 
+        UpperArm_Left = anim.GetBoneTransform(HumanBodyBones.LeftUpperArm);
         UpperArm_Left_Default = UpperArm_Left.transform.rotation.eulerAngles;
-        //--- Lấy tọa độ góc ban đầu của tay phải
-        UpperArm_Right = GameObject.FindGameObjectWithTag(Tags_4_Object.UpperArm_Right);
-        UpperArm_Right_Default = UpperArm_Right.transform.rotation.eulerAngles;
         //--- Lấy tọa độ camera
         main_camera = Camera.main.transform;
         plane.transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -68,6 +62,12 @@ public class PlayerController : MonoBehaviour
             Dead();
         }
     }
+    private void LateUpdate()
+    {
+        float angle = (target.x - Head.transform.position.x) % 90;
+        Head.transform.Rotate(angle, 0, 0);
+        UpperArm_Left.transform.Rotate(-1 * angle, 0, 90);
+    }
     void Vote()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -86,9 +86,6 @@ public class PlayerController : MonoBehaviour
         anim.SetBool(param, false);
         Player.transform.rotation = Quaternion.Euler(main);
 
-        head.transform.rotation = Quaternion.Euler(Head_Default);
-        UpperArm_Left.transform.rotation = Quaternion.Euler(UpperArm_Left_Default);
-        UpperArm_Right.transform.rotation = Quaternion.Euler(UpperArm_Right_Default);
     }
     void VoteYourSelf()
     {
@@ -102,33 +99,15 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             target = hit.point;
-            if (hit.transform.tag.Equals("Player"))
+            if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
                 /*
                  * Tìm đầu của nhân vật và xoay theo hướng chọn
                  */
-                head.transform.rotation = Quaternion.Euler(Head_Default);
-                float angle = (target.x - head.transform.position.x) % 90;
-                head.transform.Rotate(angle, 0, 0);
-                /*
-                 * Xoay tay theo hướng chỉ của nhân vật 
-                 *  - Nếu xoay theo góc dương  => chỉ tay trái
-                 *  - Nếu xoay theo góc âm  => chỉ tay phải
-                 */
-                UpperArm_Left.transform.rotation = Quaternion.Euler(UpperArm_Left_Default);
-                UpperArm_Right.transform.rotation = Quaternion.Euler(UpperArm_Right_Default);
-                if (angle >= 0)
-                {
-                    UpperArm_Left.transform.Rotate(-1 * angle, 0, 90);
-                }
-                else
-                {
-                    UpperArm_Right.transform.Rotate(-1 * angle, 0, 90);
-                }
                 anim.SetBool("isVote", true);
-                Animator animHit = hit.transform.gameObject.GetComponent<Animator>();
-                animHit.SetBool("isDead", true);
-                Destroy(hit.transform.gameObject, 3f);
+                //Animator animHit = hit.transform.gameObject.GetComponent<Animator>();
+                //animHit.SetBool("isDead", true);
+                //Destroy(hit.transform.gameObject, 3f);
             }
         }
 
