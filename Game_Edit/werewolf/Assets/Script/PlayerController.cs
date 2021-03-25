@@ -3,7 +3,7 @@
 public class PlayerController : MonoBehaviour
 {
     Vector3 target;
-    GameObject Player;
+    GameObject MainPlayer;
     Animator anim;
     Vector3 main;
     //--- Đầu
@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //--- Lấy tọa độ góc ban đầu của nhân vật
-        Player = GameObject.FindGameObjectWithTag(Tags_4_Object.Player);
-        anim = Player.gameObject.GetComponent<Animator>();
+        MainPlayer = GameObject.FindGameObjectWithTag(Tags_4_Object.Main_Player);
+        anim = MainPlayer.gameObject.GetComponent<Animator>();
         main = transform.rotation.eulerAngles;
         //--- Lấy tọa độ góc ban đầu của đầu
         Head = anim.GetBoneTransform(HumanBodyBones.Head);
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     void CancelVote(string param)
     {
         anim.SetBool(param, false);
-        Player.transform.rotation = Quaternion.Euler(main);
+        MainPlayer.transform.rotation = Quaternion.Euler(main);
 
     }
     void VoteYourSelf()

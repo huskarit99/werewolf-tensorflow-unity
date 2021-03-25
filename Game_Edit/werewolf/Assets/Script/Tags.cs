@@ -14,6 +14,7 @@ public static class Tags_4_Object
     public static string Cloud = "Cloud";
     public static string Player = "Player";
     public static string Vote_Time = "Vote_Time";
+    public static string Main_Player = "Main_Player";
 }
 
 public static class Param_4_Anim
@@ -21,4 +22,11 @@ public static class Param_4_Anim
     public static string IsVote = "isVote";
     public static string IsKill = "isKill";
     public static string IsVoteYourSelf = "isVoteYourSelf";
+}
+
+public static class Detail_Of_Character
+{
+    public static string Name = "Name";
+    public static string Number = "Number";
+    public static string Main_Player = "Main_Player";
 }
