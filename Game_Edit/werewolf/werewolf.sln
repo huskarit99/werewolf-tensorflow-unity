@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWebTransport", "SimpleWebTransport.csproj", "{3AECEC38-1156-223C-6DC9-0A93EED338DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror", "Mirror.csproj", "{E21F34D2-752C-09E5-CA18-25545A99E40D}"
@@ -16,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror.Examples", "Mirror.Examples.csproj", "{298FEF99-D405-9176-C3AC-CBBA7204A816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror.Tests.Runtime", "Mirror.Tests.Runtime.csproj", "{BD253C47-AB09-F506-FAAD-76B3A535C7F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror.Examples.Cloud.GUI", "Mirror.Examples.Cloud.GUI.csproj", "{EDCD3A92-F64C-C6EE-5402-DA0893932262}"
 EndProject
@@ -47,10 +47,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3AECEC38-1156-223C-6DC9-0A93EED338DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3AECEC38-1156-223C-6DC9-0A93EED338DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AECEC38-1156-223C-6DC9-0A93EED338DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,6 +75,10 @@ Global
 		{BD253C47-AB09-F506-FAAD-76B3A535C7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD253C47-AB09-F506-FAAD-76B3A535C7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD253C47-AB09-F506-FAAD-76B3A535C7F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CC17F1D-EA57-E3C5-DFA8-929A51691FFE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDCD3A92-F64C-C6EE-5402-DA0893932262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDCD3A92-F64C-C6EE-5402-DA0893932262}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDCD3A92-F64C-C6EE-5402-DA0893932262}.Release|Any CPU.ActiveCfg = Release|Any CPU

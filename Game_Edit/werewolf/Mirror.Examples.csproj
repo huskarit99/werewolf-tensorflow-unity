@@ -311,23 +311,23 @@
     <Reference Include="Mono.CecilX">
       <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Tests/Common/Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Tests/Common/NSubstitute.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.CecilX.Mdb">
       <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Tests/Common/System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CecilX.Pdb">
       <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CecilX.Rocks">
       <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Tests/Common/Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Tests/Common/NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Assets/Mirror/Tests/Common/System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.22f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -674,11 +674,11 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.22f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>E:/werewolf-tensorflow-client/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

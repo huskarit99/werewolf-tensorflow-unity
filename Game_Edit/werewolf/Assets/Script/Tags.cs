@@ -19,7 +19,7 @@ public static class Tags_4_Object
 
 public static class Param_4_Anim
 {
-    public static string IsVote = "isVote";
+    public static string VoteLeft = "VoteLeft";
     public static string IsKill = "isKill";
     public static string IsVoteYourSelf = "isVoteYourSelf";
 }
