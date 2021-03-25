@@ -12,6 +12,7 @@ TagManager:
   - UpperArm_Left
   - UpperArm_Right
   - Number
+  - Vote_Time
   layers:
   - Default
   - TransparentFX

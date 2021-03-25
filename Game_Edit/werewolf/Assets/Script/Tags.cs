@@ -13,6 +13,7 @@ public static class Tags_4_Object
     public static string EndPoint_Cloud = "EndPoint_Cloud";
     public static string Cloud = "Cloud";
     public static string Player = "Player";
+    public static string Vote_Time = "Vote_Time";
 }
 
 public static class Param_4_Anim

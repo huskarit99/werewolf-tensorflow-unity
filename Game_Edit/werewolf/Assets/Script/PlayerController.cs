@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     Transform main_camera;
     //--- Plane
     public GameObject plane;
+    //--- TimerCountdown
+    TimerCountdown TimerCountdown;
 
     public int position;
     // Start is called before the first frame update
@@ -34,17 +36,31 @@ public class PlayerController : MonoBehaviour
         //--- Lấy tọa độ camera
         main_camera = Camera.main.transform;
         plane.transform.rotation = Quaternion.Euler(Vector3.zero);
+        //--- Tìm đối tượng TimerCountdown
+        TimerCountdown = FindObjectOfType<TimerCountdown>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //LookAtMainCamera();
-        if (Input.GetMouseButtonDown(0) && !anim.GetBool("isVoteYourSelf"))
+        if (TimerCountdown.getSecondsLeft() > 0)
         {
-            //Vote();
-            Vote_02();
+            if (Input.GetMouseButtonDown(0) && !anim.GetBool("isVoteYourSelf"))
+            {
+                //Vote();
+                Vote_02();
+            }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                TimerCountdown.setSecondsLeft(10);
+            }
+        }
+        
+        
         if (Input.GetKeyDown(KeyCode.Q)) // && anim.GetBool("isVote"))
         {
             CancelVote("isVote");
