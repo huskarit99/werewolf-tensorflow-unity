@@ -1,11 +1,13 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - CameraController
     - MoveCloud
-    - PlayerController
     - PlayerNetworkBehavior
     - SpawnCloud
     - TimerCountdown
+    Mirror.Components.dll:
+    - Mirror.NetworkTransform
     Mirror.dll:
     - Mirror.NetworkIdentity
     - Mirror.NetworkManager
@@ -16,10 +18,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -88,19 +88,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12076}
     - Class: 114
-      Script: {instanceID: 12740}
+      Script: {instanceID: 12700}
     - Class: 114
-      Script: {instanceID: 13238}
+      Script: {instanceID: 12742}
     - Class: 114
-      Script: {instanceID: 13248}
+      Script: {instanceID: 13240}
     - Class: 114
-      Script: {instanceID: 13310}
+      Script: {instanceID: 13312}
     - Class: 114
-      Script: {instanceID: 13782}
+      Script: {instanceID: 13520}
     - Class: 114
-      Script: {instanceID: 13890}
+      Script: {instanceID: 13784}
     - Class: 114
-      Script: {instanceID: 26196}
+      Script: {instanceID: 13892}
+    - Class: 114
+      Script: {instanceID: 59532}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -670,6 +672,12 @@ ScriptsOnlyBuild:
     className: CellGUI
   - hash:
       serializedVersion: 2
+      Hash: 6fd2bb55b3ee5edb6040a1c5bccd0e07
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerNetworkBehavior
+  - hash:
+      serializedVersion: 2
       Hash: 42a930c6b13af0df34d41f5b19ec8152
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror
@@ -1102,11 +1110,11 @@ ScriptsOnlyBuild:
     className: KcpTransport
   - hash:
       serializedVersion: 2
-      Hash: 6fd2bb55b3ee5edb6040a1c5bccd0e07
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: PlayerNetworkBehavior
+    className: CameraController
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe

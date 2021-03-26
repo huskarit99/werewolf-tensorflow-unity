@@ -15,6 +15,8 @@ public static class Tags_4_Object
     public static string Player = "Player";
     public static string Vote_Time = "Vote_Time";
     public static string Main_Player = "Main_Player";
+    public static string Human = "Human";
+    public static string Camera = "Camera";
 }
 
 public static class Param_4_Anim

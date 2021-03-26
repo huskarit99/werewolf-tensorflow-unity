@@ -7,27 +7,34 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 {
     Vector3 target;
     GameObject MainPlayer;
+    GameObject Human;
+    GameObject CameraPlayer;
     Animator anim;
     Vector3 main;
     // Start is called before the first frame update
     void Start()
     {
         MainPlayer = GameObject.FindGameObjectWithTag(Tags_4_Object.Player);
-        anim = MainPlayer.gameObject.GetComponent<Animator>();
+        Human = GameObject.FindGameObjectWithTag(Tags_4_Object.Human);
+        CameraPlayer = GameObject.FindGameObjectWithTag(Tags_4_Object.Camera);
+        anim = Human.gameObject.GetComponent<Animator>();
         main = transform.rotation.eulerAngles;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (isLocalPlayer)
         {
-            Vote();
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vote();
+            }
+        }  
     }
     void Vote()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraPlayer.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
