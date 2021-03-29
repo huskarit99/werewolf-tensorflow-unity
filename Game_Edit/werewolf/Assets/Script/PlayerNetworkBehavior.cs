@@ -10,6 +10,9 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public double Radius;
     public double Distance;
     public double Distance4Main;
+    public Animator AnimPlayer;  // Hành động của nhân vật
+    public Camera CameraPlayer; // Camera theo nhân vật
+    Vector3 target;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,13 +22,15 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isLocalPlayer)
+        if(!hasAuthority) { return;  }  // kiểm tra quyền client
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vote();
-            }
-        }  
+            Vote();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CancelVote(Param_4_Anim.VoteLeft);
+        }
     }
     #region Set up character
     /// <summary>
@@ -92,5 +97,17 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
     void Vote()
     {
+        Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit))
+        {
+            target = hit.point;
+        }
+        transform.LookAt(target); // xoay nhân vật theo mục tiêu của con trỏ
+        AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true); // thực hiện hành động vote
+    }
+    void CancelVote(string param)
+    {
+        AnimPlayer.SetBool(param, false); // bỏ thực hiện hành động vote 
     }
 }
