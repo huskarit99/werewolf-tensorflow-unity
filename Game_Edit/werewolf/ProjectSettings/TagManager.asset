@@ -7,14 +7,15 @@ TagManager:
   - StartPoint_Cloud
   - EndPoint_Cloud
   - Cloud
-  - Main_Player
-  - Head
-  - UpperArm_Left
-  - UpperArm_Right
   - Number
   - Vote_Time
   - Human
   - Camera
+  - CentralPoint
+  - NameTag
+  - Head
+  - UpperArm_Left
+  - UpperArm_Right
   layers:
   - Default
   - TransparentFX

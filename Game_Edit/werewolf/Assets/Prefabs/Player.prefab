@@ -213,7 +213,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  playerName: {fileID: 2942076377727307403}
+  Radius: 150
+  Distance: 650
+  playerNameText: {fileID: 2942076377727307403}
+  playerIndexText: {fileID: 2942076377368704644}
 --- !u!1 &236439027772687343
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1357,7 @@ GameObject:
   - component: {fileID: 2942076378621832096}
   m_Layer: 0
   m_Name: NameTag
-  m_TagString: Untagged
+  m_TagString: NameTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
