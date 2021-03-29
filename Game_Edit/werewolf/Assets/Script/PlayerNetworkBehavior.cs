@@ -13,10 +13,12 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public Animator AnimPlayer;  // Hành động của nhân vật
     public Camera CameraPlayer; // Camera theo nhân vật
     Vector3 target;
+    Vector3 defaultPosition;
     // Start is called before the first frame update
     void Start()
     {
         SetupPlayer("Minh Hoang", 0,10);
+        defaultPosition = gameObject.transform.rotation.eulerAngles;
     }
 
     // Update is called once per frame
@@ -31,6 +33,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         {
             CancelVote(Param_4_Anim.VoteLeft);
         }
+    }
+    private void LateUpdate()
+    {
+        var angle = (target.x - gameObject.transform.position.x)%90;
+        var neck = AnimPlayer.GetBoneTransform(HumanBodyBones.Neck);
+        neck.transform.Rotate(angle/2, 0, 0);
+        var upperChest = AnimPlayer.GetBoneTransform(HumanBodyBones.UpperChest);
+        upperChest.transform.Rotate(angle / 2, 0, 0);
     }
     #region Set up character
     /// <summary>
@@ -94,20 +104,21 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
 
     #region Action
-    #endregion
     void Vote()
     {
+        CancelVote(Param_4_Anim.VoteLeft);
         Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit))
         {
             target = hit.point;
         }
-        transform.LookAt(target); // xoay nhân vật theo mục tiêu của con trỏ
+        //transform.LookAt(target); // xoay nhân vật theo mục tiêu của con trỏ
         AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true); // thực hiện hành động vote
     }
     void CancelVote(string param)
     {
         AnimPlayer.SetBool(param, false); // bỏ thực hiện hành động vote 
     }
+    #endregion
 }
