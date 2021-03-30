@@ -99,6 +99,17 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         {
             item.transform.LookAt(Vector3.zero);
         }
+        VotesText.SetActive(false);
+    }
+
+    //--- Đồng bộ số votes
+    public GameObject VotesText;
+    public TextMesh playerVotesText;
+    [SyncVar(hook = nameof(OnVotesChange))]
+    int Votes;
+    void OnVotesChange(int _old,int _new)
+    {
+        playerVotesText.text = Votes.ToString();
     }
     #endregion
 
@@ -112,9 +123,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             target = hit.point;
+            if (hit.transform.tag.Equals(Tags_4_Object.Player))
+            {
+                Debug.Log("Hello");
+                AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true); // thực hiện hành động vote
+            }
         }
         //transform.LookAt(target); // xoay nhân vật theo mục tiêu của con trỏ
-        AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true); // thực hiện hành động vote
+
     }
     void CancelVote(string param)
     {
