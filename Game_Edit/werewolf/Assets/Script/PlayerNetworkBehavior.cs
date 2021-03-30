@@ -14,11 +14,17 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public Camera CameraPlayer; // Camera theo nhân vật
     Vector3 target;
     Vector3 defaultPosition;
+    DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
     // Start is called before the first frame update
     void Start()
     {
         SetupPlayer("Minh Hoang", 0,10);
         defaultPosition = gameObject.transform.rotation.eulerAngles;
+
+        DieAfterTime = FindObjectOfType<DieAfterTime>();
+        // // định danh id cho player Player(Clone)
+        string _ID = "Player" + GetComponent<NetworkIdentity>().netId; 
+        transform.name = _ID;
     }
 
     // Update is called once per frame
@@ -117,7 +123,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     #region Action
     void Vote()
     {
-        CancelVote(Param_4_Anim.VoteLeft);
         Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
@@ -125,8 +130,9 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             target = hit.point;
             if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
-                Debug.Log("Hello");
-                AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true); // thực hiện hành động vote
+                AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
+                DieAfterTime.SetNamePlayer_SecondsLeft(hit.collider.name, 5); // gán tên nhân vật và số thời gian còn lại
+                // thực hiện hành động vote
             }
         }
         //transform.LookAt(target); // xoay nhân vật theo mục tiêu của con trỏ
@@ -134,6 +140,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     }
     void CancelVote(string param)
     {
+        DieAfterTime.SetNamePlayer_SecondsLeft(null, 0); // gán tên nhân vật và thời gian còn lại
         AnimPlayer.SetBool(param, false); // bỏ thực hiện hành động vote 
     }
     #endregion

@@ -2,10 +2,10 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - CameraController
+    - DieAfterTime
     - MoveCloud
     - PlayerNetworkBehavior
     - SpawnCloud
-    - TimerCountdown
     Mirror.Components.dll:
     - Mirror.NetworkAnimator
     - Mirror.NetworkTransform
@@ -19,8 +19,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -95,8 +97,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12702}
     - Class: 114
-      Script: {instanceID: 12744}
-    - Class: 114
       Script: {instanceID: 13244}
     - Class: 114
       Script: {instanceID: 13316}
@@ -106,6 +106,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13790}
     - Class: 114
       Script: {instanceID: 13898}
+    - Class: 114
+      Script: {instanceID: 25558}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -819,12 +821,6 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: AnimationController
-  - hash:
-      serializedVersion: 2
       Hash: ce58790f4b80db4732075fa2fb5e1bf9
     assemblyName: Mirror.Examples.Cloud.GUI.dll
     namespaceName: Mirror.Cloud.Example
@@ -1129,7 +1125,13 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.dll
     namespaceName: kcp2k
     className: KcpTransport
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DieAfterTime
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/Player_2/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe

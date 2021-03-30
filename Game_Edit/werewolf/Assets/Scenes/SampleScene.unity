@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.7302384, g: 0.7889801, b: 0.84985816, a: 1}
+  m_IndirectSpecularColor: {r: 0.7302238, g: 0.7889745, b: 0.8498578, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1366,7 +1366,7 @@ GameObject:
   - component: {fileID: 1037934571}
   - component: {fileID: 1037934570}
   m_Layer: 0
-  m_Name: TimerCountdown
+  m_Name: DieAfterTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1381,7 +1381,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1037934569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f89331892eca47740970a805c03e02c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 330333501a16c234f9bdae3fb88f6c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1037934571
