@@ -10,20 +10,21 @@ ScriptsOnlyBuild:
     Mirror.Components.dll:
     - Mirror.NetworkAnimator
     - Mirror.NetworkTransform
+    Mirror.Editor.dll:
+    - Mirror.NetworkBehaviourInspector
     Mirror.dll:
     - Mirror.NetworkIdentity
     - Mirror.NetworkManagerHUD
     - Mirror.NetworkStartPosition
+    - Mirror.TelepathyTransport
     - kcp2k.KcpTransport
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -80,37 +81,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11280}
+      Script: {instanceID: 11316}
     - Class: 114
-      Script: {instanceID: 11318}
+      Script: {instanceID: 11320}
     - Class: 114
       Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11362}
+      Script: {instanceID: 11398}
     - Class: 114
-      Script: {instanceID: 11494}
+      Script: {instanceID: 11402}
     - Class: 114
-      Script: {instanceID: 11570}
+      Script: {instanceID: 11534}
     - Class: 114
-      Script: {instanceID: 11814}
+      Script: {instanceID: 11612}
     - Class: 114
-      Script: {instanceID: 12080}
+      Script: {instanceID: 11856}
     - Class: 114
-      Script: {instanceID: 12654}
+      Script: {instanceID: 12124}
     - Class: 114
       Script: {instanceID: 12704}
     - Class: 114
-      Script: {instanceID: 13244}
+      Script: {instanceID: 12754}
     - Class: 114
-      Script: {instanceID: 13316}
+      Script: {instanceID: 13298}
     - Class: 114
-      Script: {instanceID: 13418}
+      Script: {instanceID: 13370}
     - Class: 114
-      Script: {instanceID: 13526}
+      Script: {instanceID: 13472}
     - Class: 114
-      Script: {instanceID: 13790}
+      Script: {instanceID: 13580}
     - Class: 114
-      Script: {instanceID: 13898}
+      Script: {instanceID: 13850}
+    - Class: 114
+      Script: {instanceID: 13962}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -932,7 +935,7 @@ ScriptsOnlyBuild:
     className: NetworkDiscoveryHUD
   - hash:
       serializedVersion: 2
-      Hash: 823487f7f3fc6ffde5acd5a71c910959
+      Hash: 096fe9152e620c88d368c1cb8d449f7e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MyNetworkManager
@@ -984,6 +987,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Tests.Common.dll
     namespaceName: Mirror.Tests
     className: MemoryTransport
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: ParrelSync.Example
+    className: CustomArgumentExample
   - hash:
       serializedVersion: 2
       Hash: 8cd1cbba27f3cb1717254f668e9e0d5a
@@ -1137,4 +1146,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/Player_3/werewolf.exe
+  playerPath: E:/TestGame/Player_2/werewolf.exe

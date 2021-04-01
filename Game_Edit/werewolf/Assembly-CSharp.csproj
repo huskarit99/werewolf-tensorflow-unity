@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ParrelSync\Examples\CustomArgumentExample.cs" />
     <Compile Include="Assets\Script\CameraController.cs" />
     <Compile Include="Assets\Script\DieAfterTime.cs" />
     <Compile Include="Assets\Script\MoveCloud.cs" />
@@ -79,6 +80,7 @@
     <None Include="Assets\ScriptTemplates\56-Mirror__Network Discovery-NewNetworkDiscovery.cs.txt" />
     <None Include="Assets\Mirror\Version.txt" />
     <None Include="Assets\Mirror\Readme.txt" />
+    <None Include="Assets\ParrelSync\VERSION.txt" />
     <None Include="Assets\Background\LowPolyFantasyClouds\Shaders\CloudsShader.shader" />
     <None Include="Assets\ScriptTemplates\52-Mirror__Network Behaviour-NewNetworkBehaviour.cs.txt" />
     <None Include="Assets\Mirror\Notice.txt" />
@@ -683,6 +685,10 @@
     <ProjectReference Include="Mirror.CompilerSymbols.csproj">
       <Project>{3AD570A6-E483-0C40-027F-F79CC7FBDE0C}</Project>
       <Name>Mirror.CompilerSymbols</Name>
+    </ProjectReference>
+    <ProjectReference Include="ParrelSync.csproj">
+      <Project>{26D503F2-A7FC-01AC-340D-DF4C17F8BBD5}</Project>
+      <Name>ParrelSync</Name>
     </ProjectReference>
     <ProjectReference Include="Mirror.Cloud.csproj">
       <Project>{307E350B-C579-78CE-7817-C0619398230A}</Project>

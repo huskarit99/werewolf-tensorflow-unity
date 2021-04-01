@@ -698,7 +698,7 @@ Transform:
   - {fileID: 283597873}
   - {fileID: 1269105608}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -790,7 +790,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!4 &758091257 stripped
 Transform:
@@ -892,7 +892,7 @@ Transform:
   - {fileID: 1159961773}
   - {fileID: 1363076311}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &820344264
 PrefabInstance:
@@ -1711,6 +1711,7 @@ GameObject:
   - component: {fileID: 1532588101}
   - component: {fileID: 1532588102}
   - component: {fileID: 1532588100}
+  - component: {fileID: 1532588104}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1776,7 +1777,7 @@ MonoBehaviour:
   serverBatchInterval: 0
   offlineScene: 
   onlineScene: Assets/Scenes/SampleScene.unity
-  transport: {fileID: 1532588101}
+  transport: {fileID: 1532588104}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
@@ -1805,6 +1806,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1532588104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532588099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  NoDelay: 1
+  SendTimeout: 5000
+  ReceiveTimeout: 30000
+  serverMaxMessageSize: 16384
+  serverMaxReceivesPerTick: 10000
+  serverSendQueueLimitPerConnection: 10000
+  serverReceiveQueueLimitPerConnection: 10000
+  clientMaxMessageSize: 16384
+  clientMaxReceivesPerTick: 1000
+  clientSendQueueLimit: 10000
+  clientReceiveQueueLimit: 10000
 --- !u!4 &1570129847 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1228337372339000162, guid: b1ad4ddef28919545b400ada9fe757a0,
@@ -2237,7 +2262,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9056249548323110585
 PrefabInstance:

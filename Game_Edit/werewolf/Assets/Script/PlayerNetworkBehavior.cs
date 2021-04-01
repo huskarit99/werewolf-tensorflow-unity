@@ -78,8 +78,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         playerPosition = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
                                     0,
                                     Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
-        var centralPoint = GameObject.FindGameObjectWithTag(Tags_4_Object.CentralPoint).transform;
-        this.gameObject.transform.LookAt(centralPoint);
+        this.gameObject.transform.LookAt(CentralPoint.transform);
     }
     void SetupVoteText(int _votes)
     {
