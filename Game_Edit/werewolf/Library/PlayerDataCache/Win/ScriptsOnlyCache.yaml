@@ -4,6 +4,7 @@ ScriptsOnlyBuild:
     - CameraController
     - DieAfterTime
     - MoveCloud
+    - MyNetworkManager
     - PlayerNetworkBehavior
     - SpawnCloud
     Mirror.Components.dll:
@@ -11,8 +12,8 @@ ScriptsOnlyBuild:
     - Mirror.NetworkTransform
     Mirror.dll:
     - Mirror.NetworkIdentity
-    - Mirror.NetworkManager
     - Mirror.NetworkManagerHUD
+    - Mirror.NetworkStartPosition
     - kcp2k.KcpTransport
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -81,33 +82,35 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11280}
     - Class: 114
-      Script: {instanceID: 11356}
+      Script: {instanceID: 11318}
     - Class: 114
-      Script: {instanceID: 11360}
+      Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11488}
+      Script: {instanceID: 11362}
     - Class: 114
-      Script: {instanceID: 11568}
+      Script: {instanceID: 11494}
     - Class: 114
-      Script: {instanceID: 11812}
+      Script: {instanceID: 11570}
     - Class: 114
-      Script: {instanceID: 12078}
+      Script: {instanceID: 11814}
     - Class: 114
-      Script: {instanceID: 12652}
+      Script: {instanceID: 12080}
     - Class: 114
-      Script: {instanceID: 12702}
+      Script: {instanceID: 12654}
+    - Class: 114
+      Script: {instanceID: 12704}
     - Class: 114
       Script: {instanceID: 13244}
     - Class: 114
       Script: {instanceID: 13316}
+    - Class: 114
+      Script: {instanceID: 13418}
     - Class: 114
       Script: {instanceID: 13526}
     - Class: 114
       Script: {instanceID: 13790}
     - Class: 114
       Script: {instanceID: 13898}
-    - Class: 114
-      Script: {instanceID: 25558}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -177,6 +180,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SelectionCaret
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DieAfterTime
   - hash:
       serializedVersion: 2
       Hash: 87ff43d2baf3385cba327d8f803a4ebb
@@ -683,7 +692,7 @@ ScriptsOnlyBuild:
     className: CellGUI
   - hash:
       serializedVersion: 2
-      Hash: 66eaa5b5689c1c59c2f37fdcd2f414b0
+      Hash: a1bfb3422802fc7aa39fc323124afc36
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerNetworkBehavior
@@ -923,7 +932,7 @@ ScriptsOnlyBuild:
     className: NetworkDiscoveryHUD
   - hash:
       serializedVersion: 2
-      Hash: 36f24d1b0e21abb6bbb4226156aead3d
+      Hash: 823487f7f3fc6ffde5acd5a71c910959
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MyNetworkManager
@@ -1125,13 +1134,7 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.dll
     namespaceName: kcp2k
     className: KcpTransport
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: DieAfterTime
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe
+  playerPath: E:/TestGame/Player_3/werewolf.exe

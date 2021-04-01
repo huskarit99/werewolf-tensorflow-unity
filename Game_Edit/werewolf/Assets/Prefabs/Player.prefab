@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 2922050001339358056}
   - component: {fileID: 1057330925}
   - component: {fileID: -2686235899061634536}
+  - component: {fileID: -8594082794977653580}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -220,9 +221,9 @@ MonoBehaviour:
   Distance4Main: 0
   AnimPlayer: {fileID: 2942076377256779105}
   CameraPlayer: {fileID: 229887591646349128}
+  VoteText: {fileID: 3216134622510038691}
   playerNameText: {fileID: 2942076377727307403}
   playerIndexText: {fileID: 2942076377368704644}
-  VotesText: {fileID: 3216134622510038691}
   playerVotesText: {fileID: 5992570515280731102}
 --- !u!114 &1057330925
 MonoBehaviour:
@@ -254,6 +255,18 @@ CapsuleCollider:
   m_Height: 61.222206
   m_Direction: 1
   m_Center: {x: 0, y: 30.611103, z: 0.9107971}
+--- !u!114 &-8594082794977653580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229887591737349393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &236439027772687343
 GameObject:
   m_ObjectHideFlags: 0

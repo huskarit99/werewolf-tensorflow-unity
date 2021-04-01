@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public class MyNetworkManager : NetworkManager
 {
+    public double Radius;
+    public double Distance;
+
+    public List<GameObject> Players = new List<GameObject>();
     public override void OnStartServer()
     {
         Debug.Log("Start Server");
@@ -15,6 +20,6 @@ public class MyNetworkManager : NetworkManager
     }
     public override void OnClientConnect(NetworkConnection conn)
     {
-        Debug.Log("Client Connect");
+        Debug.Log("Number of client = " + NetworkServer.connections.Count);
     }
 }
