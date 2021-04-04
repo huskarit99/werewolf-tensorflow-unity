@@ -10,8 +10,6 @@ ScriptsOnlyBuild:
     Mirror.Components.dll:
     - Mirror.NetworkAnimator
     - Mirror.NetworkTransform
-    Mirror.Editor.dll:
-    - Mirror.NetworkBehaviourInspector
     Mirror.dll:
     - Mirror.NetworkIdentity
     - Mirror.NetworkManagerHUD
@@ -81,39 +79,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11316}
+      Script: {instanceID: 11276}
     - Class: 114
-      Script: {instanceID: 11320}
+      Script: {instanceID: 11280}
+    - Class: 114
+      Script: {instanceID: 11318}
     - Class: 114
       Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11398}
+      Script: {instanceID: 11362}
     - Class: 114
-      Script: {instanceID: 11402}
+      Script: {instanceID: 11494}
     - Class: 114
-      Script: {instanceID: 11534}
+      Script: {instanceID: 11572}
     - Class: 114
-      Script: {instanceID: 11612}
+      Script: {instanceID: 11816}
     - Class: 114
-      Script: {instanceID: 11856}
+      Script: {instanceID: 12084}
     - Class: 114
-      Script: {instanceID: 12124}
+      Script: {instanceID: 12664}
     - Class: 114
-      Script: {instanceID: 12704}
+      Script: {instanceID: 12714}
     - Class: 114
-      Script: {instanceID: 12754}
+      Script: {instanceID: 13258}
     - Class: 114
-      Script: {instanceID: 13298}
+      Script: {instanceID: 13330}
     - Class: 114
-      Script: {instanceID: 13370}
+      Script: {instanceID: 13432}
     - Class: 114
-      Script: {instanceID: 13472}
+      Script: {instanceID: 13540}
     - Class: 114
-      Script: {instanceID: 13580}
+      Script: {instanceID: 13810}
     - Class: 114
-      Script: {instanceID: 13850}
-    - Class: 114
-      Script: {instanceID: 13962}
+      Script: {instanceID: 13922}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -695,7 +693,7 @@ ScriptsOnlyBuild:
     className: CellGUI
   - hash:
       serializedVersion: 2
-      Hash: a1bfb3422802fc7aa39fc323124afc36
+      Hash: 7f40cf71615876673865028e21b40d18
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerNetworkBehavior
@@ -935,7 +933,7 @@ ScriptsOnlyBuild:
     className: NetworkDiscoveryHUD
   - hash:
       serializedVersion: 2
-      Hash: 096fe9152e620c88d368c1cb8d449f7e
+      Hash: b2bf3051464ef5d80942850c3eedc5a0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MyNetworkManager
@@ -1146,4 +1144,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/Player_2/werewolf.exe
+  playerPath: E:/TestGame/Player_3/werewolf.exe

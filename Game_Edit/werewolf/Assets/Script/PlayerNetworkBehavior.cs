@@ -9,49 +9,61 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     public double Radius;
     public double Distance;
-    public double Distance4Main;
     public Animator AnimPlayer;  // Hành động của nhân vật
     public Camera CameraPlayer; // Camera theo nhân vật
     public GameObject VoteText; // Số vote của nhân vật
     Vector3 target;
-    Vector3 defaultPosition;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
 
     public GameObject CentralPoint;
-    MyNetworkManager Room;
+    bool IsDefault;
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Start");
         if (isLocalPlayer)
         {
-            SetupPlayer("Minh Quoc", 1, 10, 0);
-            defaultPosition = gameObject.transform.rotation.eulerAngles;
-
+            IsDefault = true;
+            Cmd_SetupPlayer("Minh Hoang 9", 9);
+            Cmd_SetupPosition(9, 10);
+            Cmd_SetupVotes4Player(0);
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             // // định danh id cho player Player(Clone)
-            string _ID = "Player" + GetComponent<NetworkIdentity>().netId;
+            string _ID = "Player" + netId;
             transform.name = _ID;
+            this.transform.LookAt(CentralPoint.transform);
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    [ClientCallback]
+    private void Update()
     {
-        if(!hasAuthority) { return;  }  // kiểm tra quyền client
+        if (!hasAuthority) { return; }  // kiểm tra quyền client
         if (isLocalPlayer)
         {
-            UpdateVotes(votes);
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vote();
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            CancelVote(Param_4_Anim.VoteLeft);
+            VoteText.SetActive(!IsDefault);
+
+            float moveHor = Input.GetAxis("Horizontal");
+            float moveVer = Input.GetAxis("Vertical");
+            var movement = new Vector3(moveHor, 0, moveVer);
+            transform.position += movement;
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Vote");
+                Vote();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                CancelVote(Param_4_Anim.VoteLeft);
+            }
+            else
+            {
+                if (IsDefault)
+                {
+                    this.transform.LookAt(CentralPoint.transform);
+                }
+            }
         }
     }
-
     #region Client
     #endregion
 
@@ -60,30 +72,33 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     /// Các hàm set up nhân vật game
     /// </summary>
     [Command]
-    void SetupPlayer(string _name ,int _index, int total,int _votes)
+    void Cmd_SetupPlayer(string _name ,int _index)
     {
-        name = _name;
+        playerName = _name;
         index = _index.ToString();
-        SetupPosition(_index, total);
-        SetupVoteText(_votes);
     }
-    void SetupPosition(int _index,int total)
+    [Command]
+    void Cmd_SetupVotes4Player(int _votes)
+    {
+        votes = _votes;
+        if (votes == 0)
+        {
+            VoteText.SetActive(false);
+        }
+        else
+        {
+            VoteText.SetActive(true);
+        }
+    }
+
+    [Command]
+    void Cmd_SetupPosition(int _index,int total)
     {
         var default_angle = 360 / total;
         var angle = Math.PI * default_angle * _index / 180;
-        if (isLocalPlayer)
-        {
-            Radius += Distance4Main;
-        }
         playerPosition = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
                                     0,
                                     Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
-        this.gameObject.transform.LookAt(CentralPoint.transform);
-    }
-    void SetupVoteText(int _votes)
-    {
-        votes = _votes;
-        VoteText.SetActive(false);
     }
     #endregion
 
@@ -93,41 +108,41 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     /// </summary>
     //--- Thay đổi tên nhân vật
     public TextMesh playerNameText;
-    [SyncVar(hook = nameof(CmdNameChange))]
-    string name;
-    void CmdNameChange(string _old, string _new)
+    [SyncVar(hook = nameof(OnNameChange))]
+    string playerName;
+    void OnNameChange(string _old, string _new)
     {
-        playerNameText.text = name;
+        playerNameText.text = playerName;
     }
     //--- Thay đổi số thứ tự nhân vật
     public TextMesh playerIndexText;
-    [SyncVar(hook = nameof(CmdIndexChange))]
+    [SyncVar(hook = nameof(OnIndexChange))]
     string index;
-    void CmdIndexChange(string _old,string _new)
+    void OnIndexChange(string _old,string _new)
     {
         playerIndexText.text = index;
     }
     //-- Thay đổi vote của nhân vật
     public TextMesh playerVotesText;
-    [SyncVar(hook = nameof(CmdVotesChange))]
+    [SyncVar(hook = nameof(OnVotesChange))]
     int votes;
-    void CmdVotesChange(int _old,int _new)
+    void OnVotesChange(int _old,int _new)
     {
         playerVotesText.text = votes.ToString();
     }
 
-    [SyncVar(hook =nameof(CmdPositionChange))]
+    [SyncVar(hook =nameof(OnPositionChange))]
     Vector3 playerPosition;
-    void CmdPositionChange(Vector3 _old, Vector3 _new)
+    void OnPositionChange(Vector3 _old, Vector3 _new)
     {
         this.gameObject.transform.position = playerPosition;
     }
     #endregion
 
     #region Action
-    [Command]
     void Vote()
     {
+        IsDefault = false;
         Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
@@ -135,30 +150,22 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             target = hit.point;
             if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
-                AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
-                DieAfterTime.SetNamePlayer_SecondsLeft(hit.collider.name, 5); // gán tên nhân vật và số thời gian còn lại
                 // thực hiện hành động vote
+                AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
+                this.transform.LookAt(new Vector3(target.x,0,target.z));
+                var _target = hit.collider.gameObject;
+            }
+            else
+            {
+                CancelVote(Tags_4_Object.Player);
             }
         }
-        //transform.LookAt(target); // xoay nhân vật theo mục tiêu của con trỏ
     }
     void CancelVote(string param)
     {
+        IsDefault = true;
         DieAfterTime.SetNamePlayer_SecondsLeft(null, 0); // gán tên nhân vật và thời gian còn lại
         AnimPlayer.SetBool(param, false); // bỏ thực hiện hành động vote 
-    }
-    [Command]
-    void UpdateVotes(int _votes)
-    {
-        this.votes += _votes;
-        if (votes == 0)
-        {
-            this.VoteText.SetActive(false);
-        }
-        else
-        {
-            this.VoteText.SetActive(true);
-        }
     }
     #endregion
 }

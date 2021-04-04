@@ -29,4 +29,7 @@ public static class Detail_Of_Character
     public static string Name = "Name";
     public static string Number = "Number";
     public static string Main_Player = "Main_Player";
+    public static string NameTag = "NameTag";
+    public static string Plane = "Plane";
+    public static string Votes = "Votes";
 }
