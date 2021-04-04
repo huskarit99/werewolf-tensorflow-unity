@@ -218,14 +218,11 @@ MonoBehaviour:
   syncInterval: 0.1
   Radius: 100
   Distance: 650
-  Distance4Main: 0
   AnimPlayer: {fileID: 2942076377256779105}
   CameraPlayer: {fileID: 229887591646349128}
   VoteText: {fileID: 3216134622510038691}
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
-  PlayerPrefabs:
-  - {fileID: 229887591737349393}
   playerNameText: {fileID: 2942076377727307403}
   playerIndexText: {fileID: 2942076377368704644}
   playerVotesText: {fileID: 5992570515280731102}
@@ -1527,7 +1524,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3216134622510038691}
-  m_Text: '0
+  m_Text: '1
 
 '
   m_OffsetZ: 0

@@ -24,9 +24,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             IsDefault = true;
-            Cmd_SetupPlayer("Minh Hoang 9", 9);
+            Cmd_SetupPlayer("Minh Hoang 9", 9,0);
             Cmd_SetupPosition(9, 10);
-            Cmd_SetupVotes4Player(0);
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
@@ -72,15 +71,17 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     /// Các hàm set up nhân vật game
     /// </summary>
     [Command]
-    void Cmd_SetupPlayer(string _name ,int _index)
+    void Cmd_SetupPlayer(string _name ,int _index,int _votes)
     {
         playerName = _name;
         index = _index.ToString();
-    }
-    [Command]
-    void Cmd_SetupVotes4Player(int _votes)
-    {
         votes = _votes;
+        Rpc_SetupVotes4Player();
+    }
+    [ClientRpc]
+    void Rpc_SetupVotes4Player()
+    {
+        Debug.Log(votes);
         if (votes == 0)
         {
             VoteText.SetActive(false);
@@ -154,6 +155,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
                 this.transform.LookAt(new Vector3(target.x,0,target.z));
                 var _target = hit.collider.gameObject;
+                Debug.Log(_target.GetComponent<PlayerNetworkBehavior>().votes);
             }
             else
             {
