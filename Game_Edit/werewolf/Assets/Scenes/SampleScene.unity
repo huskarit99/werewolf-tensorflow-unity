@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.7302384, g: 0.7889801, b: 0.84985816, a: 1}
+  m_IndirectSpecularColor: {r: 0.7302238, g: 0.7889745, b: 0.8498578, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1308,9 +1308,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1037934571}
+  - component: {fileID: 1037934572}
   - component: {fileID: 1037934570}
   m_Layer: 0
-  m_Name: DieAfterTime
+  m_Name: UIGameVote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1325,9 +1326,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1037934569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 330333501a16c234f9bdae3fb88f6c15, type: 3}
+  m_Script: {fileID: 11500000, guid: f89331892eca47740970a805c03e02c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  TextDisplay: {fileID: 1234250594}
 --- !u!4 &1037934571
 Transform:
   m_ObjectHideFlags: 0
@@ -1342,6 +1346,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1037934572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037934569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 4288717267
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!4 &1058578365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1051960433559894468, guid: 3bd6df3ce12639e4ca27de5840189866,
@@ -1515,7 +1536,7 @@ GameObject:
   - component: {fileID: 1234250595}
   - component: {fileID: 1234250594}
   m_Layer: 5
-  m_Name: Text
+  m_Name: GameVoteText
   m_TagString: Vote_Time
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1542,7 +1563,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 25
+    m_FontSize: 21
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
@@ -1576,10 +1597,10 @@ RectTransform:
   m_Father: {fileID: 23163762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 99.6, y: -20.5}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -113, y: 0}
+  m_SizeDelta: {x: 210, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1269105608 stripped
 Transform:

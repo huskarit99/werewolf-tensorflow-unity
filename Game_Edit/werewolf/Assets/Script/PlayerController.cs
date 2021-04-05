@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     //--- Plane
     public GameObject plane;
     //--- TimerCountdown
-    TimerCountdown TimerCountdown;
+    UIGameVote UIGameVote;
 
     public int position;
     // Start is called before the first frame update
@@ -37,14 +37,14 @@ public class PlayerController : MonoBehaviour
         main_camera = Camera.main.transform;
         plane.transform.rotation = Quaternion.Euler(Vector3.zero);
         //--- Tìm đối tượng TimerCountdown
-        TimerCountdown = FindObjectOfType<TimerCountdown>();
+        UIGameVote = FindObjectOfType<UIGameVote>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //LookAtMainCamera();
-        if (TimerCountdown.getSecondsLeft() > 0)
+        if (UIGameVote.getSecondsLeft() > 0)
         {
             if (Input.GetMouseButtonDown(0) && !anim.GetBool("isVoteYourSelf"))
             {
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                TimerCountdown.setSecondsLeft(10);
+                UIGameVote.setSecondsLeft(10);
             }
         }
         

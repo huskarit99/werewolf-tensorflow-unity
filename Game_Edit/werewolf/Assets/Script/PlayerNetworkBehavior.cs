@@ -14,6 +14,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public GameObject VoteText; // Số vote của nhân vật
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
+    UIGameVote UIGameVote; // Thời gian để vote
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -27,6 +28,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             Cmd_SetupPlayer("Minh Hoang 9", 9,0);
             Cmd_SetupPosition(9, 10);
             DieAfterTime = FindObjectOfType<DieAfterTime>();
+            UIGameVote = FindObjectOfType<UIGameVote>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;
@@ -45,7 +47,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             float moveVer = Input.GetAxis("Vertical");
             var movement = new Vector3(moveHor, 0, moveVer);
             transform.position += movement;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && UIGameVote.getSecondsLeft()>0)
             {
                 Debug.Log("Vote");
                 Vote();
@@ -159,14 +161,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             }
             else
             {
-                CancelVote(Tags_4_Object.Player);
+                CancelVote(Param_4_Anim.VoteLeft);
             }
         }
     }
     void CancelVote(string param)
     {
         IsDefault = true;
-        DieAfterTime.SetNamePlayer_SecondsLeft(null, 0); // gán tên nhân vật và thời gian còn lại
+        //DieAfterTime.SetNamePlayer_SecondsLeft(null, 0); // gán tên nhân vật và thời gian còn lại
         AnimPlayer.SetBool(param, false); // bỏ thực hiện hành động vote 
     }
     #endregion
