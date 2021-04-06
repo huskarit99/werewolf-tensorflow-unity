@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
+using System.Linq;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     public GameObject CentralPoint;
     bool IsDefault;
+    GameObject VotedTarget = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +27,10 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             IsDefault = true;
-            Cmd_SetupPlayer("Minh Hoang 9", 9,0);
+            Cmd_SetupPlayer("Minh Hoang 9", 9);
             Cmd_SetupPosition(9, 10);
+            //Cmd_UpdateVotes(this.GetComponent<NetworkIdentity>(), 0);
+
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVote = FindObjectOfType<UIGameVote>();
             // // định danh id cho player Player(Clone)
@@ -41,7 +45,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (!hasAuthority) { return; }  // kiểm tra quyền client
         if (isLocalPlayer)
         {
-            VoteText.SetActive(!IsDefault);
 
             float moveHor = Input.GetAxis("Horizontal");
             float moveVer = Input.GetAxis("Vertical");
@@ -50,11 +53,11 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             if (Input.GetMouseButtonDown(0) && UIGameVote.getSecondsLeft()>0)
             {
                 Debug.Log("Vote");
-                Vote();
+                VotedTarget = Vote();
             }
             else if (Input.GetKeyDown(KeyCode.Q))
             {
-                CancelVote(Param_4_Anim.VoteLeft);
+                CancelVote(VotedTarget);
             }
             else
             {
@@ -73,25 +76,10 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     /// Các hàm set up nhân vật game
     /// </summary>
     [Command]
-    void Cmd_SetupPlayer(string _name ,int _index,int _votes)
+    void Cmd_SetupPlayer(string _name ,int _index)
     {
         playerName = _name;
         index = _index.ToString();
-        votes = _votes;
-        Rpc_SetupVotes4Player();
-    }
-    [ClientRpc]
-    void Rpc_SetupVotes4Player()
-    {
-        Debug.Log(votes);
-        if (votes == 0)
-        {
-            VoteText.SetActive(false);
-        }
-        else
-        {
-            VoteText.SetActive(true);
-        }
     }
 
     [Command]
@@ -128,7 +116,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     //-- Thay đổi vote của nhân vật
     public TextMesh playerVotesText;
     [SyncVar(hook = nameof(OnVotesChange))]
-    int votes;
+    int votes = 0;
     void OnVotesChange(int _old,int _new)
     {
         playerVotesText.text = votes.ToString();
@@ -143,7 +131,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
 
     #region Action
-    void Vote()
+    GameObject Vote()
     {
         IsDefault = false;
         Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
@@ -153,23 +141,95 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             target = hit.point;
             if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
+                var _target = hit.collider.gameObject;
+                var _votes = _target.GetComponent<PlayerNetworkBehavior>().votes;
+                Debug.Log(_votes);
+                Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
-                this.transform.LookAt(new Vector3(target.x,0,target.z));
-                var _target = hit.collider.gameObject;
-                Debug.Log(_target.GetComponent<PlayerNetworkBehavior>().votes);
+                this.transform.LookAt(new Vector3(target.x, 0, target.z));
+                return _target;
             }
             else
             {
-                CancelVote(Param_4_Anim.VoteLeft);
+                CancelVote(VotedTarget);
+            }
+        }
+        return null;
+    }
+    void CancelVote(GameObject _votedTarget)
+    {
+        IsDefault = true;
+        if (AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+        {
+            var _votes = _votedTarget.GetComponent<PlayerNetworkBehavior>().votes;
+            if (_votes > 0)
+            {
+                Cmd_UpdateVotes(_votedTarget.GetComponent<NetworkIdentity>(), false);
+            }   
+        }
+        AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false); // bỏ thực hiện hành động vote
+    }
+
+    [Command]
+    void Cmd_UpdateVotes(NetworkIdentity _target,bool _isAddVote)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            if (_player != null)
+            {
+                if (_isAddVote)
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().votes++;
+                }
+                else
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().votes--;
+                }
+                var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
+                Debug.Log("Server: "+ _votes.ToString());
+                if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
+                }
+                else
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
+                }
+                Rpc_UpdateVotes(_target,_isAddVote,_votes);
             }
         }
     }
-    void CancelVote(string param)
+    [ClientRpc]
+    void Rpc_UpdateVotes(NetworkIdentity _target, bool _isAddVote,int _votes)
     {
-        IsDefault = true;
-        //DieAfterTime.SetNamePlayer_SecondsLeft(null, 0); // gán tên nhân vật và thời gian còn lại
-        AnimPlayer.SetBool(param, false); // bỏ thực hiện hành động vote 
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            if (_player != null)
+            {
+                //_player.GetComponent<PlayerNetworkBehavior>().votes = _votes;
+                if (_isAddVote)
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().votes++;
+                }
+                else
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().votes--;
+                }
+                if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
+                }
+                else
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
+                }
+            }
+        }
     }
     #endregion
 }

@@ -24,7 +24,7 @@ public class MyNetworkManager : NetworkManager
     }
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
-        var centralPoint = GameObject.FindGameObjectWithTag(Tags_4_Object.CentralPoint);
+        playerPrefab.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
         var player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 800), Quaternion.identity);
         NetworkServer.AddPlayerForConnection(conn, player);
         Debug.Log("So player: " + NetworkServer.connections.Count);

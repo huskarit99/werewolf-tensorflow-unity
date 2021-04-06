@@ -77,41 +77,41 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 12476}
-    - Class: 114
       Script: {instanceID: 12478}
     - Class: 114
-      Script: {instanceID: 12556}
+      Script: {instanceID: 12480}
     - Class: 114
-      Script: {instanceID: 12560}
+      Script: {instanceID: 12558}
     - Class: 114
-      Script: {instanceID: 12692}
+      Script: {instanceID: 12562}
     - Class: 114
-      Script: {instanceID: 12708}
+      Script: {instanceID: 12694}
     - Class: 114
-      Script: {instanceID: 12772}
+      Script: {instanceID: 12710}
     - Class: 114
-      Script: {instanceID: 13018}
+      Script: {instanceID: 12774}
     - Class: 114
-      Script: {instanceID: 13286}
+      Script: {instanceID: 13020}
     - Class: 114
-      Script: {instanceID: 13862}
+      Script: {instanceID: 13288}
     - Class: 114
-      Script: {instanceID: 13912}
+      Script: {instanceID: 13864}
     - Class: 114
-      Script: {instanceID: 13954}
+      Script: {instanceID: 13914}
     - Class: 114
-      Script: {instanceID: 14456}
+      Script: {instanceID: 13956}
     - Class: 114
-      Script: {instanceID: 14524}
+      Script: {instanceID: 14458}
     - Class: 114
-      Script: {instanceID: 14624}
+      Script: {instanceID: 14526}
     - Class: 114
-      Script: {instanceID: 14730}
+      Script: {instanceID: 14626}
     - Class: 114
-      Script: {instanceID: 15000}
+      Script: {instanceID: 14732}
     - Class: 114
-      Script: {instanceID: 15112}
+      Script: {instanceID: 15002}
+    - Class: 114
+      Script: {instanceID: 15114}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1144,4 +1144,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe
+  playerPath: E:/TestGame/Player_3/werewolf.exe
