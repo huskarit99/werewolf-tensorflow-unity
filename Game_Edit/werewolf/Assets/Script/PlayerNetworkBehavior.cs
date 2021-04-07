@@ -10,9 +10,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     public double Radius;
     public double Distance;
+
     public Animator AnimPlayer;  // Hành động của nhân vật
     public Camera CameraPlayer; // Camera theo nhân vật
+    public GameObject NameTag;
     public GameObject VoteText; // Số vote của nhân vật
+    public GameObject NameText; // Tên của nhân vật
+    public GameObject IndexText; // Index của nhân vật
+
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
     UIGameVote UIGameVote; // Thời gian để vote
@@ -27,8 +32,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             IsDefault = true;
-            Cmd_SetupPlayer("Minh Hoang 9", 9);
-            Cmd_SetupPosition(9, 10);
+            Cmd_SetupPlayer("Minh Hoang", 0);
+            Cmd_SetupPosition(0, 4);
             //Cmd_UpdateVotes(this.GetComponent<NetworkIdentity>(), 0);
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
@@ -43,9 +48,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     private void Update()
     {
         if (!hasAuthority) { return; }  // kiểm tra quyền client
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        foreach(var player in players)
+        {
+            player.GetComponent<PlayerNetworkBehavior>().NameTag.transform.LookAt(this.CameraPlayer.transform);
+        }
         if (isLocalPlayer)
         {
-
+            this.NameTag.SetActive(false);
             float moveHor = Input.GetAxis("Horizontal");
             float moveVer = Input.GetAxis("Vertical");
             var movement = new Vector3(moveHor, 0, moveVer);
