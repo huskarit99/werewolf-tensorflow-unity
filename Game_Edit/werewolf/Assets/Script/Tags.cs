@@ -22,6 +22,7 @@ public static class Param_4_Anim
     public static string VoteLeft = "VoteLeft";
     public static string IsKill = "isKill";
     public static string IsVoteYourSelf = "isVoteYourSelf";
+    public static string IsDead = "isDead";
 }
 
 public static class Detail_Of_Character

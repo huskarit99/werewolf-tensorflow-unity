@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 using System.Linq;
+using System.Threading;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
@@ -60,21 +61,24 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             float moveVer = Input.GetAxis("Vertical");
             var movement = new Vector3(moveHor, 0, moveVer);
             transform.position += movement;
-            if (Input.GetMouseButtonDown(0) && UIGameVote.getSecondsLeft()>0)
+            if (UIGameVote.getSecondsLeft()>0)
             {
-                Debug.Log("Vote");
-                VotedTarget = Vote();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                CancelVote(VotedTarget);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    VotedTarget = Vote();
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    CancelVote(VotedTarget);
+                }
             }
             else
             {
-                if (IsDefault)
-                {
-                    this.transform.LookAt(CentralPoint.transform);
-                }
+                Kill_BadGuy();
+            }
+            if (IsDefault)
+            {
+                this.transform.LookAt(CentralPoint.transform);
             }
         }
     }
@@ -127,6 +131,10 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public TextMesh playerVotesText;
     [SyncVar(hook = nameof(OnVotesChange))]
     int votes = 0;
+    public int GetVotes()
+    {
+        return this.votes;
+    }
     void OnVotesChange(int _old,int _new)
     {
         playerVotesText.text = votes.ToString();
@@ -178,7 +186,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         }
         AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false); // bỏ thực hiện hành động vote
     }
-
+    /// <summary>
+    /// Hàm Command được call ở Client và thực hiện ở Server
+    ///     1/- Tìm kiếm player bị vote thông qua netId
+    ///     2/- Nếu là vote thì số votes ++, ngược lại là votes --(Giá trị vote của player ở Server)
+    ///     3/- Cập nhật số vote ở Game Object ở Server
+    /// </summary>
+    /// <param name="_target">netId của player bị vote</param>
+    /// <param name="_isAddVote">Giá trị để chỉ định thay đổi lượt vote</param>
     [Command]
     void Cmd_UpdateVotes(NetworkIdentity _target,bool _isAddVote)
     {
@@ -211,6 +226,16 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             }
         }
     }
+    /// <summary>
+    /// Hàm Command được call ở Server và thực hiện ở Client
+    ///     1/- Tìm kiếm player bị vote thông qua netId
+    ///     2/- Nếu là vote thì số votes ++, ngược lại là votes --(Giá trị vote của player ở tất cả Client)
+    ///     3/- Cập nhật số vote ở Game Object ở Client
+    /// *** Sẽ được gọi ngay sau hàm Cmd_UpdateVotes
+    /// </summary>
+    /// <param name="_target">netId của player bị vote</param>
+    /// <param name="_isAddVote">Giá trị để chỉ định thay đổi lượt vote</param>
+    /// <param name="_votes">Giá trị votes ở Server</param>
     [ClientRpc]
     void Rpc_UpdateVotes(NetworkIdentity _target, bool _isAddVote,int _votes)
     {
@@ -232,6 +257,20 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 }
             }
         }
+    }
+
+    [Command]
+    public void Kill_BadGuy()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().GetVotes()).ToArray();
+        if (players.Length > 1)
+        {
+            players[0].GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
+        }
+        int milliseconds = 1000;
+        Thread.Sleep(milliseconds);
+        Destroy(players[0]);
     }
     #endregion
 }

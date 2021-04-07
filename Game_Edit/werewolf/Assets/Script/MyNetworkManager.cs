@@ -29,4 +29,5 @@ public class MyNetworkManager : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, player);
         Debug.Log("So player: " + NetworkServer.connections.Count);
     }
+
 }

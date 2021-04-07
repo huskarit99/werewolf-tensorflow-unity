@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using System.Linq;
+
 
 public class UIGameVote : NetworkBehaviour
 {
@@ -26,16 +28,16 @@ public class UIGameVote : NetworkBehaviour
         {
             StartCoroutine(TimerTake());
         }
-        else if (secondsLeft == 0 && wait == false) // Thiết lập thời gian chờ
-        {
-            secondsWait = 5;
-            wait = true;
-        }
-        else if (takingAway == false && secondsWait > 0 && wait == true)
-        {
-            TextDisplay.text = "";
-            StartCoroutine(WaitingTime());
-        }
+        //else if (secondsLeft == 0 && wait == false) // Thiết lập thời gian chờ
+        //{
+        //    secondsWait = 5;
+        //    wait = true;
+        //}
+        //else if (takingAway == false && secondsWait > 0 && wait == true)
+        //{
+        //    TextDisplay.text = "";
+        //    StartCoroutine(WaitingTime());
+        //}
         else if (secondsWait == 0 && secondsLeft == 0 && wait == true) // Thiết lập thời gian vote
         {
             secondsLeft = 10;
