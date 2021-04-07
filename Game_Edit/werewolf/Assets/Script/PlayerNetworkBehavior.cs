@@ -32,8 +32,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             IsDefault = true;
-            Cmd_SetupPlayer("Minh Hoang", 0);
-            Cmd_SetupPosition(0, 4);
+            Cmd_SetupPlayer("Thai Hoc", 3);
+            Cmd_SetupPosition(3, 4);
             //Cmd_UpdateVotes(this.GetComponent<NetworkIdentity>(), 0);
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
@@ -152,8 +152,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
                 var _target = hit.collider.gameObject;
-                var _votes = _target.GetComponent<PlayerNetworkBehavior>().votes;
-                Debug.Log(_votes);
                 Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
@@ -198,8 +196,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     _player.GetComponent<PlayerNetworkBehavior>().votes--;
                 }
-                var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
-                Debug.Log("Server: "+ _votes.ToString());
                 if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
                 {
                     _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
@@ -208,6 +204,9 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
                 }
+                var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
+                _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
+                Debug.Log("Server: " + _votes.ToString() + " " + _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text);
                 Rpc_UpdateVotes(_target,_isAddVote,_votes);
             }
         }
@@ -221,15 +220,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
             if (_player != null)
             {
-                //_player.GetComponent<PlayerNetworkBehavior>().votes = _votes;
-                if (_isAddVote)
-                {
-                    _player.GetComponent<PlayerNetworkBehavior>().votes++;
-                }
-                else
-                {
-                    _player.GetComponent<PlayerNetworkBehavior>().votes--;
-                }
+                _player.GetComponent<PlayerNetworkBehavior>().votes = _votes;
+                _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
                 if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
                 {
                     _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
