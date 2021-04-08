@@ -21,7 +21,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
-    UIGameVote UIGameVote; // Thời gian để vote
+    UIGameVote UIGameVote; // UI hiển thị thời gian để vote
+    UIGameVoted UIGameVoted; // UI hiển thị số lượng bị vote
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -38,6 +39,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVote = FindObjectOfType<UIGameVote>();
+            UIGameVoted = FindObjectOfType<UIGameVoted>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;
@@ -62,6 +64,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             transform.position += movement;
             if (UIGameVote.getSecondsLeft()>0)
             {
+                UIGameVoted.SetVotedText(votes);
                 if (Input.GetMouseButtonDown(0))
                 {
                     VotedTarget = Vote();
@@ -73,6 +76,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             }
             else
             {
+                UIGameVoted.SetDefaultVotedText();
                 Kill_BadGuy();
             }
             if (IsDefault)
@@ -160,6 +164,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             {
                 var _target = hit.collider.gameObject;
                 Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
+                UpdateVoted(_target.GetComponent<NetworkIdentity>());
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
                 this.transform.LookAt(new Vector3(target.x, 0, target.z));
@@ -256,7 +261,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
                     }
-                }
+                } 
             }
         }
     }
@@ -276,6 +281,21 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         int milliseconds = 1000;
         Thread.Sleep(milliseconds);
         Destroy(players[0]);
+    }
+
+    void UpdateVoted(NetworkIdentity _target) // Cập nhật số lần bị vote tại client không đồng bộ server
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            if (_player != null)
+            {
+                var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
+                _player.GetComponent<PlayerNetworkBehavior>().UIGameVoted = FindObjectOfType<UIGameVoted>();
+                _player.GetComponent<PlayerNetworkBehavior>().UIGameVoted.SetVotedText(_votes);
+            }
+        }
     }
     #endregion
 }
