@@ -40,7 +40,7 @@ public class UIGameVote : NetworkBehaviour
         //}
         else if (secondsWait == 0 && secondsLeft == 0 && wait == true) // Thiết lập thời gian vote
         {
-            secondsLeft = 10;
+            secondsLeft = 60;
             wait = false;
         }
     }

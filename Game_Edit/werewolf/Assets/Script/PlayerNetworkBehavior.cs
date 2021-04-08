@@ -33,9 +33,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             IsDefault = true;
-            Cmd_SetupPlayer("Thai Hoc", 3);
+            Cmd_SetupPlayer("Minh Huy", 3);
             Cmd_SetupPosition(3, 4);
-            //Cmd_UpdateVotes(this.GetComponent<NetworkIdentity>(), 0);
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVote = FindObjectOfType<UIGameVote>();
@@ -247,13 +246,16 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             {
                 _player.GetComponent<PlayerNetworkBehavior>().votes = _votes;
                 _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
-                if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
+                if (!isLocalPlayer)
                 {
-                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
-                }
-                else
-                {
-                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
+                    if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
+                    }
+                    else
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
+                    }
                 }
             }
         }
@@ -263,10 +265,13 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public void Kill_BadGuy()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().GetVotes()).ToArray();
+        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
         if (players.Length > 1)
         {
-            players[0].GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
+            if(players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
+            {
+                players[0].GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
+            }
         }
         int milliseconds = 1000;
         Thread.Sleep(milliseconds);
