@@ -64,7 +64,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             transform.position += movement;
             if (UIGameVote.getSecondsLeft()>0)
             {
-                UIGameVoted.SetVotedText(votes);
+                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                 if (Input.GetMouseButtonDown(0))
                 {
                     VotedTarget = Vote();
@@ -76,7 +76,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             }
             else
             {
-                UIGameVoted.SetDefaultVotedText();
+                UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
                 Kill_BadGuy();
             }
             if (IsDefault)
@@ -164,7 +164,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             {
                 var _target = hit.collider.gameObject;
                 Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
-                UpdateVoted(_target.GetComponent<NetworkIdentity>());
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
                 this.transform.LookAt(new Vector3(target.x, 0, target.z));
@@ -281,21 +280,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         int milliseconds = 1000;
         Thread.Sleep(milliseconds);
         Destroy(players[0]);
-    }
-
-    void UpdateVoted(NetworkIdentity _target) // Cập nhật số lần bị vote tại client không đồng bộ server
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        if (players.Length > 0)
-        {
-            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
-            if (_player != null)
-            {
-                var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
-                _player.GetComponent<PlayerNetworkBehavior>().UIGameVoted = FindObjectOfType<UIGameVoted>();
-                _player.GetComponent<PlayerNetworkBehavior>().UIGameVoted.SetVotedText(_votes);
-            }
-        }
     }
     #endregion
 }
