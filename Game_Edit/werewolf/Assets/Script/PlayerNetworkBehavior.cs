@@ -77,7 +77,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             else
             {
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-                Kill_BadGuy();
+                Cmd_Kill_BadGuy();
             }
             if (IsDefault)
             {
@@ -250,23 +250,30 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             {
                 _player.GetComponent<PlayerNetworkBehavior>().votes = _votes;
                 _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
-                if (!isLocalPlayer)
+                if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
                 {
-                    if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
-                    {
-                        _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
-                    }
-                    else
-                    {
-                        _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
-                    }
-                } 
+                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
+                }
+                else
+                {
+                    _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
+                }
             }
         }
     }
+    IEnumerator DoAnimDead(GameObject _target)
+    {
+        //Print the time of when the function is first called.
+        _target.GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
 
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(1);
+
+        //After we have waited 5 seconds print the time again.
+        Destroy(_target);
+    }
     [Command]
-    public void Kill_BadGuy()
+    public void Cmd_Kill_BadGuy()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
@@ -274,12 +281,23 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         {
             if(players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
             {
-                players[0].GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
+                StartCoroutine(DoAnimDead(players[0]));
+                Rpc_Kill_Player(players[0].GetComponent<NetworkIdentity>());
             }
         }
-        int milliseconds = 1000;
-        Thread.Sleep(milliseconds);
-        Destroy(players[0]);
+    }
+    [ClientRpc]
+    void Rpc_Kill_Player(NetworkIdentity _target)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            if (_player != null)
+            {
+                StartCoroutine(DoAnimDead(_player));
+            }
+        }
     }
     #endregion
 }

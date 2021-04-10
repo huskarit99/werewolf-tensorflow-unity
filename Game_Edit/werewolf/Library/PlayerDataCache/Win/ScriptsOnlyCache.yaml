@@ -2,10 +2,8 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - CameraController
-    - MoveCloud
     - MyNetworkManager
     - PlayerNetworkBehavior
-    - SpawnCloud
     - UIGameVote
     - UIGameVoted
     Mirror.Components.dll:
@@ -57,8 +55,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
-    - Class: 65
-      Script: {instanceID: 0}
     - Class: 74
       Script: {instanceID: 0}
     - Class: 81
@@ -89,10 +85,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11362}
     - Class: 114
       Script: {instanceID: 11494}
-    - Class: 114
-      Script: {instanceID: 11572}
-    - Class: 114
-      Script: {instanceID: 11816}
     - Class: 114
       Script: {instanceID: 12084}
     - Class: 114
@@ -1153,4 +1145,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe
+  playerPath: E:/TestGame/Player_2/werewolf.exe
