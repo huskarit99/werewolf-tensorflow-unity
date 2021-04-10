@@ -13,6 +13,8 @@ public class UIGameVote : NetworkBehaviour
     int secondsLeft = 0; // thời gian còn lại
     int secondsWait = 0; // thời gian chờ
     bool takingAway = false; // 
+    bool syncWait;
+    [SyncVar(hook =nameof(OnWaitChanged))]
     bool wait = true; 
     // Start is called before the first frame update
     void Start()
@@ -28,19 +30,19 @@ public class UIGameVote : NetworkBehaviour
         {
             StartCoroutine(TimerTake());
         }
-        //else if (secondsLeft == 0 && wait == false) // Thiết lập thời gian chờ
-        //{
-        //    secondsWait = 5;
-        //    wait = true;
-        //}
-        //else if (takingAway == false && secondsWait > 0 && wait == true)
-        //{
-        //    TextDisplay.text = "";
-        //    StartCoroutine(WaitingTime());
-        //}
+        else if (secondsLeft == 0 && wait == false) // Thiết lập thời gian chờ
+        {
+            secondsWait = 5;
+            wait = true;
+        }
+        else if (takingAway == false && secondsWait > 0 && wait == true)
+        {
+            TextDisplay.text = "";
+            StartCoroutine(WaitingTime());
+        }
         else if (secondsWait == 0 && secondsLeft == 0 && wait == true) // Thiết lập thời gian vote
         {
-            secondsLeft = 60;
+            secondsLeft = 30;
             wait = false;
         }
     }
@@ -64,6 +66,10 @@ public class UIGameVote : NetworkBehaviour
     void OnSecondsChanged(int _old, int _new)
     {
         TextDisplay.text = "Time Remaining: " + secondsLeft;
+    }
+    void OnWaitChanged(bool _old, bool _new)
+    {
+        syncWait = wait;
     }
     public int getSecondsLeft()
     {
