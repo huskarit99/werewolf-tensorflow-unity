@@ -34,3 +34,13 @@ public static class Detail_Of_Character
     public static string Plane = "Plane";
     public static string Votes = "Votes";
 }
+
+public static class Role4Player
+{
+    public static string Wolf = "Wolf";
+    public static string Hunter = "Hunter";
+    public static string Witch = "Witch";
+    public static string Guard = "Guard";
+    public static string Seer = "Seer";
+    public static string Human = "Human";
+}

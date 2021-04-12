@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UIGameVoted : MonoBehaviour
 {
     public Text VotedText;
-    public void SetVotedText(int voted)
+    public void SetVotedText(double voted)
     {
         VotedText.text = "Voted: " + voted;
     }

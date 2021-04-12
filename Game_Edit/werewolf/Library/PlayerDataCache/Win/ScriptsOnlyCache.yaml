@@ -86,27 +86,27 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12712}
     - Class: 114
-      Script: {instanceID: 13292}
+      Script: {instanceID: 13290}
     - Class: 114
-      Script: {instanceID: 13576}
+      Script: {instanceID: 13574}
     - Class: 114
-      Script: {instanceID: 13870}
+      Script: {instanceID: 13868}
     - Class: 114
-      Script: {instanceID: 13920}
+      Script: {instanceID: 13918}
     - Class: 114
-      Script: {instanceID: 13962}
+      Script: {instanceID: 13960}
     - Class: 114
-      Script: {instanceID: 14464}
+      Script: {instanceID: 14462}
     - Class: 114
-      Script: {instanceID: 14532}
+      Script: {instanceID: 14530}
     - Class: 114
-      Script: {instanceID: 14632}
+      Script: {instanceID: 14630}
     - Class: 114
-      Script: {instanceID: 14738}
+      Script: {instanceID: 14736}
     - Class: 114
-      Script: {instanceID: 15008}
+      Script: {instanceID: 15006}
     - Class: 114
-      Script: {instanceID: 15120}
+      Script: {instanceID: 15118}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -392,12 +392,6 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Examples.Cloud.GUI.dll
     namespaceName: Mirror.Examples.Pong
     className: QuitButtonHUD
-  - hash:
-      serializedVersion: 2
-      Hash: 6806fed3f363539652082944a1e6542b
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: UIGameReady
   - hash:
       serializedVersion: 2
       Hash: 83a41fc2749c0fb3f3c2dc575a71e5e4
@@ -1151,4 +1145,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe
+  playerPath: E:/TestGame/Player_2/werewolf.exe

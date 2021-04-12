@@ -11,11 +11,21 @@ public class UIGameVote : NetworkBehaviour
     public Text TextDisplay; // hiện thị thời gian trên màn hình
     [SyncVar(hook = nameof(OnSecondsChanged))]
     int secondsLeft = 0; // thời gian còn lại
+    void OnSecondsChanged(int _old, int _new)
+    {
+        TextDisplay.text = "Time Remaining: " + secondsLeft;
+    }
+
     int secondsWait = 0; // thời gian chờ
     bool takingAway = false; // 
     bool syncWait;
+
     [SyncVar(hook =nameof(OnWaitChanged))]
-    bool wait = true; 
+    bool wait = true;
+    void OnWaitChanged(bool _old, bool _new)
+    {
+        syncWait = wait;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -63,14 +73,6 @@ public class UIGameVote : NetworkBehaviour
         takingAway = false;
     }
 
-    void OnSecondsChanged(int _old, int _new)
-    {
-        TextDisplay.text = "Time Remaining: " + secondsLeft;
-    }
-    void OnWaitChanged(bool _old, bool _new)
-    {
-        syncWait = wait;
-    }
     public int getSecondsLeft()
     {
         return secondsLeft;

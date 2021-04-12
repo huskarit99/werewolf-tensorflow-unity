@@ -4,20 +4,25 @@ using UnityEngine;
 using Mirror;
 using System;
 using System.Linq;
-using System.Threading;
 
-public class PlayerNetworkBehavior : NetworkBehaviour
+public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
 
     public double Radius;
     public double Distance;
-
+    //--- Các thành phần của playerObject
     public Animator AnimPlayer;  // Hành động của nhân vật
     public Camera CameraPlayer; // Camera theo nhân vật
     public GameObject NameTag;
     public GameObject VoteText; // Số vote của nhân vật
     public GameObject NameText; // Tên của nhân vật
     public GameObject IndexText; // Index của nhân vật
+
+    //--- Chức năng của player
+    [SyncVar]
+    public string Role;
+    [SyncVar]
+    public bool IsKing;
 
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
@@ -30,15 +35,15 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Start");
         if (isLocalPlayer)
         {
+            Debug.Log(Role);
+
             IsDefault = true;
             Cmd_SetupPlayer("Minh Huy", 3);
             Cmd_SetupPosition(3, 4);
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
-            UIGameVote = FindObjectOfType<UIGameVote>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
@@ -46,47 +51,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             this.transform.LookAt(CentralPoint.transform);
         }
     }
-    [ClientCallback]
-    private void Update()
-    {
-        if (!hasAuthority) { return; }  // kiểm tra quyền client
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        foreach(var player in players)
-        {
-            player.GetComponent<PlayerNetworkBehavior>().NameTag.transform.LookAt(this.CameraPlayer.transform);
-        }
-        if (isLocalPlayer)
-        {
-            this.NameTag.SetActive(false);
-            float moveHor = Input.GetAxis("Horizontal");
-            float moveVer = Input.GetAxis("Vertical");
-            var movement = new Vector3(moveHor, 0, moveVer);
-            transform.position += movement;
-            if (UIGameVote.getSecondsLeft()>0)
-            {
-                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    VotedTarget = Vote();
-                }
-                else if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    CancelVote(VotedTarget);
-                }
-            }
-            else
-            {
-                UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-                Cmd_Kill_BadGuy();
-            }
-            if (IsDefault)
-            {
-                this.transform.LookAt(CentralPoint.transform);
-            }
-        }
-    }
-    #region Client
-    #endregion
 
     #region Set up character
     /// <summary>
@@ -133,12 +97,12 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     //-- Thay đổi vote của nhân vật
     public TextMesh playerVotesText;
     [SyncVar(hook = nameof(OnVotesChange))]
-    int votes = 0;
-    public int GetVotes()
+    double votes = 0;
+    public double GetVotes()
     {
         return this.votes;
     }
-    void OnVotesChange(int _old,int _new)
+    void OnVotesChange(double _old,double _new)
     {
         playerVotesText.text = votes.ToString();
     }
@@ -193,7 +157,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     /// Hàm Command được call ở Client và thực hiện ở Server
     ///     1/- Tìm kiếm player bị vote thông qua netId
     ///     2/- Nếu là vote thì số votes ++, ngược lại là votes --(Giá trị vote của player ở Server)
-    ///     3/- Cập nhật số vote ở Game Object ở Server
+    ///     3/- Nếu là king thì sẽ được 1.5 votes
+    ///     4/- Cập nhật số vote ở Game Object ở Server
     /// </summary>
     /// <param name="_target">netId của player bị vote</param>
     /// <param name="_isAddVote">Giá trị để chỉ định thay đổi lượt vote</param>
@@ -208,11 +173,25 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             {
                 if (_isAddVote)
                 {
-                    _player.GetComponent<PlayerNetworkBehavior>().votes++;
+                    if (IsKing == true)
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().votes += 1.5;
+                    }
+                    else
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().votes += 1;
+                    }                   
                 }
                 else
                 {
-                    _player.GetComponent<PlayerNetworkBehavior>().votes--;
+                    if (IsKing == true)
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().votes -= 1.5;
+                    }
+                    else
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().votes -= 1;
+                    }
                 }
                 if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
                 {
@@ -233,14 +212,15 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     /// Hàm Command được call ở Server và thực hiện ở Client
     ///     1/- Tìm kiếm player bị vote thông qua netId
     ///     2/- Nếu là vote thì số votes ++, ngược lại là votes --(Giá trị vote của player ở tất cả Client)
-    ///     3/- Cập nhật số vote ở Game Object ở Client
+    ///     3/- Nếu là king thì sẽ được 1.5 votes
+    ///     4/- Cập nhật số vote ở Game Object ở Client
     /// *** Sẽ được gọi ngay sau hàm Cmd_UpdateVotes
     /// </summary>
     /// <param name="_target">netId của player bị vote</param>
     /// <param name="_isAddVote">Giá trị để chỉ định thay đổi lượt vote</param>
     /// <param name="_votes">Giá trị votes ở Server</param>
     [ClientRpc]
-    void Rpc_UpdateVotes(NetworkIdentity _target, bool _isAddVote,int _votes)
+    void Rpc_UpdateVotes(NetworkIdentity _target, bool _isAddVote,double _votes)
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         if (players.Length > 0)
@@ -258,44 +238,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
                 }
-            }
-        }
-    }
-    IEnumerator DoAnimDead(GameObject _target)
-    {
-        //Print the time of when the function is first called.
-        _target.GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
-
-        //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(1);
-
-        //After we have waited 5 seconds print the time again.
-        Destroy(_target);
-    }
-    [Command]
-    public void Cmd_Kill_BadGuy()
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 1)
-        {
-            if(players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
-            {
-                StartCoroutine(DoAnimDead(players[0]));
-                Rpc_Kill_Player(players[0].GetComponent<NetworkIdentity>());
-            }
-        }
-    }
-    [ClientRpc]
-    void Rpc_Kill_Player(NetworkIdentity _target)
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        if (players.Length > 0)
-        {
-            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
-            if (_player != null)
-            {
-                StartCoroutine(DoAnimDead(_player));
             }
         }
     }
