@@ -36,7 +36,7 @@ public class UIGameVote : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (takingAway == false && secondsLeft > 0 && secondsWait == 0 && wait == false)
+        /*if (takingAway == false && secondsLeft > 0 && secondsWait == 0 && wait == false)
         {
             StartCoroutine(TimerTake());
         }
@@ -54,6 +54,14 @@ public class UIGameVote : NetworkBehaviour
         {
             secondsLeft = 30;
             wait = false;
+        }*/
+        if (takingAway == false && secondsLeft > 0)
+        {
+            StartCoroutine(TimerTake());
+        }
+        else if(secondsLeft == 0)
+        {
+            TextDisplay.text = "";
         }
     }
 
@@ -77,7 +85,7 @@ public class UIGameVote : NetworkBehaviour
     {
         return secondsLeft;
     }
-    public void setSecondsLeft(int seconds)
+    public void setSecondsLeft(int seconds) // thiết lập time
     {
         secondsLeft = seconds;
     }
