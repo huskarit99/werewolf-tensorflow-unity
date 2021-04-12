@@ -74,6 +74,7 @@
     <Compile Include="Assets\Script\Player_GameController.cs" />
     <Compile Include="Assets\Script\SpawnCloud.cs" />
     <Compile Include="Assets\Script\Tags.cs" />
+    <Compile Include="Assets\Script\UIGameReady.cs" />
     <Compile Include="Assets\Script\UIGameVote.cs" />
     <Compile Include="Assets\Script\UIGameVoted.cs" />
     <None Include="Assets\ScriptTemplates\51-Mirror__Network Authenticator-NewNetworkAuthenticator.cs.txt" />

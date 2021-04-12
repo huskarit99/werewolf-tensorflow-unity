@@ -74,39 +74,39 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 12480}
+      Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 12482}
+      Script: {instanceID: 11278}
     - Class: 114
-      Script: {instanceID: 12560}
+      Script: {instanceID: 11282}
     - Class: 114
-      Script: {instanceID: 12564}
+      Script: {instanceID: 11360}
     - Class: 114
-      Script: {instanceID: 12696}
+      Script: {instanceID: 11364}
     - Class: 114
-      Script: {instanceID: 12712}
+      Script: {instanceID: 11496}
     - Class: 114
-      Script: {instanceID: 13290}
+      Script: {instanceID: 12088}
     - Class: 114
-      Script: {instanceID: 13574}
+      Script: {instanceID: 12376}
     - Class: 114
-      Script: {instanceID: 13868}
+      Script: {instanceID: 12670}
     - Class: 114
-      Script: {instanceID: 13918}
+      Script: {instanceID: 12720}
     - Class: 114
-      Script: {instanceID: 13960}
+      Script: {instanceID: 12762}
     - Class: 114
-      Script: {instanceID: 14462}
+      Script: {instanceID: 13264}
     - Class: 114
-      Script: {instanceID: 14530}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 14630}
+      Script: {instanceID: 13438}
     - Class: 114
-      Script: {instanceID: 14736}
+      Script: {instanceID: 13546}
     - Class: 114
-      Script: {instanceID: 15006}
+      Script: {instanceID: 13816}
     - Class: 114
-      Script: {instanceID: 15118}
+      Script: {instanceID: 13930}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -134,6 +134,30 @@ ScriptsOnlyBuild:
     - Class: 1953259897
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: caa533b001ae39b864ba8425019e2268
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Outline
+  - hash:
+      serializedVersion: 2
+      Hash: 7ab0e790220bdca831fdd886b339039d
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: GridLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: 5f1752ed2092162f016c19510c28a8b9
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Button
+  - hash:
+      serializedVersion: 2
+      Hash: aeb62f729c52c814dec86c47dcac1471
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Text
   - hash:
       serializedVersion: 2
       Hash: 8617aadb248da95f2695ca5669494400
@@ -256,12 +280,6 @@ ScriptsOnlyBuild:
     className: PhysicsCollision
   - hash:
       serializedVersion: 2
-      Hash: aeb62f729c52c814dec86c47dcac1471
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Text
-  - hash:
-      serializedVersion: 2
       Hash: 499fd23433e68e265d153aa6b95d0047
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -308,12 +326,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
-  - hash:
-      serializedVersion: 2
-      Hash: 7ab0e790220bdca831fdd886b339039d
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: GridLayoutGroup
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -640,12 +652,6 @@ ScriptsOnlyBuild:
     className: TextContainer
   - hash:
       serializedVersion: 2
-      Hash: 5f1752ed2092162f016c19510c28a8b9
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Button
-  - hash:
-      serializedVersion: 2
       Hash: ff4753395d726a7aadce9c48dcaf99d6
     assemblyName: Mirror.Examples.dll
     namespaceName: Mirror.Examples.NetworkRoom
@@ -688,7 +694,7 @@ ScriptsOnlyBuild:
     className: CellGUI
   - hash:
       serializedVersion: 2
-      Hash: d94c224a3887a94689906a177ed70f2b
+      Hash: c06c26b9351506daa95b794224a29f6b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerNetworkBehavior
@@ -928,7 +934,7 @@ ScriptsOnlyBuild:
     className: NetworkDiscoveryHUD
   - hash:
       serializedVersion: 2
-      Hash: b2bf3051464ef5d80942850c3eedc5a0
+      Hash: eb199e4f8bc07fd3e0722eb465b64a28
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MyNetworkManager
@@ -1030,12 +1036,6 @@ ScriptsOnlyBuild:
     className: NetworkTransformChild
   - hash:
       serializedVersion: 2
-      Hash: caa533b001ae39b864ba8425019e2268
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Outline
-  - hash:
-      serializedVersion: 2
       Hash: 1e0c784ff68e6df57d641ad43622504f
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror
@@ -1132,6 +1132,12 @@ ScriptsOnlyBuild:
     className: PlayerScore
   - hash:
       serializedVersion: 2
+      Hash: 36c10170a67d0c778e9cddbf3cba10ae
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UIGameReady
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -1145,4 +1151,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/Player_2/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe

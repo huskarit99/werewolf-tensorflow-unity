@@ -45,6 +45,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
+            UIGameVote = FindObjectOfType<UIGameVote>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;
@@ -240,6 +241,21 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
             }
         }
+    }
+
+    [Command]
+    public void Cmd_VoteTime(int seconds) // Thiết lập time vote từ client và đồng bộ lên server
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.setSecondsLeft(seconds);
+        //Rpc_VoteTime(seconds);
+    }
+
+    [ClientRpc]
+    void Rpc_VoteTime(int seconds) 
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.setSecondsLeft(seconds);
     }
     #endregion
 }

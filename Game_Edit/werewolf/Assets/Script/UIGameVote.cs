@@ -85,7 +85,7 @@ public class UIGameVote : NetworkBehaviour
     {
         return secondsLeft;
     }
-    public void setSecondsLeft(int seconds) // thiết lập time
+    public void setSecondsLeft(int seconds) // Thiết lập time
     {
         secondsLeft = seconds;
     }

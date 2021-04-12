@@ -29,7 +29,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             else
             {
-                UIGameVote = FindObjectOfType<UIGameVote>();
+                if (Input.GetKeyDown(KeyCode.Space)) // Nhấn space để set time
+                {
+                    Cmd_VoteTime(20);
+                }
                 if (UIGameVote.getSecondsLeft() > 0)
                 {
                     UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
@@ -45,7 +48,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 else
                 {
                     UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-                    Cmd_Be_A_Great_King();
+                    //Cmd_Be_A_Great_King();
                 }
             }
             if (IsDefault)
