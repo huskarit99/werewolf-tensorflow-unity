@@ -48,13 +48,68 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         return false;
     }
 
+    #region GamePlay
+    #region Vote 4 A King
+    void Vote4AKing()
+    {
+        if (UIGameVote.GetReady4ResetTime() == true)
+        {
+            Cmd_VoteTime(20);
+        }
+        if (UIGameVote.getSecondsLeft() > 0)
+        {
+            UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+            if (Input.GetMouseButtonDown(0))
+            {
+                VotedTarget = Vote();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                CancelVote(VotedTarget);
+            }
+        }
+        else
+        {
+            UIGameVote.SetReady4ResetTime(true);
+            UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
+            Cmd_Be_A_Great_King();
+        }
+    }
+    #endregion
+
+    #region Vote 4 Guilty
+    void Vote4Guilty()
+    {
+        Cmd_VoteTime(60);
+        if (UIGameVote.getSecondsLeft() > 0)
+        {
+            UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+            if (Input.GetMouseButtonDown(0))
+            {
+                VotedTarget = Vote();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                CancelVote(VotedTarget);
+            }
+        }
+        else
+        {
+            UIGameVote.SetReady4ResetTime(true);
+            UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
+            Cmd_Kill_BadGuy();
+        }
+    }
+    #endregion
+    #endregion
+
     #region SetTime4GamePlay
     [Command]
     public void Cmd_VoteTime(int seconds) // Thiết lập time vote từ client và đồng bộ lên server
     {
         UIGameVote = FindObjectOfType<UIGameVote>();
         UIGameVote.setSecondsLeft(seconds);
-        //Rpc_VoteTime(seconds);
+        Rpc_VoteTime(seconds);
     }
 
     [ClientRpc]
@@ -141,60 +196,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
         }
     }
-    #endregion
-
-    #region GamePlay
-    #region Vote 4 A King
-    void Vote4AKing()
-    {
-        if (UIGameVote.GetReady4ResetTime() == true)
-        {
-            Cmd_VoteTime(10);
-        }
-        if (UIGameVote.getSecondsLeft() > 0)
-        {
-            UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-            if (Input.GetMouseButtonDown(0))
-            {
-                VotedTarget = Vote();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                CancelVote(VotedTarget);
-            }
-        }
-        else
-        {
-            UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-            Cmd_Be_A_Great_King();
-            UIGameVote.SetReady4ResetTime(true);
-        }
-    }
-    #endregion
-
-    #region Vote 4 Guilty
-    void Vote4Guilty()
-    {
-        Cmd_VoteTime(120);
-        if (UIGameVote.getSecondsLeft() > 0)
-        {
-            UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-            if (Input.GetMouseButtonDown(0))
-            {
-                VotedTarget = Vote();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                CancelVote(VotedTarget);
-            }
-        }
-        else
-        {
-            UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-            Cmd_Kill_BadGuy();
-        }
-    }
-    #endregion
     #endregion
 
 
