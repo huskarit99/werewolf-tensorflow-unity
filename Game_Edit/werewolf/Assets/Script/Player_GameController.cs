@@ -19,22 +19,53 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             this.NameTag.SetActive(false);
-            float moveHor = Input.GetAxis("Horizontal");
-            float moveVer = Input.GetAxis("Vertical");
-            var movement = new Vector3(moveHor, 0, moveVer);
-            transform.position += movement;
-            if (!CheckKing())
+            // Gán thuộc tính isReady trong UIGameReady vào biến IsReady, IsStart mặc định là false
+            IsReady = UIGameReady.GetIsReady();
+
+            // Thiết lập trạng thái sẵn sàng của player và đồng bộ lên server
+            if (IsReady && !IsStart)
             {
-                Vote4AKing();
+                Cmd_Ready(gameObject.GetComponent<NetworkIdentity>(), IsReady);
+            }           
+            if(IsReady && IsStart)
+            {
+                UIGameReady.ShowReadyPanel(false); // Ẩn panel khi IsReady và IsStart bằng true
+                float moveHor = Input.GetAxis("Horizontal");
+                float moveVer = Input.GetAxis("Vertical");
+                var movement = new Vector3(moveHor, 0, moveVer);
+                transform.position += movement;
+                if (!CheckKing())
+                {
+                    Vote4AKing();
+                }
+                else
+                {
+                    Vote4Guilty();
+                }
+                if (IsDefault)
+                {
+                    this.transform.LookAt(CentralPoint.transform);
+                }
+            }
+            else if (IsReady)
+            {
+                UIGameReady.ShowReadyPanel(true); // Hiện panel khi IsStart = false
+                Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
+                if (IsDefault)
+                {
+                    this.transform.LookAt(CentralPoint.transform);
+                }
             }
             else
             {
-                Vote4Guilty();
+                UIGameReady.ShowReadyPanel(true); // Hiện panel khi vào game
+                if (IsDefault)
+                {
+                    this.transform.LookAt(CentralPoint.transform);
+                }
             }
-            if (IsDefault)
-            {
-                this.transform.LookAt(CentralPoint.transform);
-            }
+
+            
         }
     }
     private bool CheckKing()
@@ -80,7 +111,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 Guilty
     void Vote4Guilty()
     {
-        Cmd_VoteTime(60);
+        if (UIGameVote.GetReady4ResetTime() == true)
+        {
+            Cmd_VoteTime(60);
+        }
         if (UIGameVote.getSecondsLeft() > 0)
         {
             UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
@@ -118,6 +152,71 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         UIGameVote = FindObjectOfType<UIGameVote>();
         UIGameVote.setSecondsLeft(seconds);
     }
+    #endregion
+
+    #region SetReady
+    /* Hàm Command thiết lập trạng thái sẵn sàng của 1 player 
+        _target: netId của player
+        _isReady: Trạng thái sẵn sàng của player
+        _isStart: Trạng thái bắt đầu của player
+      Cách hoạt động:
+        - Tìm player theo netId
+        - Khởi tạo UIGameReady
+        - Gán biến IsReady trong UIGameReady = _isReady
+        - Gán biến IsReady = _isReady
+    */
+    [Command]
+    public void Cmd_Ready(NetworkIdentity _target, bool _isReady)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            _player.GetComponent<PlayerNetworkBehavior>().UIGameReady = FindObjectOfType<UIGameReady>();
+            _player.GetComponent<PlayerNetworkBehavior>().UIGameReady.SetIsReady(_isReady);
+            _player.GetComponent<PlayerNetworkBehavior>().IsReady = _isReady;
+        }
+    }
+
+    /* Hàm Command kiểm tra trạng thái sẵn sàng của tất cả player 
+     * và thiết lập trạng thái bắt đầu của tất cả player
+
+      Cách hoạt động:
+        - Tìm tất cả player có trạng thái sẵn sàng (IsReady = true)
+        - So sánh với số lượng player đã vào
+        - Nếu bằng gán IsStart của tất cả player = true
+    */
+
+    [Command]
+    public void Cmd_Start()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _players_isReady = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsReady == true).ToArray();
+            Debug.Log(_players_isReady.Length);
+            if (_players_isReady.Length == players.Length)
+            {
+                for (var i = 0; i < _players_isReady.Length; i++)
+                {
+                    _players_isReady[i].GetComponent<PlayerNetworkBehavior>().IsStart = true;
+                    //Rpc_Start(_players_isReady[i].GetComponent<NetworkIdentity>());
+                }
+            }
+        }
+    }
+
+    [ClientRpc]
+    void Rpc_Start(NetworkIdentity _target)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player_isReady = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            _player_isReady.GetComponent<PlayerNetworkBehavior>().IsStart = true;
+        }
+    }
+
     #endregion
 
     #region Kill Bad Guy

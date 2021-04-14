@@ -24,10 +24,16 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [SyncVar]
     public bool IsKing;
 
+    [SyncVar]
+    bool IsReady; // Trạng thái sẵn sàng của player
+    [SyncVar]
+    bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
+
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
     UIGameVote UIGameVote; // UI hiển thị thời gian để vote
     UIGameVoted UIGameVoted; // UI hiển thị số lượng bị vote
+    UIGameReady UIGameReady; // UI hiển thị button ready
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -45,6 +51,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             UIGameVote = FindObjectOfType<UIGameVote>();
+            UIGameReady = FindObjectOfType<UIGameReady>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;

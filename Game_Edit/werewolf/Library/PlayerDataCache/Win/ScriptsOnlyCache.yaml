@@ -4,6 +4,7 @@ ScriptsOnlyBuild:
     - CameraController
     - MyNetworkManager
     - PlayerNetworkBehavior
+    - UIGameReady
     - UIGameVote
     - UIGameVoted
     Mirror.Components.dll:
@@ -30,8 +31,10 @@ ScriptsOnlyBuild:
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.Image
     - UnityEngine.UI.Text
   sceneClasses:
     Assets/Scenes/SampleScene.unity:
@@ -74,6 +77,8 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11252}
+    - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
       Script: {instanceID: 11276}
@@ -85,6 +90,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11362}
     - Class: 114
       Script: {instanceID: 11494}
+    - Class: 114
+      Script: {instanceID: 11554}
     - Class: 114
       Script: {instanceID: 12086}
     - Class: 114
@@ -106,6 +113,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13814}
     - Class: 114
+      Script: {instanceID: 13904}
+    - Class: 114
       Script: {instanceID: 13928}
     - Class: 115
       Script: {instanceID: 0}
@@ -122,6 +131,8 @@ ScriptsOnlyBuild:
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 213
       Script: {instanceID: 0}
     - Class: 218
       Script: {instanceID: 0}
@@ -1132,7 +1143,7 @@ ScriptsOnlyBuild:
     className: PlayerScore
   - hash:
       serializedVersion: 2
-      Hash: 36c10170a67d0c778e9cddbf3cba10ae
+      Hash: eb97fb493066f5fd4d30fb2868a8094c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UIGameReady
@@ -1151,4 +1162,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/Player_2/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe

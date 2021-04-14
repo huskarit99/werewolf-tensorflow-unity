@@ -5,44 +5,32 @@ using Mirror;
 
 public class UIGameReady : NetworkBehaviour
 {
-    public GameObject GameReadyButton; // Nút ấn sẵn sàng
-    bool SyncIsReady;
-    [SyncVar(hook = nameof(OnIsReadyChange))]
-    bool isReady = false;  // Kiểm tra sẵn sàng
-    bool isStart = false;
+    public GameObject GameReadyButton; //  Button sẵn sàng
+    public GameObject GameReadyPanel; // Panel sẵn sàng
+    bool IsReady = false; // Trạng thái sẵn sàng
 
-    public void ShowReadyButton(bool isShow)
+    public void ShowReadyButton(bool isShow)  // hiện hoặc ẩn button
     {
         GameReadyButton.SetActive(isShow);
     }
+
+    public void ShowReadyPanel(bool isShow) // Hiện hoặc ẩn panel
+    {
+        GameReadyPanel.SetActive(isShow);
+    }
     public bool GetIsReady()
     {
-        return isReady;
+        return IsReady;
     }
 
     public void SetIsReady(bool _isReady)
     {
-        isReady = _isReady;
+        IsReady = _isReady;
     }
 
-    void OnIsReadyChange(bool _old, bool _new)
+    public void ReadyButton() // Hành động ấn button
     {
-        SyncIsReady = isReady;
-    }
-
-    public bool GetIsStart()
-    {
-        return isStart;
-    }
-
-    public void SetIsStart(bool _isStart)
-    {
-        isStart = _isStart;
-    }
-
-    public void ReadyButton()
-    {
-        isReady = true;
-        GameReadyButton.SetActive(false);
+        IsReady = true; // Chuyển trạng thái sẵn sàng thành true
+        GameReadyButton.SetActive(false); // Ẩn button
     }
 }
