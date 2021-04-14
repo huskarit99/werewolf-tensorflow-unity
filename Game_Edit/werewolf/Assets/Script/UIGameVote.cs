@@ -18,13 +18,16 @@ public class UIGameVote : NetworkBehaviour
 
     int secondsWait = 0; // thời gian chờ
     bool takingAway = false; // 
-    bool syncWait;
 
-    [SyncVar(hook =nameof(OnWaitChanged))]
-    bool wait = true;
-    void OnWaitChanged(bool _old, bool _new)
+    [SyncVar]
+    private bool IsReady4ResetTime = true;
+    public bool GetReady4ResetTime()
     {
-        syncWait = wait;
+        return this.IsReady4ResetTime;
+    }
+    public void SetReady4ResetTime(bool _new)
+    {
+        this.IsReady4ResetTime = _new;
     }
     // Start is called before the first frame update
     void Start()
@@ -88,5 +91,6 @@ public class UIGameVote : NetworkBehaviour
     public void setSecondsLeft(int seconds) // Thiết lập time
     {
         secondsLeft = seconds;
+        IsReady4ResetTime = false;
     }
 }

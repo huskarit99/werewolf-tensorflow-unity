@@ -38,7 +38,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             Debug.Log(Role);
-
             IsDefault = true;
             Cmd_SetupPlayer("Minh Huy", 3);
             Cmd_SetupPosition(3, 4);
@@ -241,21 +240,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
             }
         }
-    }
-
-    [Command]
-    public void Cmd_VoteTime(int seconds) // Thiết lập time vote từ client và đồng bộ lên server
-    {
-        UIGameVote = FindObjectOfType<UIGameVote>();
-        UIGameVote.setSecondsLeft(seconds);
-        //Rpc_VoteTime(seconds);
-    }
-
-    [ClientRpc]
-    void Rpc_VoteTime(int seconds) 
-    {
-        UIGameVote = FindObjectOfType<UIGameVote>();
-        UIGameVote.setSecondsLeft(seconds);
     }
     #endregion
 }
