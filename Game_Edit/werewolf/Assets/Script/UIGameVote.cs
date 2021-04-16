@@ -10,7 +10,7 @@ public class UIGameVote : NetworkBehaviour
 {
     public Text TextDisplay; // hiện thị thời gian trên màn hình
     [SyncVar(hook = nameof(OnSecondsChanged))]
-    int secondsLeft = 0; // thời gian còn lại
+    int secondsLeft = 100; // thời gian còn lại
     void OnSecondsChanged(int _old, int _new)
     {
         TextDisplay.text = "Time Remaining: " + secondsLeft;

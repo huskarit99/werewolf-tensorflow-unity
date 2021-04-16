@@ -133,7 +133,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             target = hit.point;
             if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
+                CancelVote(VotedTarget);
                 var _target = hit.collider.gameObject;
+                Debug.Log(_target.GetComponent<NetworkIdentity>().netId.ToString());
+                Debug.Log(VotedTarget);
                 Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
@@ -152,13 +155,17 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         IsDefault = true;
         if (AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
         {
-            var _votes = _votedTarget.GetComponent<PlayerNetworkBehavior>().votes;
-            if (_votes > 0)
+            if (_votedTarget != null)
             {
-                Cmd_UpdateVotes(_votedTarget.GetComponent<NetworkIdentity>(), false);
-            }   
+                var _votes = _votedTarget.GetComponent<PlayerNetworkBehavior>().votes;
+                if (_votes > 0)
+                {
+                    Cmd_UpdateVotes(_votedTarget.GetComponent<NetworkIdentity>(), false);
+                }
+            }
         }
         AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false); // bỏ thực hiện hành động vote
+        VotedTarget = null;
     }
     /// <summary>
     /// Hàm Command được call ở Client và thực hiện ở Server
@@ -199,6 +206,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         _player.GetComponent<PlayerNetworkBehavior>().votes -= 1;
                     }
+                    if (_player.GetComponent<PlayerNetworkBehavior>().votes < 0)
+                    {
+                        _player.GetComponent<PlayerNetworkBehavior>().votes = 0;
+                    }
                 }
                 if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
                 {
@@ -210,7 +221,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
                 _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
-                Debug.Log("Server: " + _votes.ToString() + " " + _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text);
                 Rpc_UpdateVotes(_target,_isAddVote,_votes);
             }
         }

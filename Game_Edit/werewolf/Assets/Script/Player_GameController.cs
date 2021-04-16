@@ -6,6 +6,11 @@ using System.Linq;
 
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
+    [SyncVar]
+    int Day = 1;
+    [SyncVar]
+    string Action = Action4Player.Default;
+
 
     [ClientCallback]
     private void Update()
@@ -34,13 +39,39 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 float moveVer = Input.GetAxis("Vertical");
                 var movement = new Vector3(moveHor, 0, moveVer);
                 transform.position += movement;
-                if (!CheckKing())
+                switch (Day) 
                 {
-                    Vote4AKing();
-                }
-                else
-                {
-                    Vote4Guilty();
+                    case 1:
+                        {
+                            Day++;
+                        }
+                        break;
+                    case 2 :
+                        {
+                            if (Action == Action4Player.Default)
+                            {
+                                Cmd_SetAction4Player(Action4Player.VoteKing);
+                            }
+                            if (Action == Action4Player.VoteKing)
+                            {
+                                Vote4AKing();
+                                if (CheckKing())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetAction4Player(Action4Player.Guilty);
+                                }
+                            }
+                            else if (Action == Action4Player.Guilty)
+                            {
+                                Vote4Guilty();
+                            }
+                        }
+                        break;
+                    default:
+                        {
+                            //Vote4Guilty();
+                        }
+                        break;
                 }
                 if (IsDefault)
                 {
@@ -71,8 +102,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     private bool CheckKing()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKing == true).ToArray();
-        if (players.Length > 0)
+        var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKing == true).ToArray();
+        if (_check != null && _check.Length > 0)
         {
             return true;
         }
@@ -87,23 +118,27 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             Cmd_VoteTime(20);
         }
-        if (UIGameVote.getSecondsLeft() > 0)
-        {
-            UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-            if (Input.GetMouseButtonDown(0))
-            {
-                VotedTarget = Vote();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                CancelVote(VotedTarget);
-            }
-        }
         else
         {
-            UIGameVote.SetReady4ResetTime(true);
-            UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-            Cmd_Be_A_Great_King();
+            if (UIGameVote.getSecondsLeft() > 0)
+            {
+                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+                if (Input.GetMouseButtonDown(0))
+                {
+                    VotedTarget = Vote();
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    CancelVote(VotedTarget);
+                }
+            }
+            else
+            {
+                UIGameVote.SetReady4ResetTime(true);
+                UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
+                Cmd_Be_A_Great_King();
+                Cmd_SetAction4Player(Action4Player.Default);
+            }
         }
     }
     #endregion
@@ -113,25 +148,29 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         if (UIGameVote.GetReady4ResetTime() == true)
         {
-            Cmd_VoteTime(60);
-        }
-        if (UIGameVote.getSecondsLeft() > 0)
-        {
-            UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-            if (Input.GetMouseButtonDown(0))
-            {
-                VotedTarget = Vote();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                CancelVote(VotedTarget);
-            }
+            Cmd_VoteTime(30);
         }
         else
         {
-            UIGameVote.SetReady4ResetTime(true);
-            UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-            Cmd_Kill_BadGuy();
+            if (UIGameVote.getSecondsLeft() > 0)
+            {
+                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+                if (Input.GetMouseButtonDown(0))
+                {
+                    VotedTarget = Vote();
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    CancelVote(VotedTarget);
+                }
+            }
+            else
+            {
+                UIGameVote.SetReady4ResetTime(true);
+                UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết 
+                Cmd_Kill_BadGuy();
+                Cmd_SetAction4Player(Action4Player.Default);
+            }
         }
     }
     #endregion
@@ -152,6 +191,22 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         UIGameVote = FindObjectOfType<UIGameVote>();
         UIGameVote.setSecondsLeft(seconds);
     }
+    [Command]
+    public void Cmd_DefaultVoteTime() // Thiết lập time vote từ client và đồng bộ lên server
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.setSecondsLeft(3);
+        Rpc_DefaultVoteTime(3);
+    }
+
+    [ClientRpc]
+    void Rpc_DefaultVoteTime(int seconds)
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.setSecondsLeft(seconds);
+    }
+
+
     #endregion
 
     #region SetReady
@@ -219,6 +274,34 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     #endregion
 
+    #region SetAction4Player
+    [Command]
+    void Cmd_SetAction4Player(string _action)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
+        if (players != null && players.Length > 0)
+        {
+            foreach(var player in players)
+            {
+                player.GetComponent<PlayerNetworkBehavior>().Action = _action;
+            }
+        }
+        Rpc_SetAction4Player(_action);
+    }
+    [ClientRpc]
+    void Rpc_SetAction4Player(string _action)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
+        if (players != null && players.Length > 0)
+        {
+            foreach (var player in players)
+            {
+                player.GetComponent<PlayerNetworkBehavior>().Action = _action;
+            }
+        }
+    }
+    #endregion
+
     #region Kill Bad Guy
     IEnumerator DoAnimDead(GameObject _target)
     {
@@ -266,7 +349,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 1)
+        if (players.Length  > 0)
         {
             if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
             {

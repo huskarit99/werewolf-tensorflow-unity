@@ -224,6 +224,8 @@ MonoBehaviour:
   VoteText: {fileID: 3216134622510038691}
   NameText: {fileID: 2942076377727307401}
   IndexText: {fileID: 2942076377368704651}
+  Role: 
+  IsKing: 0
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 2942076377727307403}
@@ -256,9 +258,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 9.676361
-  m_Height: 61.222206
+  m_Height: 39.198906
   m_Direction: 1
-  m_Center: {x: 0, y: 30.611103, z: 0.9107971}
+  m_Center: {x: 0, y: 19.599453, z: 0.9107971}
 --- !u!114 &-8594082794977653580
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -44,3 +44,10 @@ public static class Role4Player
     public static string Seer = "Seer";
     public static string Human = "Human";
 }
+
+public static class Action4Player
+{
+    public static string Default = "Default";
+    public static string VoteKing = "VoteKing";
+    public static string Guilty = "Guilty";
+}
