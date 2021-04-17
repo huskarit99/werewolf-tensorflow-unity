@@ -1162,4 +1162,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: E:/TestGame/Player_2/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe

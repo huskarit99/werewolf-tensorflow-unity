@@ -133,14 +133,14 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             target = hit.point;
             if (hit.transform.tag.Equals(Tags_4_Object.Player))
             {
-                CancelVote(VotedTarget);
+                CheckVote(VotedTarget);
                 var _target = hit.collider.gameObject;
                 Debug.Log(_target.GetComponent<NetworkIdentity>().netId.ToString());
                 Debug.Log(VotedTarget);
                 Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
-                this.transform.LookAt(new Vector3(target.x, 0, target.z));
+                this.transform.LookAt(new Vector3(target.x, 0, target.z)); 
                 return _target;
             }
             else
@@ -150,6 +150,23 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         return null;
     }
+
+    void CheckVote(GameObject _votedTarget)
+    {
+        if (AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+        {
+            if (_votedTarget != null)
+            {
+                var _votes = _votedTarget.GetComponent<PlayerNetworkBehavior>().votes;
+                if (_votes > 0)
+                {
+                    Cmd_UpdateVotes(_votedTarget.GetComponent<NetworkIdentity>(), false);
+                }
+            }
+        } 
+        VotedTarget = null;
+    }
+
     void CancelVote(GameObject _votedTarget)
     {
         IsDefault = true;
