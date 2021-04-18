@@ -25,9 +25,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsKing;
 
     [SyncVar]
-    bool IsReady; // Trạng thái sẵn sàng của player
+    public bool IsReady; // Trạng thái sẵn sàng của player
     [SyncVar]
-    bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
+    public bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
 
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây

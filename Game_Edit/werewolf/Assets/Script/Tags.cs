@@ -51,3 +51,9 @@ public static class Action4Player
     public static string VoteKing = "VoteKing";
     public static string Guilty = "Guilty";
 }
+
+public static class GameScene
+{
+    public static string SampleScene = "SampleScene";
+    public static string NightScene = "NightScene";
+}

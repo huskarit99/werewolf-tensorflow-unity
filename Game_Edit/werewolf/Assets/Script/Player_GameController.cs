@@ -66,13 +66,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             }
                             else if (Action == Action4Player.Guilty)
                             {
-                                Vote4Guilty();
+                                var _check = Vote4Guilty();
+                                if (_check == true)
+                                {
+                                    Day++;
+                                    DontDestroyOnLoad(transform.gameObject);
+                                    ChangeScene(GameScene.NightScene);
+                                }
                             }
                         }
                         break;
                     default:
                         {
-                            //Vote4Guilty();
+                            Vote4Guilty();
                         }
                         break;
                 }
@@ -115,7 +121,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     #region GamePlay
     #region Vote 4 A King
-    void Vote4AKing()
+    bool Vote4AKing()
     {
         if (UIGameVote.GetReady4ResetTime() == true)
         {
@@ -141,13 +147,15 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
                 Cmd_Be_A_Great_King();
                 Cmd_SetAction4Player(Action4Player.Default);
+                return true;
             }
         }
+        return false;
     }
     #endregion
 
     #region Vote 4 Guilty
-    void Vote4Guilty()
+    bool Vote4Guilty()
     {
         if (UIGameVote.GetReady4ResetTime() == true)
         {
@@ -173,8 +181,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết 
                 Cmd_Kill_BadGuy();
                 Cmd_SetAction4Player(Action4Player.Default);
+                return true;
             }
         }
+        return false;
     }
     #endregion
     #endregion
@@ -383,6 +393,14 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     #endregion
 
+
+    #region ChangeScene
+    [Command]
+    void ChangeScene(string _scene)
+    {
+        NetworkManager.singleton.ServerChangeScene(_scene);
+    }
+    #endregion
 
 
 }
