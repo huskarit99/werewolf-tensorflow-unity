@@ -11,12 +11,18 @@ public class UIGameReady : NetworkBehaviour
 
     public void ShowReadyButton(bool isShow)  // hiện hoặc ẩn button
     {
-        GameReadyButton.SetActive(isShow);
+        if (GameReadyButton != null)
+        {
+            GameReadyButton.SetActive(isShow);
+        }
     }
 
     public void ShowReadyPanel(bool isShow) // Hiện hoặc ẩn panel
     {
-        GameReadyPanel.SetActive(isShow);
+        if (GameReadyPanel != null)
+        {
+            GameReadyPanel.SetActive(isShow);
+        }
     }
     public bool GetIsReady()
     {
@@ -30,7 +36,10 @@ public class UIGameReady : NetworkBehaviour
 
     public void ReadyButton() // Hành động ấn button
     {
-        IsReady = true; // Chuyển trạng thái sẵn sàng thành true
-        GameReadyButton.SetActive(false); // Ẩn button
+        if (GameReadyButton != null)
+        {
+            IsReady = true; // Chuyển trạng thái sẵn sàng thành true
+            GameReadyButton.SetActive(false); // Ẩn button
+        }
     }
 }

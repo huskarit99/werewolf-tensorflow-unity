@@ -7,7 +7,7 @@ using System.Linq;
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
     [SyncVar]
-    int Day = 1;
+    public int Day = 1;
     [SyncVar]
     string Action = Action4Player.Default;
 
@@ -70,7 +70,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 if (_check == true)
                                 {
                                     Day++;
-                                    DontDestroyOnLoad(transform.gameObject);
                                     ChangeScene(GameScene.NightScene);
                                 }
                             }
@@ -78,6 +77,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         break;
                     default:
                         {
+                            if (Action == Action4Player.Default)
+                            {
+                                Cmd_SetAction4Player(Action4Player.Guilty);
+                            }
                             Vote4Guilty();
                         }
                         break;
@@ -340,6 +343,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 Rpc_Kill_Player(players[0].GetComponent<NetworkIdentity>());
             }
         }
+        new WaitForSeconds(5);
     }
     [ClientRpc]
     void Rpc_Kill_Player(NetworkIdentity _target)
@@ -353,6 +357,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 StartCoroutine(DoAnimDead(_player));
             }
         }
+        new WaitForSeconds(5);
     }
     #endregion
 

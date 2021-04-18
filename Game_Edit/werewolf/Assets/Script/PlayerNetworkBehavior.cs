@@ -38,6 +38,11 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public GameObject CentralPoint;
     bool IsDefault;
     GameObject VotedTarget = null;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     // Start is called before the first frame update
     void Start()
     {

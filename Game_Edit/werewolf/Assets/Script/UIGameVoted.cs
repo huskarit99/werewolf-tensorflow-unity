@@ -8,10 +8,16 @@ public class UIGameVoted : MonoBehaviour
     public Text VotedText;
     public void SetVotedText(double voted)
     {
-        VotedText.text = "Voted: " + voted;
+        if (VotedText != null)
+        {
+            VotedText.text = "Voted: " + voted;
+        }
     }
     public void SetDefaultVotedText()
     {
-        VotedText.text = "";
+        if (VotedText != null)
+        {
+            VotedText.text = "";
+        }
     }
 }
