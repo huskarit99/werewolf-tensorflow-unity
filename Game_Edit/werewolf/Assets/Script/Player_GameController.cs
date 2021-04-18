@@ -54,11 +54,14 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             }
                             if (Action == Action4Player.VoteKing)
                             {
-                                Vote4AKing();
                                 if (CheckKing())
                                 {
                                     CancelVote(VotedTarget);
                                     Cmd_SetAction4Player(Action4Player.Guilty);
+                                }
+                                else
+                                {
+                                    Vote4AKing();
                                 }
                             }
                             else if (Action == Action4Player.Guilty)
