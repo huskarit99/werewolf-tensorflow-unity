@@ -8,7 +8,6 @@ public class UIGameReady : NetworkBehaviour
     public GameObject GameReadyButton; //  Button sẵn sàng
     public GameObject GameReadyPanel; // Panel sẵn sàng
     bool IsReady = false; // Trạng thái sẵn sàng
-
     public void ShowReadyButton(bool isShow)  // hiện hoặc ẩn button
     {
         if (GameReadyButton != null)

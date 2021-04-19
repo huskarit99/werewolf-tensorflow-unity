@@ -73,21 +73,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11282}
+      Script: {instanceID: 11280}
     - Class: 114
-      Script: {instanceID: 11556}
+      Script: {instanceID: 11554}
     - Class: 114
-      Script: {instanceID: 12088}
+      Script: {instanceID: 12086}
     - Class: 114
-      Script: {instanceID: 12376}
+      Script: {instanceID: 12374}
     - Class: 114
-      Script: {instanceID: 12762}
+      Script: {instanceID: 12760}
     - Class: 114
-      Script: {instanceID: 13264}
+      Script: {instanceID: 13262}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13334}
     - Class: 114
-      Script: {instanceID: 13816}
+      Script: {instanceID: 13814}
+    - Class: 114
+      Script: {instanceID: 13904}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -156,41 +158,41 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11278}
+      Script: {instanceID: 11276}
     - Class: 114
-      Script: {instanceID: 11282}
+      Script: {instanceID: 11280}
     - Class: 114
-      Script: {instanceID: 11360}
+      Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11364}
+      Script: {instanceID: 11362}
     - Class: 114
-      Script: {instanceID: 11496}
+      Script: {instanceID: 11494}
     - Class: 114
-      Script: {instanceID: 11556}
+      Script: {instanceID: 11554}
     - Class: 114
-      Script: {instanceID: 12088}
+      Script: {instanceID: 12086}
     - Class: 114
-      Script: {instanceID: 12376}
+      Script: {instanceID: 12374}
     - Class: 114
-      Script: {instanceID: 12670}
+      Script: {instanceID: 12668}
     - Class: 114
-      Script: {instanceID: 12720}
+      Script: {instanceID: 12718}
     - Class: 114
-      Script: {instanceID: 12762}
+      Script: {instanceID: 12760}
     - Class: 114
-      Script: {instanceID: 13264}
+      Script: {instanceID: 13262}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13334}
     - Class: 114
-      Script: {instanceID: 13438}
+      Script: {instanceID: 13436}
     - Class: 114
-      Script: {instanceID: 13546}
+      Script: {instanceID: 13544}
     - Class: 114
-      Script: {instanceID: 13816}
+      Script: {instanceID: 13814}
     - Class: 114
-      Script: {instanceID: 13906}
+      Script: {instanceID: 13904}
     - Class: 114
-      Script: {instanceID: 13930}
+      Script: {instanceID: 13928}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -780,7 +782,7 @@ ScriptsOnlyBuild:
     className: CellGUI
   - hash:
       serializedVersion: 2
-      Hash: 008db158ec4a322c92e1d9c6696aaf91
+      Hash: 49ea8d60e55dcad5149749d696296bc2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerNetworkBehavior

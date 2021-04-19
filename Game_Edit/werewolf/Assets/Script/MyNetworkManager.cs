@@ -12,6 +12,7 @@ public class MyNetworkManager : NetworkManager
     public GameObject CentralPoint;
     public override void OnStartServer()
     {
+        DontDestroyOnLoad(this);
         Debug.Log("Start Server");
     }
     public override void OnStopServer()

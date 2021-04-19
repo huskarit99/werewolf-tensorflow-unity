@@ -226,11 +226,18 @@ MonoBehaviour:
   IndexText: {fileID: 2942076377368704651}
   Role: 
   IsKing: 0
+  IsReady: 0
+  IsStart: 0
+  Prefabs:
+  - {fileID: 229887591737349393}
+  - {fileID: 6153987449745224098, guid: 57d7e0ef9ff132544b36b810b36d2fd6, type: 3}
+  - {fileID: 5395090757721345457, guid: 13b8e2282fd0fc0459623ff2be19f0c7, type: 3}
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 2942076377727307403}
   playerIndexText: {fileID: 2942076377368704644}
   playerVotesText: {fileID: 5992570515280731102}
+  MyNetworkManager: {fileID: 0}
 --- !u!114 &1057330925
 MonoBehaviour:
   m_ObjectHideFlags: 0

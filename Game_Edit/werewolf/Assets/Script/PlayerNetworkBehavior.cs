@@ -25,7 +25,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsKing;
 
     [SyncVar]
-    public bool IsReady; // Trạng thái sẵn sàng của player
+    public bool IsReady = false; // Trạng thái sẵn sàng của player
     [SyncVar]
     public bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
 
@@ -34,6 +34,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameVote UIGameVote; // UI hiển thị thời gian để vote
     UIGameVoted UIGameVoted; // UI hiển thị số lượng bị vote
     UIGameReady UIGameReady; // UI hiển thị button ready
+    public GameObject[] Prefabs;
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -141,7 +142,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 CheckVote(VotedTarget);
                 var _target = hit.collider.gameObject;
                 Debug.Log(_target.GetComponent<NetworkIdentity>().netId.ToString());
-                Debug.Log(VotedTarget);
                 Cmd_UpdateVotes(_target.GetComponent<NetworkIdentity>(), true);
                 // thực hiện hành động vote
                 AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
