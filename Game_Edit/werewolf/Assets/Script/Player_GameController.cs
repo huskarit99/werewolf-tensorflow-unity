@@ -183,6 +183,25 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         return false;
     }
+    private bool CheckAllVote()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _players_Voted =
+                players.Where(t =>
+                t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteLeft) == true).ToArray();
+            if (_players_Voted.Length == players.Length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
     #region GamePlay
     #region Vote 4 A King
     bool Vote4AKing()
@@ -195,19 +214,27 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             if (UIGameVote.getSecondsLeft() > 0)
             {
-                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                if (Input.GetMouseButtonDown(0))
+                if (CheckAllVote() && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
-                    VotedTarget = Vote();
+                    Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                 }
-                else if (Input.GetKeyDown(KeyCode.Q))
+                else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
                 {
-                    CancelVote(VotedTarget);
+                    UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        VotedTarget = Vote();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Q)) 
+                    {
+                        CancelVote(VotedTarget);
+                    }
                 }
             }
             else
             {
-                UIGameVote.SetReady4ResetTime(true);
+                UIGameVote.SetReady4ResetTime(true); 
+                Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
                 Cmd_Be_A_Great_King();
                 return true;
@@ -228,20 +255,28 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             if (UIGameVote.getSecondsLeft() > 0)
             {
-                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                if (Input.GetMouseButtonDown(0))
+                if (CheckAllVote() && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
-                    VotedTarget = Vote();
+                    Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                 }
-                else if (Input.GetKeyDown(KeyCode.Q))
+                else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
                 {
-                    CancelVote(VotedTarget);
+                    UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        VotedTarget = Vote();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        CancelVote(VotedTarget);
+                    }
                 }
             }
             else
             {
                 Cmd_SetDone4Player(true);
                 UIGameVote.SetReady4ResetTime(true);
+                Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết 
                 Cmd_Kill_BadGuy();
                 return true;
@@ -284,6 +319,23 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     IEnumerator Wait4NSeconds(int _seconds)
     {
         yield return new WaitForSeconds(_seconds);
+    }
+
+    [Command]
+    public void Cmd_AllVoteTime() // Thời gian chờ khi tất cả player đều vote
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.SetAllVote(true);
+        UIGameVote.setSecondsLeft(5);
+        Rpc_AllVoteTime(5);
+    }
+
+    [ClientRpc]
+    void Rpc_AllVoteTime(int seconds)
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.SetAllVote(true);
+        UIGameVote.setSecondsLeft(seconds);
     }
 
     #endregion
@@ -352,6 +404,22 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
 
 
+    #endregion
+
+    #region SetAllVote
+    [Command]
+    public void Cmd_SetAllVote(bool _vote) // Thay đổi biến AllVote 
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.SetAllVote(_vote);
+        Rpc_SetAllVote(_vote);
+    }
+    [ClientRpc]
+    void Rpc_SetAllVote(bool _vote)
+    {
+        UIGameVote = FindObjectOfType<UIGameVote>();
+        UIGameVote.SetAllVote(_vote);
+    }
     #endregion
 
     #region Get/SetAction4Player

@@ -29,6 +29,18 @@ public class UIGameVote : NetworkBehaviour
     {
         this.IsReady4ResetTime = _new;
     }
+
+    [SyncVar]
+    private bool IsAllVote = false; // Trạng thái tất cả player đều vote
+    public bool GetAllVote()
+    {
+        return this.IsAllVote;
+    }
+    public void SetAllVote(bool _vote)
+    {
+        this.IsAllVote = _vote;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
