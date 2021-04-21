@@ -50,6 +50,13 @@ public static class Action4Player
     public static string Default = "Default";
     public static string VoteKing = "VoteKing";
     public static string Guilty = "Guilty";
+
+    public static string GuardTurn = "GuardTurn";
+    public static string SeerTurn = "SeerTurn";
+    public static string WolfTurn = "WolfTurn";
+    public static string WitchTurn = "WitchTurn";
+
+    public static string HunterTurn = "HunterTurn";
 }
 
 public static class GameScene
