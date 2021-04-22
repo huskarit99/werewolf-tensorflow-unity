@@ -18,9 +18,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsDone = false;
 
     [SyncVar]
-    public bool IsKilled = false;
+    public bool IsSavedByGuard = false;
     [SyncVar]
-    public bool IsSaved = false;
+    public bool IsSavedByWitch = false;
+    [SyncVar]
+    public bool IsKilledByWitch = false;
+    [SyncVar]
+    public bool IsKilled = false;
     #endregion
 
 
@@ -82,9 +86,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 if (CheckDone4Players())
                                 {
                                     CancelVote(VotedTarget);
+                                    UIGameVote.SetReady4ResetTime(true);
                                     Cmd_SetDay4Player(Day + 1);
                                     Cmd_SetAction4Player(Action4Player.Default);
-                                    UIGameVote.SetReady4ResetTime(true);
                                 }
                                 else
                                 {
@@ -92,7 +96,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
-                                            Vote4Guilty();
+                                            Vote4Action(Action4Player.WolfTurn);
                                         }
                                     }
                                     else
@@ -115,7 +119,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             if (CheckAction4Players(Action4Player.Default))
                             {
                                 CancelVote(VotedTarget);
-                                Cmd_ChangeScene(Action4Player.Default,GameScene.SampleScene);
+                                Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
                                 Cmd_SetAction4Player(Action4Player.VoteKing);
                                 Cmd_SetDone4Player(false);
                             }
@@ -125,6 +129,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     CancelVote(VotedTarget);
                                     Cmd_SetAction4Player(Action4Player.Guilty);
+                                    Cmd_SetDone4Player(false);
+                                    UIGameVote.SetReady4ResetTime(true);
                                 }
                                 else
                                 {
@@ -143,14 +149,76 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         CancelVote(VotedTarget);
                                         UIGameVote.SetReady4ResetTime(true);
-                                        Cmd_SetAction4Player(Action4Player.WolfTurn);
-                                        Cmd_ChangeScene(Action4Player.WolfTurn,GameScene.NightScene);
+                                        Cmd_SetAction4Player(Action4Player.GuardTurn);
+                                        Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
                                         Cmd_SetDone4Player(false);
                                     }
                                 }
                                 else
                                 {
-                                    Vote4Guilty();
+                                    Vote4Action(Action4Player.Guilty);
+                                }
+                            }
+                            else if (CheckAction4Players(Action4Player.GuardTurn))
+                            {
+                                if (CheckDone4Players())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetAction4Player(Action4Player.SeerTurn);
+                                    UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
+                                }
+                                else
+                                {
+                                    if (CheckRole(Role4Player.Guard))
+                                    {
+                                        if (Role == Role4Player.Guard)
+                                        {
+                                            Vote4Action(Action4Player.GuardTurn);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UIGameVote.GetReady4ResetTime())
+                                        {
+                                            Cmd_VoteTime(5);
+                                        }
+                                        if (UIGameVote.getSecondsLeft() == 0)
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (CheckAction4Players(Action4Player.SeerTurn))
+                            {
+                                if (CheckDone4Players())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetAction4Player(Action4Player.WolfTurn);
+                                    UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
+                                }
+                                else
+                                {
+                                    if (CheckRole(Role4Player.Seer))
+                                    {
+                                        if (Role == Role4Player.Seer)
+                                        {
+                                            Vote4Action(Action4Player.SeerTurn);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UIGameVote.GetReady4ResetTime())
+                                        {
+                                            Cmd_VoteTime(5);
+                                        }
+                                        if (UIGameVote.getSecondsLeft() == 0)
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                    }
                                 }
                             }
                             else if (CheckAction4Players(Action4Player.WolfTurn))
@@ -158,9 +226,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 if (CheckDone4Players())
                                 {
                                     CancelVote(VotedTarget);
-                                    Cmd_SetDay4Player(Day + 1);
-                                    Cmd_SetAction4Player(Action4Player.Default);
+                                    Cmd_SetAction4Player(Action4Player.WitchTurn);
                                     UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
                                 }
                                 else
                                 {
@@ -168,7 +236,39 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
-                                            Vote4Guilty();
+                                            Vote4Action(Action4Player.WolfTurn);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UIGameVote.GetReady4ResetTime())
+                                        {
+                                            Cmd_VoteTime(5);
+                                        }
+                                        if (UIGameVote.getSecondsLeft() == 0)
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (CheckAction4Players(Action4Player.WitchTurn))
+                            {
+                                if (CheckDone4Players())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetDay4Player(Day + 1);
+                                    Cmd_SetAction4Player(Action4Player.Default);
+                                    UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
+                                }
+                                else
+                                {
+                                    if (CheckRole(Role4Player.Witch))
+                                    {
+                                        if (Role == Role4Player.Witch)
+                                        {
+                                            Vote4Action(Action4Player.WitchTurn);
                                         }
                                     }
                                     else
@@ -191,7 +291,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             if (CheckAction4Players(Action4Player.Default))
                             {
                                 CancelVote(VotedTarget);
-                                Cmd_ChangeScene(Action4Player.Default,GameScene.SampleScene);
+                                Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
                                 Cmd_SetAction4Player(Action4Player.VoteKing);
                                 Cmd_SetDone4Player(false);
                             }
@@ -201,12 +301,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     CancelVote(VotedTarget);
                                     Cmd_SetAction4Player(Action4Player.Guilty);
+                                    Cmd_SetDone4Player(false);
+                                    UIGameVote.SetReady4ResetTime(true);
                                 }
                                 else
                                 {
                                     Vote4AKing();
                                 }
-                                Cmd_SetAction4Player(Action4Player.Guilty);
                             }
                             else if (CheckAction4Players(Action4Player.Guilty))
                             {
@@ -220,14 +321,76 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         CancelVote(VotedTarget);
                                         UIGameVote.SetReady4ResetTime(true);
-                                        Cmd_SetAction4Player(Action4Player.WolfTurn);
-                                        Cmd_ChangeScene(Action4Player.WolfTurn,GameScene.NightScene);
+                                        Cmd_SetAction4Player(Action4Player.GuardTurn);
+                                        Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
                                         Cmd_SetDone4Player(false);
                                     }
                                 }
                                 else
                                 {
-                                    Vote4Guilty();
+                                    Vote4Action(Action4Player.Guilty);
+                                }
+                            }
+                            else if (CheckAction4Players(Action4Player.GuardTurn))
+                            {
+                                if (CheckDone4Players())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetAction4Player(Action4Player.SeerTurn);
+                                    UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
+                                }
+                                else
+                                {
+                                    if (CheckRole(Role4Player.Guard))
+                                    {
+                                        if (Role == Role4Player.Guard)
+                                        {
+                                            Vote4Action(Action4Player.GuardTurn);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UIGameVote.GetReady4ResetTime())
+                                        {
+                                            Cmd_VoteTime(5);
+                                        }
+                                        if (UIGameVote.getSecondsLeft() == 0)
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (CheckAction4Players(Action4Player.SeerTurn))
+                            {
+                                if (CheckDone4Players())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetAction4Player(Action4Player.WolfTurn);
+                                    UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
+                                }
+                                else
+                                {
+                                    if (CheckRole(Role4Player.Seer))
+                                    {
+                                        if (Role == Role4Player.Seer)
+                                        {
+                                            Vote4Action(Action4Player.SeerTurn);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UIGameVote.GetReady4ResetTime())
+                                        {
+                                            Cmd_VoteTime(5);
+                                        }
+                                        if (UIGameVote.getSecondsLeft() == 0)
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                    }
                                 }
                             }
                             else if (CheckAction4Players(Action4Player.WolfTurn))
@@ -235,9 +398,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 if (CheckDone4Players())
                                 {
                                     CancelVote(VotedTarget);
-                                    Cmd_SetDay4Player(Day + 1);
-                                    Cmd_SetAction4Player(Action4Player.Default);
+                                    Cmd_SetAction4Player(Action4Player.WitchTurn);
                                     UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
                                 }
                                 else
                                 {
@@ -245,7 +408,39 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
-                                            Vote4Guilty();
+                                            Vote4Action(Action4Player.WolfTurn);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UIGameVote.GetReady4ResetTime())
+                                        {
+                                            Cmd_VoteTime(5);
+                                        }
+                                        if (UIGameVote.getSecondsLeft() == 0)
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (CheckAction4Players(Action4Player.WitchTurn))
+                            {
+                                if (CheckDone4Players())
+                                {
+                                    CancelVote(VotedTarget);
+                                    Cmd_SetDay4Player(Day + 1);
+                                    Cmd_SetAction4Player(Action4Player.Default);
+                                    UIGameVote.SetReady4ResetTime(true);
+                                    Cmd_SetDone4Player(false);
+                                }
+                                else
+                                {
+                                    if (CheckRole(Role4Player.Witch))
+                                    {
+                                        if (Role == Role4Player.Witch)
+                                        {
+                                            Vote4Action(Action4Player.WitchTurn);
                                         }
                                     }
                                     else
@@ -394,13 +589,34 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         return false;
     }
     #endregion
-
-    #region Vote 4 Guilty
-    bool Vote4Guilty()
+    void Vote4Action(string _action)
     {
-        if (UIGameVote.GetReady4ResetTime() == true)
+        if (UIGameVote.GetReady4ResetTime())
         {
-            Cmd_VoteTime(30);
+            if (_action == Action4Player.Guilty)
+            {
+                Cmd_VoteTime(90);
+            }
+            else if (_action == Action4Player.GuardTurn)
+            {
+                Cmd_VoteTime(20);
+            }
+            else if (_action == Action4Player.SeerTurn)
+            {
+                Cmd_VoteTime(20);
+            }
+            else if (_action == Action4Player.WolfTurn)
+            {
+                Cmd_VoteTime(45);
+            }
+            else if (_action == Action4Player.WitchTurn)
+            {
+                Cmd_VoteTime(20);
+            }
+            else if (_action == Action4Player.HunterTurn)
+            {
+                Cmd_VoteTime(30);
+            }
         }
         else
         {
@@ -429,13 +645,43 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 UIGameVote.SetReady4ResetTime(true);
                 Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết 
-                Cmd_KillInTheDark();
-                return true;
+                if (_action == Action4Player.Guilty)
+                {
+                    Cmd_KillPlayer();
+                }
+                else if (_action == Action4Player.GuardTurn)
+                {
+                    Cmd_SaveByGuard(VotedTarget.GetComponent<NetworkIdentity>());
+                }
+                else if (_action == Action4Player.SeerTurn)
+                {
+                    ShowRole(VotedTarget);
+                }
+                else if (_action == Action4Player.WolfTurn)
+                {
+                    Cmd_KillPlayer();
+                }
+                else if (_action == Action4Player.WitchTurn)
+                {
+                    Cmd_KillPlayer();
+                }
+                else if (_action == Action4Player.HunterTurn)
+                {
+                    Cmd_KillPlayer();
+                }
             }
         }
-        return false;
     }
     #endregion
+    #region ChangeScene
+    [Command]
+    void Cmd_ChangeScene(string _action, string _scene)
+    {
+        if (CheckAction4Players(_action))
+        {
+            NetworkManager.singleton.ServerChangeScene(_scene);
+        }
+    }
     #endregion
 
     #region SetTime4GamePlay
@@ -655,75 +901,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     #endregion
 
-    #region Kill Bad Guy
-    IEnumerator DoAnimDead(GameObject _target)
-    {
-        //Print the time of when the function is first called.
-        _target.GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
-
-        //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(2);
-
-        //After we have waited 5 seconds print the time again.
-        Destroy(_target);
-    }
-    [Command]
-    public void Cmd_Kill_BadGuy()
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
-        if (players.Length > 0)
-        {
-            foreach(var player in players)
-            {
-                if (player.GetComponent<PlayerNetworkBehavior>().IsSaved == true)
-                {
-
-                }
-                else
-                {
-                    StartCoroutine(DoAnimDead(player));
-                }
-            }
-            Rpc_Kill_Player();
-        }
-    }
-    [ClientRpc]
-    void Rpc_Kill_Player()
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
-        if (players.Length > 0)
-        {
-            foreach (var player in players)
-            {
-                if (player.GetComponent<PlayerNetworkBehavior>().IsSaved == true)
-                {
-
-                }
-                else
-                {
-                    StartCoroutine(DoAnimDead(player));
-                }
-            }
-        }
-    }
-
-    [Command]
-    void Cmd_KillInTheDark()
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 1)
-        {
-            if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
-            {
-                players[0].GetComponent<PlayerNetworkBehavior>().IsKilled = true;
-            }
-        }
-    }
-    #endregion
-
     #region Be a Great King
     [Command]
     void Cmd_Be_A_Great_King()
@@ -761,48 +938,118 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     #endregion
 
-    bool BeforeKingDie()
+    #region Kill Bad Guy
+    IEnumerator DoAnimDead(GameObject _target)
     {
-        if (UIGameVote.GetReady4ResetTime() == true)
+        //Print the time of when the function is first called.
+        _target.GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
+
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(2);
+
+        //After we have waited 5 seconds print the time again.
+        Destroy(_target);
+    }
+    [Command]
+    public void Cmd_Kill_BadGuy()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
+        if (players.Length > 0)
         {
-            Cmd_VoteTime(10);
-        }
-        else
-        {
-            if (UIGameVote.getSecondsLeft() > 0)
+            foreach (var player in players)
             {
-                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                if (Input.GetMouseButtonDown(0))
+                if (player.GetComponent<PlayerNetworkBehavior>().IsSavedByGuard == true)
                 {
-                    VotedTarget = Vote();
+
                 }
-                else if (Input.GetKeyDown(KeyCode.Q))
+                else if (player.GetComponent<PlayerNetworkBehavior>().IsSavedByWitch == true)
                 {
-                    CancelVote(VotedTarget);
+
+                }
+                else
+                {
+                    StartCoroutine(DoAnimDead(player));
                 }
             }
-            else
+            Rpc_Kill_Player();
+        }
+    }
+    [ClientRpc]
+    void Rpc_Kill_Player()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
+        if (players.Length > 0)
+        {
+            foreach (var player in players)
             {
-                UIGameVote.SetReady4ResetTime(true);
-                UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
-                Cmd_Be_A_Great_King();
-                Cmd_SetAction4Player(Action4Player.Default);
-                return true;
+                if (player.GetComponent<PlayerNetworkBehavior>().IsSavedByGuard == true)
+                {
+
+                }
+                else if (player.GetComponent<PlayerNetworkBehavior>().IsSavedByWitch == true)
+                {
+
+                }
+                else
+                {
+                    StartCoroutine(DoAnimDead(player));
+                }
             }
         }
-        return false;
     }
 
-    #region ChangeScene
     [Command]
-    void Cmd_ChangeScene(string _action,string _scene)
+    void Cmd_KillPlayer()
     {
-        if (CheckAction4Players(_action))
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
+        if (players.Length > 1)
         {
-            NetworkManager.singleton.ServerChangeScene(_scene);
+            if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
+            {
+                players[0].GetComponent<PlayerNetworkBehavior>().IsKilled = true;
+            }
+        }
+    }
+    string ShowRole(GameObject _target)
+    {
+        return _target.GetComponent<PlayerNetworkBehavior>().Role;
+    }
+    [Command]
+    void Cmd_SaveByGuard(NetworkIdentity _target)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+        if (player != null)
+        {
+            player.GetComponent<PlayerNetworkBehavior>().IsSavedByGuard = true;
+        }
+    }
+    [Command]
+    void Cmd_SaveByWitch(NetworkIdentity _target)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+        if (player != null)
+        {
+            player.GetComponent<PlayerNetworkBehavior>().IsSavedByWitch = true;
+        }
+    }
+    [Command]
+    void Cmd_GiveTheThrone(NetworkIdentity _target)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+        if (player != null)
+        {
+            player.GetComponent<PlayerNetworkBehavior>().IsKing = true;
         }
     }
     #endregion
+
+
 
 
 }
