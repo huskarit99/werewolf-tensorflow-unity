@@ -72,7 +72,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 if (UIGameVote.getSecondsLeft() == 0)
                                 {
                                     UIGameVote.SetReady4ResetTime(true);
-                                    Cmd_ChangeScene(GameScene.NightScene);
+                                    Cmd_ChangeScene(Action4Player.Default,GameScene.NightScene);
                                     Cmd_SetAction4Player(Action4Player.WolfTurn);
                                     Cmd_SetDone4Player(false);
                                 }
@@ -115,7 +115,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             if (CheckAction4Players(Action4Player.Default))
                             {
                                 CancelVote(VotedTarget);
-                                Cmd_ChangeScene(GameScene.SampleScene);
+                                Cmd_ChangeScene(Action4Player.Default,GameScene.SampleScene);
                                 Cmd_SetAction4Player(Action4Player.VoteKing);
                                 Cmd_SetDone4Player(false);
                             }
@@ -143,8 +143,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         CancelVote(VotedTarget);
                                         UIGameVote.SetReady4ResetTime(true);
-                                        Cmd_ChangeScene(GameScene.NightScene);
                                         Cmd_SetAction4Player(Action4Player.WolfTurn);
+                                        Cmd_ChangeScene(Action4Player.WolfTurn,GameScene.NightScene);
                                         Cmd_SetDone4Player(false);
                                     }
                                 }
@@ -191,7 +191,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             if (CheckAction4Players(Action4Player.Default))
                             {
                                 CancelVote(VotedTarget);
-                                Cmd_ChangeScene(GameScene.SampleScene);
+                                Cmd_ChangeScene(Action4Player.Default,GameScene.SampleScene);
                                 Cmd_SetAction4Player(Action4Player.VoteKing);
                                 Cmd_SetDone4Player(false);
                             }
@@ -220,8 +220,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         CancelVote(VotedTarget);
                                         UIGameVote.SetReady4ResetTime(true);
-                                        Cmd_ChangeScene(GameScene.NightScene);
                                         Cmd_SetAction4Player(Action4Player.WolfTurn);
+                                        Cmd_ChangeScene(Action4Player.WolfTurn,GameScene.NightScene);
                                         Cmd_SetDone4Player(false);
                                     }
                                 }
@@ -795,9 +795,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     #region ChangeScene
     [Command]
-    void Cmd_ChangeScene(string _scene)
+    void Cmd_ChangeScene(string _action,string _scene)
     {
-        NetworkManager.singleton.ServerChangeScene(_scene);
+        if (CheckAction4Players(_action))
+        {
+            NetworkManager.singleton.ServerChangeScene(_scene);
+        }
     }
     #endregion
 
