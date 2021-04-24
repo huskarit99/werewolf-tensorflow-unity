@@ -34,6 +34,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameVote UIGameVote; // UI hiển thị thời gian để vote
     UIGameVoted UIGameVoted; // UI hiển thị số lượng bị vote
     UIGameReady UIGameReady; // UI hiển thị button ready
+    UIGameSleep UIGameSleep; // UI hiển thị panel sleep
     public GameObject[] Prefabs;
 
     public GameObject CentralPoint;
@@ -57,7 +58,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             UIGameVote = FindObjectOfType<UIGameVote>();
-            UIGameReady = FindObjectOfType<UIGameReady>();
+            UIGameReady = FindObjectOfType<UIGameReady>(); 
+            UIGameSleep = FindObjectOfType<UIGameSleep>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;
