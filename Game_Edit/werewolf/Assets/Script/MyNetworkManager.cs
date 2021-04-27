@@ -10,9 +10,12 @@ public class MyNetworkManager : NetworkManager
     public double Radius;
     public double Distance;
     public GameObject CentralPoint;
+    public List<string> roles;
     public override void OnStartServer()
     {
         DontDestroyOnLoad(this);
+        roles = new List<string>(){ Role4Player.Human,
+                                  Role4Player.Wolf};
         Debug.Log("Start Server");
     }
     public override void OnStopServer()
@@ -26,12 +29,14 @@ public class MyNetworkManager : NetworkManager
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         //--- Set role cho người chơi
-        var roles = new List<string>(){ Role4Player.Human,
-                                  Role4Player.Seer,
-                                  Role4Player.Guard,
-                                  Role4Player.Wolf,
-                                  Role4Player.Witch,
-                                  Role4Player.Hunter};
+        //var roles = new List<string>(){ Role4Player.Human,
+        //                          Role4Player.Seer,
+        //                          Role4Player.Guard,
+        //                          Role4Player.Wolf,
+        //                          Role4Player.Witch,
+        //                          Role4Player.Hunter};
+
+        // test vote
         playerPrefab.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles);
         //--- Set VoteText cho người chơi
         playerPrefab.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
@@ -40,11 +45,16 @@ public class MyNetworkManager : NetworkManager
     }
     private string RandomRole4Player(List<string> _roles, out List<string> _arr)
     {
-        var _index = UnityEngine.Random.Range(0, _roles.Count);
-        var item = _roles[_index];
-        _roles.RemoveAt(_index);
+        if (_roles.Count > 0)
+        {
+            var _index = UnityEngine.Random.Range(0, _roles.Count - 1);
+            var item = _roles[_index];
+            _roles.RemoveAt(_index);
+            _arr = _roles;
+            return item;
+        }
         _arr = _roles;
-        return item;
+        return string.Empty;
     }
 
 }
