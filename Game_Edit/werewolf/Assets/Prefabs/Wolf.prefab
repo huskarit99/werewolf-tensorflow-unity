@@ -196,12 +196,20 @@ MonoBehaviour:
   IsKing: 0
   IsReady: 0
   IsStart: 0
+  Prefabs: []
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 9116334106119105080}
   playerIndexText: {fileID: 9116334105743708727}
   playerVotesText: {fileID: 395754174597922669}
+  MyNetworkManager: {fileID: 0}
   Day: 1
+  Action: Default
+  IsDone: 0
+  IsSavedByGuard: 0
+  IsSavedByWitch: 0
+  IsKilledByWitch: 0
+  IsKilled: 0
 --- !u!114 &6221691485688263262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,6 +743,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf
       objectReference: {fileID: 0}
+    - target: {fileID: 1630794972795428178, guid: e9de9a358ba5fab468c07d5dc4e4dd20,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4dcf8651b2211cc4f8ed6ac32215b906, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9de9a358ba5fab468c07d5dc4e4dd20, type: 3}
 --- !u!4 &4772038071682880608 stripped

@@ -1580,6 +1580,12 @@ PrefabInstance:
       propertyPath: CentralPoint
       value: 
       objectReference: {fileID: 1657088520}
+    - target: {fileID: 5754627140167327891, guid: 2bdf490dd9ca90b42b1444e8bdc25717,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 2529296182027759208, guid: fd1234f77f618e249a64c1db6cbea756,
+        type: 3}
     - target: {fileID: 5754627140167327894, guid: 2bdf490dd9ca90b42b1444e8bdc25717,
         type: 3}
       propertyPath: m_Name
