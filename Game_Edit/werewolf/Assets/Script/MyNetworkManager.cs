@@ -36,11 +36,11 @@ public class MyNetworkManager : NetworkManager
         //                          Role4Player.Witch,
         //                          Role4Player.Hunter};
 
-        // test vote
-        playerPrefab.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles);
         //--- Set VoteText cho người chơi
-        playerPrefab.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
         var player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 800), Quaternion.identity);
+        player.GetComponent<PlayerNetworkBehavior>().index = NetworkServer.connections.Count - 1;
+        player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
+        player.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles);
         NetworkServer.AddPlayerForConnection(conn, player);
     }
     private string RandomRole4Player(List<string> _roles, out List<string> _arr)

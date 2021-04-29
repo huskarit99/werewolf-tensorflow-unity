@@ -881,6 +881,7 @@ MonoBehaviour:
     type: 3}
   playerNameText: {fileID: 647742165400909298}
   playerIndexText: {fileID: 647742165780483581}
+  index: 1
   playerVotesText: {fileID: 8286772658034172071}
   MyNetworkManager: {fileID: 0}
   Day: 1

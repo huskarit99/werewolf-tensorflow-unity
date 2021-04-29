@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 using System.Linq;
 
 public partial class PlayerNetworkBehavior : NetworkBehaviour
@@ -32,6 +33,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     private void Update()
     {
         if (!hasAuthority) { return; }  // kiểm tra quyền client
+        Cmd_SetupPosition(this.index);
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         foreach (var player in players)
         {
@@ -68,10 +70,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     UIGameReady.ShowReadyPanel(false); // Ẩn panel khi IsReady và IsStart bằng true
                 }
-                float moveHor = Input.GetAxis("Horizontal");
-                float moveVer = Input.GetAxis("Vertical");
-                var movement = new Vector3(moveHor, 0, moveVer);
-                transform.position += movement;
                 switch (Day) 
                 {
                     case 1:
@@ -131,12 +129,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             {
                                 if (CheckDone4Players())
                                 {
-                                    Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
                                     SetupForNewAction(Action4Player.VoteKing);
                                 }
                                 else
                                 {
-                                    Cmd_Kill_BadGuy();
+                                    var currentScene = SceneManager.GetActiveScene();
+                                    if (currentScene.name != GameScene.SampleScene)
+                                    {
+                                        Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
+                                    }
+                                    else
+                                    {
+                                        Vote4Action(Action4Player.Default);
+                                    }
                                 }
                             }
                             if (CheckAction4Players(Action4Player.VoteKing))
@@ -578,6 +583,17 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         return false;
     }
+
+    private bool CheckDeath()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
+        if (_check != null && _check.Length > 0)
+        {
+            return true;
+        }
+        return false;
+    }
     #endregion
 
     #region GamePlay
@@ -679,9 +695,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     _role = Role4Player.Hunter;
                 }
-                else
+                else if (_action == Action4Player.Default)
                 {
                     _role = Role4Player.Human;
+                    if (CheckDeath())
+                    {
+                        Cmd_Kill_BadGuy();
+                    }
                 }
                 if (CheckAllVote(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
@@ -1013,7 +1033,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         //Print the time of when the function is first called.
         _target.GetComponent<PlayerNetworkBehavior>().AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
         //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(2 + _target.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(2);
 
         //After we have waited 5 seconds print the time again.
         Destroy(_target);
@@ -1021,7 +1041,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     public void Cmd_Kill_BadGuy()
     {
-        var _isDone = false;
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
         if (players.Length > 0)
@@ -1041,17 +1060,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     StartCoroutine(DoAnimDead(player));
                 }
             }
-            _isDone = true;
         }
-        if (_isDone == true)
-        {
-            Rpc_Kill_Player();
-        }
+        Rpc_Kill_Badguy();
     }
     [ClientRpc]
-    void Rpc_Kill_Player()
+    void Rpc_Kill_Badguy()
     {
-        var _isDone = false;
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
         if (players.Length > 0)
@@ -1071,12 +1085,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     StartCoroutine(DoAnimDead(player));
                 }
             }
-            _isDone = true;
         }
-        if (_isDone)
-        {
-            Cmd_SetDone4Player(true);
-        }
+        Cmd_SetDone4Player(true);
     }
     [Command]
     void Cmd_KillPlayer()

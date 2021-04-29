@@ -23,7 +23,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public string Role;
     [SyncVar]
     public bool IsKing;
-
     [SyncVar]
     public bool IsReady = false; // Trạng thái sẵn sàng của player
     [SyncVar]
@@ -52,8 +51,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             Debug.Log(Role);
             IsDefault = true;
-            Cmd_SetupPlayer("Minh Huy", 3);
-            Cmd_SetupPosition(3, 4);
+            Cmd_SetupPlayer("Minh Huy");
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
@@ -72,18 +70,29 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     /// Các hàm set up nhân vật game
     /// </summary>
     [Command]
-    void Cmd_SetupPlayer(string _name ,int _index)
+    void Cmd_SetupPlayer(string _name)
     {
         playerName = _name;
-        index = _index.ToString();
     }
 
     [Command]
-    void Cmd_SetupPosition(int _index,int total)
+    void Cmd_SetupPosition(int _index)
     {
+        var total = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Length;
         var default_angle = 360 / total;
         var angle = Math.PI * default_angle * _index / 180;
-        playerPosition = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
+        this.transform.position = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
+                                    0,
+                                    Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
+        Rpc_SetupPosition(_index);
+    }
+    [ClientRpc]
+    void Rpc_SetupPosition(int _index)
+    {
+        var total = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Length;
+        var default_angle = 360 / total;
+        var angle = Math.PI * default_angle * _index / 180;
+        this.transform.position = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
                                     0,
                                     Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
     }
@@ -104,10 +113,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     //--- Thay đổi số thứ tự nhân vật
     public TextMesh playerIndexText;
     [SyncVar(hook = nameof(OnIndexChange))]
-    string index;
-    void OnIndexChange(string _old,string _new)
+    public int index;
+    void OnIndexChange(int _old,int _new)
     {
-        playerIndexText.text = index;
+        playerIndexText.text = index.ToString();
     }
     //-- Thay đổi vote của nhân vật
     public TextMesh playerVotesText;
@@ -122,12 +131,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         playerVotesText.text = votes.ToString();
     }
 
-    [SyncVar(hook =nameof(OnPositionChange))]
-    Vector3 playerPosition;
-    void OnPositionChange(Vector3 _old, Vector3 _new)
-    {
-        this.gameObject.transform.position = playerPosition;
-    }
     #endregion
 
     #region Action
