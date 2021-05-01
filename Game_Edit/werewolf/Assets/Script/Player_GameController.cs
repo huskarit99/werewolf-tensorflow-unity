@@ -52,7 +52,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             UIGameVote = FindObjectOfType<UIGameVote>();
             UIGameReady = FindObjectOfType<UIGameReady>();
-            UIGameSleep = FindObjectOfType<UIGameSleep>(); 
+            UIGameSleep = FindObjectOfType<UIGameSleep>();
+            UIGameTurn = FindObjectOfType<UIGameTurn>();
 
             // Gán thuộc tính isReady trong UIGameReady vào biến IsReady, IsStart mặc định là false
             if (IsReady == false)
@@ -76,6 +77,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         {
                             if (CheckAction4Players(Action4Player.Default))
                             {
+                                //UIGameTurn.SetTurnText(Action4Player.Default);
                                 if (CheckDone4Players())
                                 {
                                     Cmd_ChangeScene(Action4Player.Default, GameScene.NightScene);
@@ -99,16 +101,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.WolfTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.WolfTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -146,6 +151,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             }
                             if (CheckAction4Players(Action4Player.VoteKing))
                             {
+                                UIGameTurn.SetTurnText(Action4Player.VoteKing);
                                 if (CheckKing())
                                 {
                                     SetupForNewAction(Action4Player.Guilty);
@@ -157,6 +163,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             }
                             else if (CheckAction4Players(Action4Player.Guilty))
                             {
+                                UIGameTurn.SetTurnText(Action4Player.Guilty);
                                 if (CheckDone4Players())
                                 {
                                     Cmd_Kill_BadGuy();
@@ -180,16 +187,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Guard)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.GuardTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.GuardTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -214,16 +224,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Seer)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.SeerTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.SeerTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -252,16 +265,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.WolfTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.WolfTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -287,16 +303,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Witch)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.WitchTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.WitchTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -332,6 +351,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             }
                             else if (CheckAction4Players(Action4Player.Guilty))
                             {
+                                UIGameTurn.SetTurnText(Action4Player.Guilty);
                                 if (CheckDone4Players())
                                 {
                                     Cmd_Kill_BadGuy();
@@ -355,16 +375,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Guard)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.GuardTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.GuardTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -389,16 +412,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Seer)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.SeerTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.SeerTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -427,16 +453,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.WolfTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.WolfTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -462,16 +491,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Witch)
                                         {
+                                            UIGameTurn.SetTurnText(Action4Player.WitchTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.WitchTurn);
                                         }
                                         else
                                         {
+                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
+                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -637,6 +669,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         return false;
     }
     #endregion
+
+    #region Vote 4 Action
     void Vote4Action(string _action)
     {
         if (UIGameVote.GetReady4ResetTime())
@@ -753,6 +787,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
         }
     }
+    #endregion
     void SetupForNewAction(string _newAction)
     {
         CancelVote(VotedTarget);

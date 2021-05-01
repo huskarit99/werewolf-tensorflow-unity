@@ -6,6 +6,7 @@ ScriptsOnlyBuild:
     - PlayerNetworkBehavior
     - UIGameReady
     - UIGameSleep
+    - UIGameTurn
     - UIGameVote
     - UIGameVoted
     Mirror.Components.dll:
@@ -22,10 +23,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -78,23 +77,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11280}
     - Class: 114
-      Script: {instanceID: 11554}
+      Script: {instanceID: 11366}
     - Class: 114
-      Script: {instanceID: 12086}
+      Script: {instanceID: 11556}
     - Class: 114
-      Script: {instanceID: 12374}
+      Script: {instanceID: 12088}
     - Class: 114
-      Script: {instanceID: 12760}
+      Script: {instanceID: 12376}
     - Class: 114
-      Script: {instanceID: 13262}
+      Script: {instanceID: 12762}
     - Class: 114
-      Script: {instanceID: 13334}
+      Script: {instanceID: 13264}
     - Class: 114
-      Script: {instanceID: 13704}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13816}
+      Script: {instanceID: 13706}
     - Class: 114
-      Script: {instanceID: 13906}
+      Script: {instanceID: 13818}
+    - Class: 114
+      Script: {instanceID: 13908}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -171,35 +172,37 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11362}
     - Class: 114
-      Script: {instanceID: 11494}
+      Script: {instanceID: 11366}
     - Class: 114
-      Script: {instanceID: 11554}
+      Script: {instanceID: 11496}
     - Class: 114
-      Script: {instanceID: 12086}
+      Script: {instanceID: 11556}
     - Class: 114
-      Script: {instanceID: 12374}
+      Script: {instanceID: 12088}
     - Class: 114
-      Script: {instanceID: 12668}
+      Script: {instanceID: 12376}
     - Class: 114
-      Script: {instanceID: 12718}
+      Script: {instanceID: 12670}
     - Class: 114
-      Script: {instanceID: 12760}
+      Script: {instanceID: 12720}
     - Class: 114
-      Script: {instanceID: 13262}
+      Script: {instanceID: 12762}
     - Class: 114
-      Script: {instanceID: 13334}
+      Script: {instanceID: 13264}
     - Class: 114
-      Script: {instanceID: 13436}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13544}
+      Script: {instanceID: 13438}
     - Class: 114
-      Script: {instanceID: 13704}
+      Script: {instanceID: 13546}
     - Class: 114
-      Script: {instanceID: 13816}
+      Script: {instanceID: 13706}
     - Class: 114
-      Script: {instanceID: 13906}
+      Script: {instanceID: 13818}
     - Class: 114
-      Script: {instanceID: 13930}
+      Script: {instanceID: 13908}
+    - Class: 114
+      Script: {instanceID: 13932}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -301,6 +304,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CameraController
+  - hash:
+      serializedVersion: 2
+      Hash: 3dc5e3afaf7ed90fe5d05cae1662f50c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UIGameTurn
   - hash:
       serializedVersion: 2
       Hash: 0e68c7511d0bb7746e68316200e21bb0
@@ -1253,4 +1262,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/NightScene.unity
-  playerPath: E:/TestGame/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe
