@@ -798,7 +798,7 @@ ScriptsOnlyBuild:
     className: CellGUI
   - hash:
       serializedVersion: 2
-      Hash: 82189547a58205a16de49fb3137ddb0f
+      Hash: aa39c107c8346955ff474ded75870ed0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerNetworkBehavior
@@ -1262,4 +1262,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/NightScene.unity
-  playerPath: E:/TestGame/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe

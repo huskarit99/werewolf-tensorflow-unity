@@ -27,6 +27,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsReady = false; // Trạng thái sẵn sàng của player
     [SyncVar]
     public bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
+    [SyncVar]
+    public bool IsSkipVote = false; // Trạng thái skip vote của player
 
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây

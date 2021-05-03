@@ -606,7 +606,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         return false;
     }
-    private bool CheckAllVote(string _role)
+    private bool CheckAllVote_SkipVote(string _role)
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == false).ToArray();
         if (players.Length > 0)
@@ -615,7 +615,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 var _players_Voted = players.Where(t =>
                                                     t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteLeft) == true).ToArray();
-                if (_players_Voted.Length == players.Length)
+                var _players_SkipVote = players.Where(t =>
+                                                    t.GetComponent<PlayerNetworkBehavior>().IsSkipVote == true).ToArray();
+                if (_players_Voted.Length + _players_SkipVote.Length == players.Length)
                 {
                     return true;
                 }
@@ -626,7 +628,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 var _players_Voted = players.Where(t =>
                                     t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteLeft) == true &&
                                     t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
-                if (_players_Voted.Length == players.Length)
+                var _players_SkipVote = players.Where(t =>
+                                    t.GetComponent<PlayerNetworkBehavior>().IsSkipVote == true &&
+                                    t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
+                if (_players_Voted.Length + _players_SkipVote.Length == players.Length)
                 {
                     return true;
                 }
@@ -690,27 +695,35 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             if (UIGameVote.getSecondsLeft() > 0)
             {
-                if (CheckAllVote(Role4Player.Human) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
+                if (CheckAllVote_SkipVote(Role4Player.Human) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
                     Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                 }
                 else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
                 {
                     UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                    if (Input.GetMouseButtonDown(0))
+                    if (!IsSkipVote)
                     {
-                        VotedTarget = Vote();
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            VotedTarget = Vote();
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            CancelVote(VotedTarget);
+                        }else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+                        {
+                            Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                        }
                     }
-                    else if (Input.GetKeyDown(KeyCode.Q)) 
-                    {
-                        CancelVote(VotedTarget);
-                    }
+                    
                 }
             }
             else
             {
                 UIGameVote.SetReady4ResetTime(true); 
                 Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
+                Cmd_SetSkipVote(false); // Thiết lập lại trạng thái chưa skip vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
                 Cmd_Be_A_Great_King();
                 return true;
@@ -735,7 +748,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             else if (_action == Action4Player.SeerTurn)
             {
-                Cmd_VoteTime(20);
+                Cmd_VoteTime(20); 
             }
             else if (_action == Action4Player.WolfTurn)
             {
@@ -783,20 +796,27 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     _role = Role4Player.Human;
                 }
-                if (CheckAllVote(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
+                if (CheckAllVote_SkipVote(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
                     Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                 }
                 else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
                 {
                     UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                    if (Input.GetMouseButtonDown(0))
+                    if (!IsSkipVote)
                     {
-                        VotedTarget = Vote();
-                    }
-                    else if (Input.GetKeyDown(KeyCode.Q))
-                    {
-                        CancelVote(VotedTarget);
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            VotedTarget = Vote();
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            CancelVote(VotedTarget);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+                        {
+                            Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                        }
                     }
                 }
             }
@@ -808,6 +828,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 Cmd_SetDone4Player(true);
                 Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
+                Cmd_SetSkipVote(false); // Thiết lập lại trạng thái chưa skip vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết 
                 if (_action == Action4Player.Guilty)
                 {
@@ -994,6 +1015,44 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         UIGameVote = FindObjectOfType<UIGameVote>();
         UIGameVote.SetAllVote(_vote);
+    }
+    #endregion
+
+    #region SetSkipVote
+    [Command]
+    public void Cmd_SkipVote(NetworkIdentity _target, bool _isSkipVote) // Thay đổi biến IsSkipVote của 1 player theo netId
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
+            _player.GetComponent<PlayerNetworkBehavior>().IsSkipVote = _isSkipVote;
+        }
+    }
+    [Command]
+    public void Cmd_SetSkipVote(bool _skipVote) // Thay đổi biến IsSkipVote của tất cả player
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            foreach(var player in players)
+            {
+                player.GetComponent<PlayerNetworkBehavior>().IsSkipVote = _skipVote;
+            }
+        }
+        Rpc_SetSkipVote(_skipVote);
+    }
+    [ClientRpc]
+    void Rpc_SetSkipVote(bool _skipVote)
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        if (players.Length > 0)
+        {
+            foreach (var player in players)
+            {
+                player.GetComponent<PlayerNetworkBehavior>().IsSkipVote = _skipVote;
+            }
+        }
     }
     #endregion
 
