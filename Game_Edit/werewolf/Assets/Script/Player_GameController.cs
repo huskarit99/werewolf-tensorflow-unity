@@ -26,6 +26,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsKilledByWitch = false;
     [SyncVar]
     public bool IsKilled = false;
+    [SyncVar]
+    public bool IsGuilty = false;
     #endregion
 
 
@@ -44,6 +46,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             if (string.IsNullOrEmpty(player.GetComponent<PlayerNetworkBehavior>().Role))
             {
+                player.SetActive(false);
             }
         }
         if (isLocalPlayer)
@@ -99,20 +102,17 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (Role == Role4Player.Wolf)
                                         {
-                                            UIGameTurn.SetTurnText(Action4Player.WolfTurn);
                                             UIGameSleep.ShowSleepPanel(false);
                                             Vote4Action(Action4Player.WolfTurn);
                                         }
                                         else
                                         {
                                             Cmd_SetDone4Player(true);
-                                            UIGameTurn.SetDefaultTurnText();
                                             UIGameSleep.ShowSleepPanel(true);
                                         }
                                     }
                                     else
                                     {
-                                        UIGameTurn.SetDefaultTurnText();
                                         UIGameSleep.ShowSleepPanel(true);
                                         if (UIGameVote.GetReady4ResetTime())
                                         {
@@ -136,17 +136,26 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
                                     if (CheckDone4Players(true))
                                     {
-                                        SetupForNewAction(Action4Player.VoteKing);
+                                        if (CheckIsGuilty())
+                                        {
+                                            SetupForNewAction(Action4Player.Guilty);
+                                        }
+                                        else
+                                        {
+                                            SetupForNewAction(Action4Player.VoteKing);
+                                        }
                                     }
                                     else
                                     {
-                                        StartCoroutine(DoKilledPlayer());
+                                        if (CheckDeath())
+                                        {
+                                            StartCoroutine(DoKilledPlayer());
+                                        }
                                         Vote4Action(Action4Player.Default);
                                     }
                                 }
                                 else if (CheckAction4Players(Action4Player.VoteKing))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.VoteKing);
                                     if (CheckKing())
                                     {
                                         SetupForNewAction(Action4Player.Guilty);
@@ -158,20 +167,35 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.Guilty))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.Guilty);
                                     if (CheckDone4Players(true))
                                     {
-                                        SetupForNewAction(Action4Player.GuardTurn);
-                                        Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                        if (CheckDeath())
+                                        {
+                                            Cmd_SetGuilty4Player(true);
+                                            SetupForNewAction(Action4Player.Default);
+                                        }
+                                        else
+                                        {
+                                            Cmd_SetGuilty4Player(false);
+                                            SetupForNewAction(Action4Player.GuardTurn);
+                                            Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                        }
+                                        
                                     }
                                     else
                                     {
-                                        Vote4Action(Action4Player.Guilty);
+                                        if (CheckIsGuilty())
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                        else
+                                        {
+                                            Vote4Action(Action4Player.Guilty);
+                                        }
                                     }
                                 }
                                 else if (CheckAction4Players(Action4Player.GuardTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.GuardTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.SeerTurn);
@@ -188,7 +212,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -211,7 +234,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.SeerTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.SeerTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.WolfTurn);
@@ -228,7 +250,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -251,14 +272,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.WolfTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.WolfTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.WitchTurn);
-                                        CancelVote(VotedTarget);
-                                        Cmd_SetAction4Player(Action4Player.WitchTurn);
-                                        UIGameVote.SetReady4ResetTime(true);
-                                        Cmd_SetDone4Player(false);
                                     }
                                     else
                                     {
@@ -272,7 +288,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -295,7 +310,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.WitchTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.WitchTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.Default);
@@ -313,7 +327,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -346,17 +359,26 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
                                     if (CheckDone4Players(true))
                                     {
-                                        SetupForNewAction(Action4Player.VoteKing);
+                                        if (CheckIsGuilty())
+                                        {
+                                            SetupForNewAction(Action4Player.Guilty);
+                                        }
+                                        else
+                                        {
+                                            SetupForNewAction(Action4Player.VoteKing);
+                                        }
                                     }
                                     else
                                     {
-                                        StartCoroutine(DoKilledPlayer());
+                                        if (CheckDeath())
+                                        {
+                                            StartCoroutine(DoKilledPlayer());
+                                        }
                                         Vote4Action(Action4Player.Default);
                                     }
                                 }
                                 else if (CheckAction4Players(Action4Player.VoteKing))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.VoteKing);
                                     if (CheckKing())
                                     {
                                         SetupForNewAction(Action4Player.Guilty);
@@ -368,20 +390,35 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.Guilty))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.Guilty);
                                     if (CheckDone4Players(true))
                                     {
-                                        SetupForNewAction(Action4Player.GuardTurn);
-                                        Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                        if (CheckDeath())
+                                        {
+                                            Cmd_SetGuilty4Player(true);
+                                            SetupForNewAction(Action4Player.Default);
+                                        }
+                                        else
+                                        {
+                                            Cmd_SetGuilty4Player(false);
+                                            SetupForNewAction(Action4Player.GuardTurn);
+                                            Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                        }
+
                                     }
                                     else
                                     {
-                                        Vote4Action(Action4Player.Guilty);
+                                        if (CheckIsGuilty())
+                                        {
+                                            Vote4Action(Action4Player.Default);
+                                        }
+                                        else
+                                        {
+                                            Vote4Action(Action4Player.Guilty);
+                                        }
                                     }
                                 }
                                 else if (CheckAction4Players(Action4Player.GuardTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.GuardTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.SeerTurn);
@@ -398,7 +435,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -421,7 +457,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.SeerTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.SeerTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.WolfTurn);
@@ -438,7 +473,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -461,14 +495,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.WolfTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.WolfTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.WitchTurn);
-                                        CancelVote(VotedTarget);
-                                        Cmd_SetAction4Player(Action4Player.WitchTurn);
-                                        UIGameVote.SetReady4ResetTime(true);
-                                        Cmd_SetDone4Player(false);
                                     }
                                     else
                                     {
@@ -482,7 +511,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -505,7 +533,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else if (CheckAction4Players(Action4Player.WitchTurn))
                                 {
-                                    UIGameTurn.SetTurnText(Action4Player.WitchTurn);
                                     if (CheckDone4Players(true))
                                     {
                                         SetupForNewAction(Action4Player.Default);
@@ -523,7 +550,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetDone4Player(true);
-                                                UIGameTurn.SetDefaultTurnText();
                                                 UIGameSleep.ShowSleepPanel(true);
                                             }
                                         }
@@ -578,7 +604,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Check_Something
     private bool CheckKing()
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKing == true).ToArray();
         if (_check != null && _check.Length > 0)
         {
@@ -588,7 +614,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     private bool CheckAction4Players(string _action)
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == false).ToArray();
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Action == _action).ToArray();
         if (_check != null && _check.Length == players.Length)
         {
@@ -598,7 +624,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     private bool CheckDone4Players(bool _isDone)
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsDone == _isDone).ToArray();
         if (_check != null && _check.Length == players.Length)
         {
@@ -608,7 +634,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     private bool CheckAllVote_SkipVote(string _role)
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == false).ToArray();
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         if (players.Length > 0)
         {
             if (_role == Role4Player.Human)
@@ -641,7 +667,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     private bool CheckRole(string _role)
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
         if (_check != null && _check.Length > 0)
         {
@@ -651,7 +677,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     private bool CheckDay()
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Day == players[0].GetComponent<PlayerNetworkBehavior>().Day).ToArray();
         if (_check != null && _check.Length > 0)
         {
@@ -662,7 +688,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     private bool CheckDeath()
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsKilled == true).ToArray();
         if (_check != null && _check.Length > 0)
         {
@@ -673,8 +699,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     private bool CheckOutOfTime()
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().UIGameVote.getSecondsLeft() == 0).ToArray();
+        if (_check != null && players.Length == _check.Length)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool CheckIsGuilty()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
+        var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsGuilty == true).ToArray();
         if (_check != null && players.Length == _check.Length)
         {
             return true;
@@ -796,26 +833,30 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     _role = Role4Player.Human;
                 }
-                if (CheckAllVote_SkipVote(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
+
+                if (_action != Action4Player.Default)
                 {
-                    Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
-                }
-                else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
-                {
-                    UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
-                    if (!IsSkipVote)
+                    if (CheckAllVote_SkipVote(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                     {
-                        if (Input.GetMouseButtonDown(0))
+                        Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
+                    }
+                    else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
+                    {
+                        UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
+                        if (!IsSkipVote)
                         {
-                            VotedTarget = Vote();
-                        }
-                        else if (Input.GetKeyDown(KeyCode.Q))
-                        {
-                            CancelVote(VotedTarget);
-                        }
-                        else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
-                        {
-                            Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                            if (Input.GetMouseButtonDown(0))
+                            {
+                                VotedTarget = Vote();
+                            }
+                            else if (Input.GetKeyDown(KeyCode.Q))
+                            {
+                                CancelVote(VotedTarget);
+                            }
+                            else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+                            {
+                                Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                            }
                         }
                     }
                 }
@@ -860,6 +901,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
     void SetupForNewAction(string _newAction)
     {
+        UIGameTurn.SetTurnText(_newAction);
         CancelVote(VotedTarget);
         UIGameVote.SetReady4ResetTime(true);
         Cmd_SetDone4Player(false);
@@ -1056,11 +1098,25 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     #endregion
 
+    #region Set Role
+    [Command]
+    void SetRole4Player(string _role)
+    {
+        this.GetComponent<PlayerNetworkBehavior>().Role = string.Empty;
+    }
+    #endregion
+
     #region Get/SetAction4Player
     [Command]
     void Cmd_SetAction4Player(string _action)
     {
         this.GetComponent<PlayerNetworkBehavior>().Action = _action;
+    }
+
+    [Command]
+    void Cmd_SetGuilty4Player(bool _isGuilty)
+    {
+        this.GetComponent<PlayerNetworkBehavior>().IsGuilty = _isGuilty;
     }
 
     [Command]
@@ -1125,6 +1181,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         var _anim = this.AnimPlayer.runtimeAnimatorController.animationClips.Where(t => t.name == Param_4_Anim.IsDead).FirstOrDefault();
         if (_anim != null)
         {
+            Debug.Log(_anim.length);
             yield return new WaitForSeconds(2 + _anim.length);
             if (this.GetComponent<PlayerNetworkBehavior>().IsKilled)
             {
@@ -1132,8 +1189,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 var player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == this.GetComponent<NetworkIdentity>().netId).FirstOrDefault();
                 if (player != null)
                 {
+                    SetupForNewAction(Action4Player.Default);
                     player.SetActive(false);
-                    DestroyOnServer(player.GetComponent<NetworkIdentity>());
+                    SetRole4Player(string.Empty);
                 }
             }
         }
@@ -1146,20 +1204,11 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 var player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == this.GetComponent<NetworkIdentity>().netId).FirstOrDefault();
                 if (player != null)
                 {
+                    SetupForNewAction(Action4Player.Default);
                     player.SetActive(false);
-                    DestroyOnServer(player.GetComponent<NetworkIdentity>());
+                    SetRole4Player(string.Empty);
                 }
             }
-        }
-    }
-    [Command]
-    void DestroyOnServer(NetworkIdentity _netId)
-    {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
-        var player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _netId.netId).FirstOrDefault();
-        if (player != null)
-        {
-            player.SetActive(false);
         }
     }
 
