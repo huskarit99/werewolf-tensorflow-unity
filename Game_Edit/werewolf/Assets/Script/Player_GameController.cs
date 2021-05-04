@@ -632,18 +632,23 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         return false;
     }
-    private bool CheckAllVote_SkipVote(string _role)
+    private bool CheckVote4Player(string _role)
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         if (players.Length > 0)
         {
             if (_role == Role4Player.Human)
             {
+                // Player đã vote
                 var _players_Voted = players.Where(t =>
                                                     t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteLeft) == true).ToArray();
+                // Player bỏ vote
                 var _players_SkipVote = players.Where(t =>
                                                     t.GetComponent<PlayerNetworkBehavior>().IsSkipVote == true).ToArray();
-                if (_players_Voted.Length + _players_SkipVote.Length == players.Length)
+                // Player tự vote
+                var _players_VoteMySelf = players.Where(t =>
+                                                    t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf) == true).ToArray();
+                if (_players_Voted.Length + _players_SkipVote.Length + _players_VoteMySelf.Length == players.Length)
                 {
                     return true;
                 }
@@ -651,13 +656,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             else
             {
                 players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
+                // Player đã vote
                 var _players_Voted = players.Where(t =>
                                     t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteLeft) == true &&
                                     t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
+                // Player bỏ vote
                 var _players_SkipVote = players.Where(t =>
                                     t.GetComponent<PlayerNetworkBehavior>().IsSkipVote == true &&
                                     t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
-                if (_players_Voted.Length + _players_SkipVote.Length == players.Length)
+                // Player tự vote
+                var _players_VoteMySelf = players.Where(t =>
+                                    t.GetComponent<PlayerNetworkBehavior>().AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf) == true &&
+                                    t.GetComponent<PlayerNetworkBehavior>().Role == _role).ToArray();
+                if (_players_Voted.Length + _players_SkipVote.Length + _players_VoteMySelf.Length == players.Length)
                 {
                     return true;
                 }
@@ -732,7 +743,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             if (UIGameVote.getSecondsLeft() > 0)
             {
-                if (CheckAllVote_SkipVote(Role4Player.Human) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
+                if (CheckVote4Player(Role4Player.Human) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
                     Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                 }
@@ -748,7 +759,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         else if (Input.GetKeyDown(KeyCode.Q))
                         {
                             CancelVote(VotedTarget);
-                        }else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+                        }
+                        else if (Input.GetKeyDown(KeyCode.A))
+                        {
+                            VotedTarget = VoteMySelf();
+                        }
+                        else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
                         {
                             Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
                         }
@@ -836,7 +852,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
                 if (_action != Action4Player.Default)
                 {
-                    if (CheckAllVote_SkipVote(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
+                    if (CheckVote4Player(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                     {
                         Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                     }
@@ -853,7 +869,11 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             {
                                 CancelVote(VotedTarget);
                             }
-                            else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+                            else if (Input.GetKeyDown(KeyCode.A))
+                            {
+                                VotedTarget = VoteMySelf();
+                            }
+                            else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
                             {
                                 Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
                             }
