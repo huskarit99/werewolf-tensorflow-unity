@@ -138,10 +138,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
 
     #region Action
-    GameObject Vote()
+    GameObject Vote(int _index)
     {
         IsDefault = false;
-        Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
+        /*Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
@@ -161,25 +161,46 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 CancelVote(VotedTarget);
             }
+        }*/
+        if(_index == 0) // Hành động bỏ vote
+        {
+            CancelVote(VotedTarget);
+        }
+        else if(index == _index) // Hành động player tự vote chính mình 
+        {
+            CheckVote(VotedTarget);
+            Cmd_UpdateVotes(gameObject.GetComponent<NetworkIdentity>(), true);
+            AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false);
+            AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, true);
+            return gameObject;
+        }
+        else // Hành động player vote 
+        {
+            var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player)
+            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == _index).ToArray();
+            if (players.Length > 0)
+            {
+                foreach (var player in players)
+                {
+                    CheckVote(VotedTarget);
+                    Cmd_UpdateVotes(player.GetComponent<NetworkIdentity>(), true);
+                    AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, false);
+                    AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
+                    this.transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
+                    return player;
+                }
+            }
+            else // Nếu ko tìm thấy player thì sẽ trả về mục tiêu vote trước đó
+            {
+                return VotedTarget;
+            }
         }
         return null;
     }
 
-    GameObject VoteMySelf() // Hành động player tự vote chính mình
-    {
-        IsDefault = false;
-        if (VotedTarget == null && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
-        {
-            Cmd_UpdateVotes(gameObject.GetComponent<NetworkIdentity>(), true);
-            AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, true);
-            return gameObject;
-        }
-        return VotedTarget;
-    }
-
     void CheckVote(GameObject _votedTarget)
     {
-        if (AnimPlayer.GetBool(Param_4_Anim.VoteLeft))
+        if (AnimPlayer.GetBool(Param_4_Anim.VoteLeft) || AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
         {
             if (_votedTarget != null)
             {

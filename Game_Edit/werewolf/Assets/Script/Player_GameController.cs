@@ -752,22 +752,18 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                     if (!IsSkipVote)
                     {
-                        if (Input.GetMouseButtonDown(0))
+                        for (int num = 0; num <= 10; num++)
                         {
-                            VotedTarget = Vote();
+                            if (Input.GetKeyDown(num.ToString()))
+                            {
+                                VotedTarget = Vote(num);
+                            }
+                            if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
+                            {
+                                Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                            }
                         }
-                        else if (Input.GetKeyDown(KeyCode.Q))
-                        {
-                            CancelVote(VotedTarget);
-                        }
-                        else if (Input.GetKeyDown(KeyCode.A))
-                        {
-                            VotedTarget = VoteMySelf();
-                        }
-                        else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
-                        {
-                            Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
-                        }
+                        
                     }
                     
                 }
@@ -861,22 +857,18 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                         if (!IsSkipVote)
                         {
-                            if (Input.GetMouseButtonDown(0))
+                            for (int num = 0; num <= 10; num++)
                             {
-                                VotedTarget = Vote();
+                                if (Input.GetKeyDown(num.ToString()))
+                                {
+                                    VotedTarget = Vote(num);
+                                }
+                                if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
+                                {
+                                    Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                                }
                             }
-                            else if (Input.GetKeyDown(KeyCode.Q))
-                            {
-                                CancelVote(VotedTarget);
-                            }
-                            else if (Input.GetKeyDown(KeyCode.A))
-                            {
-                                VotedTarget = VoteMySelf();
-                            }
-                            else if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
-                            {
-                                Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
-                            }
+                            
                         }
                     }
                 }

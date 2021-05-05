@@ -38,7 +38,7 @@ public class MyNetworkManager : NetworkManager
 
         //--- Set VoteText cho người chơi
         var player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 800), Quaternion.identity);
-        player.GetComponent<PlayerNetworkBehavior>().index = NetworkServer.connections.Count - 1;
+        player.GetComponent<PlayerNetworkBehavior>().index = NetworkServer.connections.Count;
         player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
         player.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles);
         NetworkServer.AddPlayerForConnection(conn, player);
