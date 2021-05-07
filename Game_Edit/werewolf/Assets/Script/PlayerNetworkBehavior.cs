@@ -20,7 +20,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     //--- Chức năng của player
     [SyncVar]
-    public string Role;
+    public string Role = Role4Player.Human;
     [SyncVar]
     public bool IsKing;
     [SyncVar]
@@ -37,7 +37,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameReady UIGameReady; // UI hiển thị button ready
     UIGameSleep UIGameSleep; // UI hiển thị panel sleep
     UIGameTurn UIGameTurn; // UI hiển thị tên của lượt chơi
-    public GameObject[] Prefabs;
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -52,7 +51,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            Debug.Log(Role);
             IsDefault = true;
             Cmd_SetupPlayer("Minh Huy");
 
@@ -83,22 +81,28 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_SetupPosition(int _index)
     {
         var total = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Length;
-        var default_angle = 360 / total;
-        var angle = Math.PI * default_angle * _index / 180;
-        this.transform.position = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
-                                    0,
-                                    Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
-        Rpc_SetupPosition(_index);
+        if (total > 0)
+        {
+            var default_angle = 360 / total;
+            var angle = Math.PI * default_angle * (_index - 1) / 180;
+            this.transform.position = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
+                                        0,
+                                        Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
+            Rpc_SetupPosition(_index);
+        }
     }
     [ClientRpc]
     void Rpc_SetupPosition(int _index)
     {
         var total = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Length;
-        var default_angle = 360 / total;
-        var angle = Math.PI * default_angle * _index / 180;
-        this.transform.position = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
-                                    0,
-                                    Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
+        if (total > 0)
+        {
+            var default_angle = 360 / total;
+            var angle = Math.PI * default_angle * (_index - 1) / 180;
+            this.transform.position = new Vector3(Convert.ToSingle(Radius * Math.Sin(angle)),
+                                        0,
+                                        Convert.ToSingle(Distance + Radius * Math.Cos(angle)));
+        }
     }
     #endregion
 

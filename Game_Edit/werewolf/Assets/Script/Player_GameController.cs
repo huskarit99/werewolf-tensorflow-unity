@@ -52,6 +52,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             this.NameTag.SetActive(false);
+            //AnimPlayer = GetComponent<Animator>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             UIGameVote = FindObjectOfType<UIGameVote>();
             UIGameReady = FindObjectOfType<UIGameReady>();
@@ -93,6 +94,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             {
                                 if (CheckDone4Players(true))
                                 {
+                                    UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                                     SetupForNewAction(Action4Player.Default);
                                     Cmd_SetDay4Player(Day + 1);
                                 }
@@ -198,6 +200,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Guard, Role4Player.Human);
                                         SetupForNewAction(Action4Player.SeerTurn);
                                     }
                                     else
@@ -206,6 +209,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Guard)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Guard);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.GuardTurn);
                                             }
@@ -236,6 +240,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Seer, Role4Player.Human);
                                         SetupForNewAction(Action4Player.WolfTurn);
                                     }
                                     else
@@ -244,6 +249,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Seer)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Seer);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.SeerTurn);
                                             }
@@ -274,6 +280,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                                         SetupForNewAction(Action4Player.WitchTurn);
                                     }
                                     else
@@ -282,6 +289,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Wolf)
                                             {
+                                                UpdateApperance(Role4Player.Human,Role4Player.Wolf);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.WolfTurn);
                                             }
@@ -312,6 +320,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Witch, Role4Player.Human);
                                         SetupForNewAction(Action4Player.Default);
                                         Cmd_SetDay4Player(Day + 1);
                                     }
@@ -321,6 +330,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Witch)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Witch);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.WitchTurn);
                                             }
@@ -409,7 +419,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     {
                                         if (CheckIsGuilty())
                                         {
-                                            Vote4Action(Action4Player.Default);
+                                            Cmd_SetDone4Player(true);
                                         }
                                         else
                                         {
@@ -421,6 +431,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Guard, Role4Player.Human);
                                         SetupForNewAction(Action4Player.SeerTurn);
                                     }
                                     else
@@ -429,6 +440,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Guard)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Guard);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.GuardTurn);
                                             }
@@ -459,6 +471,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Seer, Role4Player.Human);
                                         SetupForNewAction(Action4Player.WolfTurn);
                                     }
                                     else
@@ -467,6 +480,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Seer)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Seer);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.SeerTurn);
                                             }
@@ -497,6 +511,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                                         SetupForNewAction(Action4Player.WitchTurn);
                                     }
                                     else
@@ -505,6 +520,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Wolf)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Wolf);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.WolfTurn);
                                             }
@@ -535,6 +551,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
+                                        UpdateApperance(Role4Player.Witch, Role4Player.Human);
                                         SetupForNewAction(Action4Player.Default);
                                         Cmd_SetDay4Player(Day + 1);
                                     }
@@ -544,6 +561,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Witch)
                                             {
+                                                UpdateApperance(Role4Player.Human, Role4Player.Witch);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.WitchTurn);
                                             }
@@ -802,6 +820,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             else if (_action == Action4Player.WolfTurn)
             {
                 Cmd_VoteTime(45);
+                if (this.Role == Role4Player.Wolf)
+                {
+                    UpdateApperance(Role4Player.Human, Role4Player.Wolf);
+                }
             }
             else if (_action == Action4Player.WitchTurn)
             {
@@ -897,6 +919,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 else if (_action == Action4Player.WolfTurn)
                 {
+                    UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                     Cmd_KillPlayer();
                 }
                 else if (_action == Action4Player.WitchTurn)
@@ -1273,4 +1296,33 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     #endregion
 
+    #region Update Player Prefab
+    void UpdateApperance(string _oldRole, string _newRole)
+    {
+        var _rolePrefab = FindObjectOfType<NetworkManager>().spawnPrefabs.Where(t => t.name == this.Role).FirstOrDefault();
+        if (_rolePrefab != null)
+        {
+            //ClientScene.RegisterPrefab(_rolePrefab);
+            Cmd_UpdateApperance(_rolePrefab, this.transform.position, this.transform.rotation);
+        }
+        else
+        {
+            Debug.Log("Error");
+        }
+    }
+
+    [Command]
+    void Cmd_UpdateApperance(GameObject _apperance, Vector3 _position, Quaternion _rotation)
+    {
+        var oldPrefab = GetComponent<NetworkIdentity>().connectionToClient;
+
+        var _rolePrefab = FindObjectOfType<NetworkManager>().spawnPrefabs.Where(t => t.name == Role4Player.Wolf).FirstOrDefault();
+        GameObject newPrefab = (GameObject)Instantiate(_rolePrefab, _position, _rotation);
+
+        newPrefab.GetComponent<PlayerNetworkBehavior>().Role = this.Role;
+
+        NetworkServer.Destroy(oldPrefab.identity.gameObject);
+        NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPrefab);
+    }
+    #endregion
 }

@@ -11,11 +11,18 @@ public class MyNetworkManager : NetworkManager
     public double Distance;
     public GameObject CentralPoint;
     public List<string> roles;
+
     public override void OnStartServer()
     {
         DontDestroyOnLoad(this);
-        roles = new List<string>(){ Role4Player.Human,
-                                  Role4Player.Wolf};
+        //--- Set role cho người chơi
+        roles = new List<string>(){ //Role4Player.Human,
+                                  //Role4Player.Seer,
+                                  //Role4Player.Guard,
+                                  Role4Player.Wolf,
+                                  //Role4Player.Witch,
+                                  //Role4Player.Hunter
+                                   };
         Debug.Log("Start Server");
     }
     public override void OnStopServer()
@@ -26,21 +33,15 @@ public class MyNetworkManager : NetworkManager
     {
         base.OnServerConnect(conn);
     }
+
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
-        //--- Set role cho người chơi
-        //var roles = new List<string>(){ Role4Player.Human,
-        //                          Role4Player.Seer,
-        //                          Role4Player.Guard,
-        //                          Role4Player.Wolf,
-        //                          Role4Player.Witch,
-        //                          Role4Player.Hunter};
-
+        Debug.Log("Added");
         //--- Set VoteText cho người chơi
         var player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 800), Quaternion.identity);
         player.GetComponent<PlayerNetworkBehavior>().index = NetworkServer.connections.Count;
         player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
-        player.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles);
+        player.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles); 
         NetworkServer.AddPlayerForConnection(conn, player);
     }
     private string RandomRole4Player(List<string> _roles, out List<string> _arr)
