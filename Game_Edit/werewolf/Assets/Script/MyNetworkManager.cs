@@ -55,7 +55,7 @@ public class MyNetworkManager : NetworkManager
             return item;
         }
         _arr = _roles;
-        return string.Empty;
+        return Role4Player.Human;
     }
 
 }

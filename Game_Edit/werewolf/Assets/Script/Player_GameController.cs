@@ -94,7 +94,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             {
                                 if (CheckDone4Players(true))
                                 {
-                                    UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                                     SetupForNewAction(Action4Player.Default);
                                     Cmd_SetDay4Player(Day + 1);
                                 }
@@ -200,7 +199,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
-                                        UpdateApperance(Role4Player.Guard, Role4Player.Human);
                                         SetupForNewAction(Action4Player.SeerTurn);
                                     }
                                     else
@@ -209,7 +207,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Guard)
                                             {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Guard);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.GuardTurn);
                                             }
@@ -240,7 +237,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
-                                        UpdateApperance(Role4Player.Seer, Role4Player.Human);
                                         SetupForNewAction(Action4Player.WolfTurn);
                                     }
                                     else
@@ -249,7 +245,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Seer)
                                             {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Seer);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.SeerTurn);
                                             }
@@ -280,7 +275,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
-                                        UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                                         SetupForNewAction(Action4Player.WitchTurn);
                                     }
                                     else
@@ -289,7 +283,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Wolf)
                                             {
-                                                UpdateApperance(Role4Player.Human,Role4Player.Wolf);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.WolfTurn);
                                             }
@@ -320,7 +313,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
-                                        UpdateApperance(Role4Player.Witch, Role4Player.Human);
                                         SetupForNewAction(Action4Player.Default);
                                         Cmd_SetDay4Player(Day + 1);
                                     }
@@ -330,7 +322,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             if (Role == Role4Player.Witch)
                                             {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Witch);
                                                 UIGameSleep.ShowSleepPanel(false);
                                                 Vote4Action(Action4Player.WitchTurn);
                                             }
@@ -362,233 +353,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         break;
                     default:
                         {
-                            if (CheckDay())
-                            {
-                                if (CheckAction4Players(Action4Player.Default))
-                                {
-                                    Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
-                                    if (CheckDone4Players(true))
-                                    {
-                                        if (CheckIsGuilty())
-                                        {
-                                            SetupForNewAction(Action4Player.Guilty);
-                                        }
-                                        else
-                                        {
-                                            SetupForNewAction(Action4Player.VoteKing);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (CheckDeath())
-                                        {
-                                            StartCoroutine(DoKilledPlayer());
-                                        }
-                                        Vote4Action(Action4Player.Default);
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.VoteKing))
-                                {
-                                    if (CheckKing())
-                                    {
-                                        SetupForNewAction(Action4Player.Guilty);
-                                    }
-                                    else
-                                    {
-                                        Vote4AKing();
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.Guilty))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        if (CheckDeath())
-                                        {
-                                            Cmd_SetGuilty4Player(true);
-                                            SetupForNewAction(Action4Player.Default);
-                                        }
-                                        else
-                                        {
-                                            Cmd_SetGuilty4Player(false);
-                                            SetupForNewAction(Action4Player.GuardTurn);
-                                            Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        if (CheckIsGuilty())
-                                        {
-                                            Cmd_SetDone4Player(true);
-                                        }
-                                        else
-                                        {
-                                            Vote4Action(Action4Player.Guilty);
-                                        }
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.GuardTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        UpdateApperance(Role4Player.Guard, Role4Player.Human);
-                                        SetupForNewAction(Action4Player.SeerTurn);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Guard))
-                                        {
-                                            if (Role == Role4Player.Guard)
-                                            {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Guard);
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.GuardTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.SeerTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        UpdateApperance(Role4Player.Seer, Role4Player.Human);
-                                        SetupForNewAction(Action4Player.WolfTurn);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Seer))
-                                        {
-                                            if (Role == Role4Player.Seer)
-                                            {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Seer);
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.SeerTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.WolfTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        UpdateApperance(Role4Player.Wolf, Role4Player.Human);
-                                        SetupForNewAction(Action4Player.WitchTurn);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Wolf))
-                                        {
-                                            if (Role == Role4Player.Wolf)
-                                            {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Wolf);
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.WolfTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.WitchTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        UpdateApperance(Role4Player.Witch, Role4Player.Human);
-                                        SetupForNewAction(Action4Player.Default);
-                                        Cmd_SetDay4Player(Day + 1);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Witch))
-                                        {
-                                            if (Role == Role4Player.Witch)
-                                            {
-                                                UpdateApperance(Role4Player.Human, Role4Player.Witch);
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.WitchTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
                         }
                         break;
                 }
@@ -770,7 +534,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                     if (!IsSkipVote)
                     {
-                        for (int num = 0; num <= 10; num++)
+                        for (int num = 0; num < 10; num++)
                         {
                             if (Input.GetKeyDown(num.ToString()))
                             {
@@ -820,9 +584,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             else if (_action == Action4Player.WolfTurn)
             {
                 Cmd_VoteTime(45);
-                if (this.Role == Role4Player.Wolf)
+                if (Role == Role4Player.Wolf)
                 {
-                    UpdateApperance(Role4Player.Human, Role4Player.Wolf);
+                    UpdateApperance(Role4Player.Wolf);
                 }
             }
             else if (_action == Action4Player.WitchTurn)
@@ -879,7 +643,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                         if (!IsSkipVote)
                         {
-                            for (int num = 0; num <= 10; num++)
+                            for (int num = 0; num < 10; num++)
                             {
                                 if (Input.GetKeyDown(num.ToString()))
                                 {
@@ -919,7 +683,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 else if (_action == Action4Player.WolfTurn)
                 {
-                    UpdateApperance(Role4Player.Wolf, Role4Player.Human);
                     Cmd_KillPlayer();
                 }
                 else if (_action == Action4Player.WitchTurn)
@@ -1297,32 +1060,45 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
 
     #region Update Player Prefab
-    void UpdateApperance(string _oldRole, string _newRole)
+    void UpdateApperance(string _role)
     {
-        var _rolePrefab = FindObjectOfType<NetworkManager>().spawnPrefabs.Where(t => t.name == this.Role).FirstOrDefault();
-        if (_rolePrefab != null)
-        {
-            //ClientScene.RegisterPrefab(_rolePrefab);
-            Cmd_UpdateApperance(_rolePrefab, this.transform.position, this.transform.rotation);
-        }
-        else
-        {
-            Debug.Log("Error");
-        }
+        Cmd_UpdateApperance(_role);
     }
 
     [Command]
-    void Cmd_UpdateApperance(GameObject _apperance, Vector3 _position, Quaternion _rotation)
+    void Cmd_UpdateApperance(string _role)
     {
         var oldPrefab = GetComponent<NetworkIdentity>().connectionToClient;
 
-        var _rolePrefab = FindObjectOfType<NetworkManager>().spawnPrefabs.Where(t => t.name == Role4Player.Wolf).FirstOrDefault();
-        GameObject newPrefab = (GameObject)Instantiate(_rolePrefab, _position, _rotation);
+        var _rolePrefab = FindObjectOfType<NetworkManager>().spawnPrefabs.Where(t => t.name == _role).FirstOrDefault();
+        GameObject newPrefab = (GameObject)Instantiate(_rolePrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+
+        newPrefab.GetComponent<PlayerNetworkBehavior>().index = this.index;
 
         newPrefab.GetComponent<PlayerNetworkBehavior>().Role = this.Role;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsKing = this.IsKing;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsReady = this.IsReady;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsStart = this.IsStart;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsSkipVote = this.IsSkipVote;
 
-        NetworkServer.Destroy(oldPrefab.identity.gameObject);
-        NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPrefab);
+        newPrefab.GetComponent<PlayerNetworkBehavior>().Day = this.Day;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().Action = this.Action;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsDone = this.IsDone;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsSavedByGuard = this.IsSavedByGuard;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsSavedByWitch = this.IsSavedByWitch;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsKilled = this.IsKilled;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsKilledByWitch = this.IsKilledByWitch;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().IsGuilty = this.IsGuilty;
+
+        Destroy(oldPrefab.identity.gameObject);
+        NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPrefab,true);
+        Rpc_UpdateApperance();
+    }
+
+    [ClientRpc]
+    void Rpc_UpdateApperance()
+    {
+        Debug.Log("Replace");
     }
     #endregion
 }
