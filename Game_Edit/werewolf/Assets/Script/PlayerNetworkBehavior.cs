@@ -37,6 +37,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameReady UIGameReady; // UI hiển thị button ready
     UIGameSleep UIGameSleep; // UI hiển thị panel sleep
     UIGameTurn UIGameTurn; // UI hiển thị tên của lượt chơi
+    UIGameWin UIGameWin; // UI hiển thị khi player giành chiến thắng
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -60,6 +61,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameReady = FindObjectOfType<UIGameReady>(); 
             UIGameSleep = FindObjectOfType<UIGameSleep>();
             UIGameTurn = FindObjectOfType<UIGameTurn>();
+            UIGameWin = FindObjectOfType<UIGameWin>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;

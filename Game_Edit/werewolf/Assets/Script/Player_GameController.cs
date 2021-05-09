@@ -58,6 +58,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameReady = FindObjectOfType<UIGameReady>();
             UIGameSleep = FindObjectOfType<UIGameSleep>();
             UIGameTurn = FindObjectOfType<UIGameTurn>();
+            UIGameWin = FindObjectOfType<UIGameWin>();
             // Gán thuộc tính isReady trong UIGameReady vào biến IsReady, IsStart mặc định là false
             if (IsReady == false)
             {
@@ -137,14 +138,26 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
                                     if (CheckDone4Players(true))
                                     {
-                                        if (CheckIsGuilty())
+                                        if(CheckWin() == 0) // Số người chơi lớn hơn 1
                                         {
-                                            SetupForNewAction(Action4Player.Guilty);
+                                            if (CheckIsGuilty())
+                                            {
+                                                SetupForNewAction(Action4Player.Guilty);
+                                            }
+                                            else
+                                            {
+                                                SetupForNewAction(Action4Player.VoteKing);
+                                            }
                                         }
-                                        else
+                                        else if(CheckWin() == 1) // Số người chơi = 1 và là sói
                                         {
-                                            SetupForNewAction(Action4Player.VoteKing);
+                                            Cmd_SetWin("Wolf Win");
                                         }
+                                        else if(CheckWin() == 2) // Số người chơi = 1 và là người
+                                        {
+                                            Cmd_SetWin("Human Win");
+                                        }
+                                        
                                     }
                                     else
                                     {
@@ -170,18 +183,29 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 {
                                     if (CheckDone4Players(true))
                                     {
-                                        if (CheckDeath())
+                                        if (CheckWin() == 0) // Số người chơi lớn hơn 1
                                         {
-                                            Cmd_SetGuilty4Player(true);
-                                            SetupForNewAction(Action4Player.Default);
+                                            if (CheckDeath())
+                                            {
+                                                Cmd_SetGuilty4Player(true);
+                                                SetupForNewAction(Action4Player.Default);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetGuilty4Player(false);
+                                                SetupForNewAction(Action4Player.GuardTurn);
+                                                Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                            }
                                         }
-                                        else
+                                        else if (CheckWin() == 1) // Số người chơi = 1 và là sói
                                         {
-                                            Cmd_SetGuilty4Player(false);
-                                            SetupForNewAction(Action4Player.GuardTurn);
-                                            Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                            Cmd_SetWin("Wolf Win");
                                         }
-                                        
+                                        else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                        {
+                                            Cmd_SetWin("Human Win");
+                                        }
+
                                     }
                                     else
                                     {
@@ -353,6 +377,248 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         break;
                     default:
                         {
+                            if (CheckDay())
+                            {
+                                if (CheckAction4Players(Action4Player.Default))
+                                {
+                                    Cmd_ChangeScene(Action4Player.Default, GameScene.SampleScene);
+                                    if (CheckDone4Players(true))
+                                    {
+                                        if (CheckWin() == 0) // Số người chơi lớn hơn 1
+                                        {
+                                            if (CheckIsGuilty())
+                                            {
+                                                SetupForNewAction(Action4Player.Guilty);
+                                            }
+                                            else
+                                            {
+                                                SetupForNewAction(Action4Player.VoteKing);
+                                            }
+                                        }
+                                        else if (CheckWin() == 1) // Số người chơi = 1 và là sói
+                                        {
+                                            Cmd_SetWin("Wolf Win");
+                                        }
+                                        else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                        {
+                                            Cmd_SetWin("Human Win");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (CheckDeath())
+                                        {
+                                            StartCoroutine(DoKilledPlayer());
+                                        }
+                                        Vote4Action(Action4Player.Default);
+                                    }
+                                }
+                                else if (CheckAction4Players(Action4Player.VoteKing))
+                                {
+                                    if (CheckKing())
+                                    {
+                                        SetupForNewAction(Action4Player.Guilty);
+                                    }
+                                    else
+                                    {
+                                        Vote4AKing();
+                                    }
+                                }
+                                else if (CheckAction4Players(Action4Player.Guilty))
+                                {
+                                    if (CheckDone4Players(true))
+                                    {
+                                        if (CheckWin() == 0) // Số người chơi lớn hơn 1
+                                        {
+                                            if (CheckDeath())
+                                            {
+                                                Cmd_SetGuilty4Player(true);
+                                                SetupForNewAction(Action4Player.Default);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetGuilty4Player(false);
+                                                SetupForNewAction(Action4Player.GuardTurn);
+                                                Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                            }
+                                        }
+                                        else if (CheckWin() == 1) // Số người chơi = 1 và là sói
+                                        {
+                                            Cmd_SetWin("Wolf Win");
+                                        }
+                                        else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                        {
+                                            Cmd_SetWin("Human Win");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (CheckIsGuilty())
+                                        {
+                                            Cmd_SetDone4Player(true);
+                                        }
+                                        else
+                                        {
+                                            Vote4Action(Action4Player.Guilty);
+                                        }
+                                    }
+                                }
+                                else if (CheckAction4Players(Action4Player.GuardTurn))
+                                {
+                                    if (CheckDone4Players(true))
+                                    {
+                                        SetupForNewAction(Action4Player.SeerTurn);
+                                    }
+                                    else
+                                    {
+                                        if (CheckRole(Role4Player.Guard))
+                                        {
+                                            if (Role == Role4Player.Guard)
+                                            {
+                                                UIGameSleep.ShowSleepPanel(false);
+                                                Vote4Action(Action4Player.GuardTurn);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetDone4Player(true);
+                                                UIGameSleep.ShowSleepPanel(true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            UIGameSleep.ShowSleepPanel(true);
+                                            if (UIGameVote.GetReady4ResetTime())
+                                            {
+                                                Cmd_VoteTime(5);
+                                            }
+                                            else
+                                            {
+                                                if (UIGameVote.getSecondsLeft() == 0)
+                                                {
+                                                    Cmd_SetDone4Player(true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (CheckAction4Players(Action4Player.SeerTurn))
+                                {
+                                    if (CheckDone4Players(true))
+                                    {
+                                        SetupForNewAction(Action4Player.WolfTurn);
+                                    }
+                                    else
+                                    {
+                                        if (CheckRole(Role4Player.Seer))
+                                        {
+                                            if (Role == Role4Player.Seer)
+                                            {
+                                                UIGameSleep.ShowSleepPanel(false);
+                                                Vote4Action(Action4Player.SeerTurn);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetDone4Player(true);
+                                                UIGameSleep.ShowSleepPanel(true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            UIGameSleep.ShowSleepPanel(true);
+                                            if (UIGameVote.GetReady4ResetTime())
+                                            {
+                                                Cmd_VoteTime(5);
+                                            }
+                                            else
+                                            {
+                                                if (UIGameVote.getSecondsLeft() == 0)
+                                                {
+                                                    Cmd_SetDone4Player(true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (CheckAction4Players(Action4Player.WolfTurn))
+                                {
+                                    if (CheckDone4Players(true))
+                                    {
+                                        SetupForNewAction(Action4Player.WitchTurn);
+                                    }
+                                    else
+                                    {
+                                        if (CheckRole(Role4Player.Wolf))
+                                        {
+                                            if (Role == Role4Player.Wolf)
+                                            {
+                                                UIGameSleep.ShowSleepPanel(false);
+                                                Vote4Action(Action4Player.WolfTurn);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetDone4Player(true);
+                                                UIGameSleep.ShowSleepPanel(true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            UIGameSleep.ShowSleepPanel(true);
+                                            if (UIGameVote.GetReady4ResetTime())
+                                            {
+                                                Cmd_VoteTime(5);
+                                            }
+                                            else
+                                            {
+                                                if (UIGameVote.getSecondsLeft() == 0)
+                                                {
+                                                    Cmd_SetDone4Player(true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (CheckAction4Players(Action4Player.WitchTurn))
+                                {
+                                    if (CheckDone4Players(true))
+                                    {
+                                        SetupForNewAction(Action4Player.Default);
+                                        Cmd_SetDay4Player(Day + 1);
+                                    }
+                                    else
+                                    {
+                                        if (CheckRole(Role4Player.Witch))
+                                        {
+                                            if (Role == Role4Player.Witch)
+                                            {
+                                                UIGameSleep.ShowSleepPanel(false);
+                                                Vote4Action(Action4Player.WitchTurn);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetDone4Player(true);
+                                                UIGameSleep.ShowSleepPanel(true);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            UIGameSleep.ShowSleepPanel(true);
+                                            if (UIGameVote.GetReady4ResetTime())
+                                            {
+                                                Cmd_VoteTime(5);
+                                            }
+                                            else
+                                            {
+                                                if (UIGameVote.getSecondsLeft() == 0)
+                                                {
+                                                    Cmd_SetDone4Player(true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                         break;
                 }
@@ -510,6 +776,24 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             return true;
         }
         return false;
+    }
+
+    private int CheckWin() // Kiểm tra còn lại 1 player và là sói hay người
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
+        if (players.Length == 1)
+        {
+            var _player = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Role == Role4Player.Wolf).ToArray();
+            if (_player.Length == 1)
+            {
+                return 1; // Sói thắng
+            }
+            else
+            {
+                return 2; // Các hệ còn lại khác sói thắng
+            }
+        }
+        return 0;
     }
     #endregion
 
@@ -930,6 +1214,23 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 player.GetComponent<PlayerNetworkBehavior>().IsSkipVote = _skipVote;
             }
         }
+    }
+    #endregion
+
+    #region SetWin
+    [Command]
+    public void Cmd_SetWin(string _playerWin)
+    {
+        UIGameWin = FindObjectOfType<UIGameWin>();
+        UIGameWin.ShowWinText(_playerWin);
+        Rpc_SetWin(_playerWin);
+    }
+
+    [ClientRpc]
+    void Rpc_SetWin(string _playerWin)
+    {
+        UIGameWin = FindObjectOfType<UIGameWin>();
+        UIGameWin.ShowWinText(_playerWin);
     }
     #endregion
 
