@@ -43,6 +43,7 @@ public static class Role4Player
     public static string Guard = "Guard";
     public static string Seer = "Seer";
     public static string Human = "Human";
+    public static string Player = "Player";
 }
 
 public static class Action4Player

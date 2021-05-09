@@ -576,10 +576,18 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             else if (_action == Action4Player.GuardTurn)
             {
                 Cmd_VoteTime(20);
+                if (Role == Role4Player.Guard)
+                {
+                    UpdateApperance(Role4Player.Guard);
+                }
             }
             else if (_action == Action4Player.SeerTurn)
             {
-                Cmd_VoteTime(20); 
+                Cmd_VoteTime(20);
+                if (Role == Role4Player.Seer)
+                {
+                    UpdateApperance(Role4Player.Seer);
+                }
             }
             else if (_action == Action4Player.WolfTurn)
             {
@@ -592,10 +600,18 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             else if (_action == Action4Player.WitchTurn)
             {
                 Cmd_VoteTime(20);
+                if (Role == Role4Player.Witch)
+                {
+                    UpdateApperance(Role4Player.Witch);
+                }
             }
             else if (_action == Action4Player.HunterTurn)
             {
                 Cmd_VoteTime(30);
+                if (Role == Role4Player.Hunter)
+                {
+                    UpdateApperance(Role4Player.Hunter);
+                }
             }
             else
             {
@@ -669,28 +685,49 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
                 Cmd_SetSkipVote(false); // Thiết lập lại trạng thái chưa skip vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết 
+                //UpdateApperance(Role4Player.Human);
                 if (_action == Action4Player.Guilty)
                 {
                     Cmd_KillPlayer();
                 }
                 else if (_action == Action4Player.GuardTurn)
                 {
+                    if (Role == Role4Player.Guard)
+                    {
+                        UpdateApperance(Role4Player.Human);
+                    }
                     Cmd_SaveByGuard(VotedTarget.GetComponent<NetworkIdentity>());
                 }
                 else if (_action == Action4Player.SeerTurn)
                 {
+                    if (Role == Role4Player.Seer)
+                    {
+                        UpdateApperance(Role4Player.Human);
+                    }
                     ShowRole(VotedTarget);
                 }
                 else if (_action == Action4Player.WolfTurn)
                 {
+                    if (Role == Role4Player.Wolf)
+                    {
+                        UpdateApperance(Role4Player.Human);
+                    }
                     Cmd_KillPlayer();
                 }
                 else if (_action == Action4Player.WitchTurn)
                 {
+                    if (Role == Role4Player.Witch)
+                    {
+                        UpdateApperance(Role4Player.Human);
+                    }
                     Cmd_KillPlayer();
                 }
                 else if (_action == Action4Player.HunterTurn)
                 {
+                    if (Role == Role4Player.Hunter)
+                    {
+                        UpdateApperance(Role4Player.Human);
+                    }
                     Cmd_KillPlayer();
                 }
             }
