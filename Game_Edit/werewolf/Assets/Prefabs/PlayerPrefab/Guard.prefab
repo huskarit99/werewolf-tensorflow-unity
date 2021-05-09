@@ -269,6 +269,7 @@ GameObject:
   - component: {fileID: 5327635207371263565}
   - component: {fileID: 1393614842865672888}
   - component: {fileID: 4707423543006106644}
+  - component: {fileID: -2789929892060548527}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Player
@@ -347,7 +348,7 @@ MonoBehaviour:
   syncInterval: 0.1
   Radius: 125
   Distance: 650
-  AnimPlayer: {fileID: 0}
+  AnimPlayer: {fileID: -2789929892060548527}
   CameraPlayer: {fileID: 5395090757661417448}
   NameTag: {fileID: 7006427972998361863}
   VoteText: {fileID: 7299647356666160643}
@@ -357,11 +358,12 @@ MonoBehaviour:
   IsKing: 0
   IsReady: 0
   IsStart: 0
-  Prefabs: []
+  IsSkipVote: 0
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 7006427974287103531}
   playerIndexText: {fileID: 7006427973823639076}
+  index: 0
   playerVotesText: {fileID: 1929349184502530942}
   MyNetworkManager: {fileID: 0}
   Day: 1
@@ -371,6 +373,7 @@ MonoBehaviour:
   IsSavedByWitch: 0
   IsKilledByWitch: 0
   IsKilled: 0
+  IsGuilty: 0
 --- !u!114 &5327635207371263565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +416,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &-2789929892060548527
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5395090757721345457}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7006427972998361863
 GameObject:
   m_ObjectHideFlags: 0
