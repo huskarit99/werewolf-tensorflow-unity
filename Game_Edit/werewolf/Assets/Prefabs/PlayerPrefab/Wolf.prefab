@@ -216,10 +216,6 @@ MonoBehaviour:
   IsReady: 0
   IsStart: 0
   IsSkipVote: 0
-  Animators:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 9116334106119105080}
@@ -274,13 +270,19 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6153987449745224098}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: e9de9a358ba5fab468c07d5dc4e4dd20, type: 3}
   m_Controller: {fileID: 9100000, guid: 2e7bae8d92e39b544840d6f8a2fc81f3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Bip001 R Finger21'\n\tTransform 'Bip001 R Finger02'\n\tTransform
+    'Bip001 R Clavicle'\n\tTransform 'Bip001 L Finger21'\n\tTransform 'Bip001 L Finger02'\n\tTransform
+    'Bip001 L Finger1'\n\tTransform 'Bip001 R Finger22'\n\tTransform 'Bip001 L Finger22'\n\tTransform
+    'Bip001 L Forearm'\n\tTransform 'Bip001 L Clavicle'\n\tand more ...\n\tFrom animation
+    clip 'Default'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0

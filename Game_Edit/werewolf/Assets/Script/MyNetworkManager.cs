@@ -17,11 +17,11 @@ public class MyNetworkManager : NetworkManager
         DontDestroyOnLoad(this);
         //--- Set role cho người chơi
         roles = new List<string>(){
-                                  Role4Player.Seer,
-                                  Role4Player.Guard,
+                                  //Role4Player.Seer,
+                                  //Role4Player.Guard,
                                   Role4Player.Wolf,
-                                  Role4Player.Witch,
-                                  Role4Player.Hunter
+                                  //Role4Player.Witch,
+                                  //Role4Player.Hunter
                                    };
         Debug.Log("Start Server");
     }

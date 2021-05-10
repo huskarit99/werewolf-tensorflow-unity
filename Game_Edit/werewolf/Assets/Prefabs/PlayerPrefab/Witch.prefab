@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7433968273957431807}
   - component: {fileID: 5739826989914072186}
   - component: {fileID: 1522045777915267215}
-  - component: {fileID: 7220614368534903427}
+  - component: {fileID: 1787847636}
   m_Layer: 0
   m_Name: Witch
   m_TagString: Player
@@ -90,7 +90,7 @@ MonoBehaviour:
   syncInterval: 0.1
   Radius: 125
   Distance: 650
-  AnimPlayer: {fileID: 0}
+  AnimPlayer: {fileID: 1787847636}
   CameraPlayer: {fileID: 5518967517229053407}
   NameTag: {fileID: 7454491870476949808}
   VoteText: {fileID: 7135381152797887540}
@@ -146,7 +146,7 @@ CapsuleCollider:
   m_Height: 39.198906
   m_Direction: 1
   m_Center: {x: 0, y: 19.599453, z: 0.9107971}
---- !u!95 &7220614368534903427
+--- !u!95 &1787847636
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ Animator:
   m_GameObject: {fileID: 5518967517017859974}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a54f69b01914f2547bc5440d6d3932f4, type: 2}
+  m_Controller: {fileID: 9100000, guid: 790ab6ecae5d3e64b9f4797dc8774ff3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -746,17 +746,17 @@ PrefabInstance:
     - target: {fileID: 1254904514761681469, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1254904514761681469, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1254904514761681469, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1254904514761681469, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
@@ -766,17 +766,17 @@ PrefabInstance:
     - target: {fileID: 4470690700878007893, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4470690700878007893, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4470690700878007893, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4470690700878007893, guid: c63b754f9ecaf62469930eb7ac53dde8,
         type: 3}
