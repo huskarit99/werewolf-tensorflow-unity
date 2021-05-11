@@ -2108,7 +2108,7 @@ GameObject:
   - component: {fileID: 839941588030283625}
   - component: {fileID: 8828093748555558245}
   m_Layer: 0
-  m_Name: Human 1
+  m_Name: Human
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2247,7 +2247,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5917792900302663776}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 6686e23874e46a64aac6dbdaed9fa0cf, type: 3}
   m_Controller: {fileID: 9100000, guid: a54f69b01914f2547bc5440d6d3932f4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0

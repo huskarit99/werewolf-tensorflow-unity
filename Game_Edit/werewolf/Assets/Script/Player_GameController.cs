@@ -52,7 +52,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             this.NameTag.SetActive(false);
-            //AnimPlayer = GetComponent<Animator>();
+            AnimPlayer = GetComponent<Animator>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             UIGameVote = FindObjectOfType<UIGameVote>();
             UIGameReady = FindObjectOfType<UIGameReady>();

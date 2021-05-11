@@ -871,10 +871,6 @@ MonoBehaviour:
   IsReady: 0
   IsStart: 0
   IsSkipVote: 0
-  Animators:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 647742165400909298}
@@ -929,7 +925,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2529296182027759208}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 6686e23874e46a64aac6dbdaed9fa0cf, type: 3}
   m_Controller: {fileID: 9100000, guid: a54f69b01914f2547bc5440d6d3932f4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
