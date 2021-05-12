@@ -127,6 +127,21 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                 }
                             }
+                            else
+                            {
+                                if (IsDone)
+                                {
+                                    if (this.Action == Action4Player.Default)
+                                    {
+                                        SetupForNewAction(Action4Player.WolfTurn);
+                                    }
+                                    else if (this.Action == Action4Player.WolfTurn)
+                                    {
+                                        SetupForNewAction(Action4Player.Default);
+                                        Cmd_SetDay4Player(Day + 1);
+                                    }
+                                }
+                            }
                         }
                         break;
                     case 2 :
@@ -370,6 +385,68 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                                else
+                                {
+                                    if (IsDone)
+                                    {
+                                        if (this.Action == Action4Player.Default)
+                                        {
+                                            if (CheckWin() == 0) // Số người chơi lớn hơn 1
+                                            {
+                                                if (CheckIsGuilty())
+                                                {
+                                                    SetupForNewAction(Action4Player.Guilty);
+                                                }
+                                                else
+                                                {
+                                                    SetupForNewAction(Action4Player.VoteKing);
+                                                }
+                                            }
+                                            else if (CheckWin() == 1) // Số người chơi = 1 và là sói
+                                            {
+                                                Cmd_SetWin("Wolf Win");
+                                            }
+                                            else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                            {
+                                                Cmd_SetWin("Human Win");
+                                            }
+                                        }
+                                        else if (this.Action == Action4Player.Guilty)
+                                        {
+                                            if (CheckWin() == 0) // Số người chơi lớn hơn 1
+                                            {
+                                                if (CheckDeath())
+                                                {
+                                                    Cmd_SetGuilty4Player(true);
+                                                    SetupForNewAction(Action4Player.Default);
+                                                }
+                                                else
+                                                {
+                                                    Cmd_SetGuilty4Player(false);
+                                                    SetupForNewAction(Action4Player.GuardTurn);
+                                                    Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                                }
+                                            }
+                                            else if (CheckWin() == 1) // Số người chơi = 1 và là sói
+                                            {
+                                                Cmd_SetWin("Wolf Win");
+                                            }
+                                            else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                            {
+                                                Cmd_SetWin("Human Win");
+                                            }
+                                        }
+                                        else if (this.Action == Action4Player.GuardTurn)
+                                        {
+                                            SetupForNewAction(Action4Player.SeerTurn);
+                                        }
+                                        else if (this.Action == Action4Player.WolfTurn)
+                                        {
+                                            SetupForNewAction(Action4Player.WitchTurn);
+                                        }
+                                        else if (this.Action == Action4Player.Default) ;
                                     }
                                 }
                             }
@@ -616,6 +693,68 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                                else
+                                {
+                                    if (IsDone)
+                                    {
+                                        if (this.Action == Action4Player.Default)
+                                        {
+                                            if (CheckWin() == 0) // Số người chơi lớn hơn 1
+                                            {
+                                                if (CheckIsGuilty())
+                                                {
+                                                    SetupForNewAction(Action4Player.Guilty);
+                                                }
+                                                else
+                                                {
+                                                    SetupForNewAction(Action4Player.VoteKing);
+                                                }
+                                            }
+                                            else if (CheckWin() == 1) // Số người chơi = 1 và là sói
+                                            {
+                                                Cmd_SetWin("Wolf Win");
+                                            }
+                                            else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                            {
+                                                Cmd_SetWin("Human Win");
+                                            }
+                                        }
+                                        else if (this.Action == Action4Player.Guilty)
+                                        {
+                                            if (CheckWin() == 0) // Số người chơi lớn hơn 1
+                                            {
+                                                if (CheckDeath())
+                                                {
+                                                    Cmd_SetGuilty4Player(true);
+                                                    SetupForNewAction(Action4Player.Default);
+                                                }
+                                                else
+                                                {
+                                                    Cmd_SetGuilty4Player(false);
+                                                    SetupForNewAction(Action4Player.GuardTurn);
+                                                    Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                                }
+                                            }
+                                            else if (CheckWin() == 1) // Số người chơi = 1 và là sói
+                                            {
+                                                Cmd_SetWin("Wolf Win");
+                                            }
+                                            else if (CheckWin() == 2) // Số người chơi = 1 và là người
+                                            {
+                                                Cmd_SetWin("Human Win");
+                                            }
+                                        }
+                                        else if (this.Action == Action4Player.GuardTurn)
+                                        {
+                                            SetupForNewAction(Action4Player.SeerTurn);
+                                        }
+                                        else if (this.Action == Action4Player.WolfTurn)
+                                        {
+                                            SetupForNewAction(Action4Player.WitchTurn);
+                                        }
+                                        else if (this.Action == Action4Player.Default) ;
                                     }
                                 }
                             }
@@ -922,6 +1061,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 else if (_action == Action4Player.WitchTurn)
                 {
                     _role = Role4Player.Witch;
+                    ShowRole(VotedTarget);
                 }
                 else if (_action == Action4Player.HunterTurn)
                 {
@@ -988,7 +1128,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         UpdateApperance(Role4Player.Human);
                     }
-                    ShowRole(VotedTarget);
                 }
                 else if (_action == Action4Player.WolfTurn)
                 {
@@ -1363,6 +1502,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
     string ShowRole(GameObject _target)
     {
+        var _role = GameObject.FindGameObjectWithTag(Tags_4_Object.Role);
+        _role.GetComponent<TextMesh>().text = _target.GetComponent<PlayerNetworkBehavior>().Role;
         return _target.GetComponent<PlayerNetworkBehavior>().Role;
     }
     [Command]

@@ -13,9 +13,7 @@ TagManager:
   - Camera
   - CentralPoint
   - NameTag
-  - Head
-  - UpperArm_Left
-  - UpperArm_Right
+  - Role
   layers:
   - Default
   - TransparentFX

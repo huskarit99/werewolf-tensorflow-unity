@@ -15,6 +15,7 @@ public static class Tags_4_Object
     public static string Camera = "Camera";
     public static string CentralPoint = "CentralPoint";
     public static string NameTag = "NameTag";
+    public static string Role = "Role";
 }
 
 public static class Param_4_Anim
