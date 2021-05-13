@@ -48,6 +48,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 player.SetActive(false);
             }
+            if (player.GetComponent<PlayerNetworkBehavior>().IsKing)
+            {
+                player.GetComponent<PlayerNetworkBehavior>().playerNameText.color = Color.yellow;
+            }
         }
         if (isLocalPlayer)
         {
@@ -446,7 +450,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             SetupForNewAction(Action4Player.WitchTurn);
                                         }
-                                        else if (this.Action == Action4Player.Default) ;
+                                        else if (this.Action == Action4Player.WitchTurn)
+                                        {
+                                            SetupForNewAction(Action4Player.Default);
+                                        }
                                     }
                                 }
                             }
@@ -754,7 +761,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         {
                                             SetupForNewAction(Action4Player.WitchTurn);
                                         }
-                                        else if (this.Action == Action4Player.Default) ;
+                                        else if (this.Action == Action4Player.WitchTurn)
+                                        {
+                                            SetupForNewAction(Action4Player.Default);
+                                        }
                                     }
                                 }
                             }
@@ -898,7 +908,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     private bool CheckOutOfTime()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
-        var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().UIGameVote.getSecondsLeft() == 0).ToArray();
+        var _check = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().GetTimeVote() == 0).ToArray();
         if (_check != null && players.Length == _check.Length)
         {
             return true;
@@ -1385,19 +1395,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     void Cmd_SetAction4Player(string _action)
     {
-        this.GetComponent<PlayerNetworkBehavior>().Action = _action;
+        this.Action = _action;
     }
 
     [Command]
     void Cmd_SetGuilty4Player(bool _isGuilty)
     {
-        this.GetComponent<PlayerNetworkBehavior>().IsGuilty = _isGuilty;
+        this.IsGuilty = _isGuilty;
     }
 
     [Command]
     void Cmd_SetDone4Player(bool _isDone)
     {
-        this.GetComponent<PlayerNetworkBehavior>().IsDone = _isDone;
+        this.IsDone = _isDone;
     }
 
 

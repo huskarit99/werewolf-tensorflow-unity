@@ -33,6 +33,15 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
     UIGameVote UIGameVote; // UI hiển thị thời gian để vote
+    public int GetTimeVote()
+    {
+        if (UIGameVote == null)
+        {
+            return 0;
+        }
+        return UIGameVote.getSecondsLeft();
+    }
+
     UIGameVoted UIGameVoted; // UI hiển thị số lượng bị vote
     UIGameReady UIGameReady; // UI hiển thị button ready
     UIGameSleep UIGameSleep; // UI hiển thị panel sleep
