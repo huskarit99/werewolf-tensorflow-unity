@@ -231,7 +231,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6483036295230510444}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 2d84410605dc2ab4d8752f6686fd31e4, type: 3}
+  m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: a151e10eed23ce34fac5a807d62c1e7a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -836,6 +836,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Seer
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 2d84410605dc2ab4d8752f6686fd31e4,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a151e10eed23ce34fac5a807d62c1e7a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d84410605dc2ab4d8752f6686fd31e4, type: 3}
 --- !u!4 &5801708183145254503 stripped

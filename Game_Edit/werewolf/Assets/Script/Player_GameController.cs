@@ -56,7 +56,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             this.NameTag.SetActive(false);
-            AnimPlayer = GetComponent<Animator>();
+            //AnimPlayer = GetComponent<Animator>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
             UIGameVote = FindObjectOfType<UIGameVote>();
             UIGameReady = FindObjectOfType<UIGameReady>();
@@ -1002,6 +1002,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 Action
     void Vote4Action(string _action)
     {
+        Debug.Log(UIGameVote);
         if (UIGameVote.GetReady4ResetTime())
         {
             if (_action == Action4Player.Guilty)

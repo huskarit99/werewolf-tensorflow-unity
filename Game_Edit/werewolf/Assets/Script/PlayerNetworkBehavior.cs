@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
@@ -260,6 +261,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_UpdateVotes(NetworkIdentity _target,bool _isAddVote)
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var currentScene = SceneManager.GetActiveScene();
         if (players.Length > 0)
         {
             var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
@@ -267,7 +269,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 if (_isAddVote)
                 {
-                    if (IsKing == true)
+                    if (IsKing == true && currentScene.name == GameScene.SampleScene)
                     {
                         _player.GetComponent<PlayerNetworkBehavior>().votes += 1.5;
                     }
@@ -278,7 +280,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 else
                 {
-                    if (IsKing == true)
+                    if (IsKing == true && currentScene.name == GameScene.SampleScene)
                     {
                         _player.GetComponent<PlayerNetworkBehavior>().votes -= 1.5;
                     }
