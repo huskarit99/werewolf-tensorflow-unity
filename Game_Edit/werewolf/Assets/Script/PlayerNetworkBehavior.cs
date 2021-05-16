@@ -62,7 +62,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (isLocalPlayer)
         {
             IsDefault = true;
-            Cmd_SetupPlayer("Minh Huy");
+            //Cmd_SetupPlayer("Minh Huy");
 
             DieAfterTime = FindObjectOfType<DieAfterTime>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();

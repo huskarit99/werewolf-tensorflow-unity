@@ -67,11 +67,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             if (IsReady == false)
             {
                 IsReady = UIGameReady.GetIsReady();
+                playerName = UIGameReady.GetPlayerName();
             }
-            // Thiết lập trạng thái sẵn sàng của player và đồng bộ lên server
+            // Thiết lập trạng thái sẵn sàng và tên của player và đồng bộ lên server
             if (IsReady && !IsStart)
             {
                 Cmd_Ready(gameObject.GetComponent<NetworkIdentity>(), IsReady);
+                Cmd_SetupPlayer(playerName);
             }           
             if(IsReady && IsStart)
             {
@@ -975,7 +977,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             }
                             if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
                             {
-                                Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                                Cmd_SkipVote(true); // Thay đổi biến IsSkipVote đồng bộ lên server
                             }
                         }
                         
@@ -1101,7 +1103,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
                                 {
-                                    Cmd_SkipVote(gameObject.GetComponent<NetworkIdentity>(), true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                                    Cmd_SkipVote(true); // Thay đổi biến IsSkipVote đồng bộ lên server
                                 }
                             }
                             
@@ -1330,14 +1332,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     #region SetSkipVote
     [Command]
-    public void Cmd_SkipVote(NetworkIdentity _target, bool _isSkipVote) // Thay đổi biến IsSkipVote của 1 player theo netId
+    public void Cmd_SkipVote(bool _isSkipVote) // Thay đổi biến IsSkipVote của 1 player theo netId
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        if (players.Length > 0)
-        {
-            var _player = players.Where(t => t.GetComponent<NetworkIdentity>().netId == _target.netId).FirstOrDefault();
-            _player.GetComponent<PlayerNetworkBehavior>().IsSkipVote = _isSkipVote;
-        }
+         this.IsSkipVote = _isSkipVote;
+        
     }
     [Command]
     public void Cmd_SetSkipVote(bool _skipVote) // Thay đổi biến IsSkipVote của tất cả player
@@ -1563,6 +1561,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         GameObject newPrefab = (GameObject)Instantiate(_rolePrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
 
         newPrefab.GetComponent<PlayerNetworkBehavior>().index = this.index;
+        newPrefab.GetComponent<PlayerNetworkBehavior>().playerName = this.playerName;
 
         newPrefab.GetComponent<PlayerNetworkBehavior>().Role = this.Role;
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsKing = this.IsKing;

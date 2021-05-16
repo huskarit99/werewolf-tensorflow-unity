@@ -13,6 +13,8 @@ ScriptsOnlyBuild:
     Mirror.Components.dll:
     - Mirror.NetworkAnimator
     - Mirror.NetworkTransform
+    Mirror.Editor.dll:
+    - Mirror.NetworkBehaviourInspector
     Mirror.dll:
     - Mirror.NetworkIdentity
     - Mirror.NetworkManagerHUD
@@ -38,6 +40,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
     - UnityEngine.UI.Text
   sceneClasses:
     Assets/Scenes/NightScene.unity:
@@ -190,6 +193,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12722}
     - Class: 114
       Script: {instanceID: 12764}
+    - Class: 114
+      Script: {instanceID: 12870}
     - Class: 114
       Script: {instanceID: 13266}
     - Class: 114
@@ -1251,7 +1256,7 @@ ScriptsOnlyBuild:
     className: PlayerScore
   - hash:
       serializedVersion: 2
-      Hash: eb97fb493066f5fd4d30fb2868a8094c
+      Hash: ac5ba85a76db750d10c094d211c941c8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UIGameReady
@@ -1271,4 +1276,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/NightScene.unity
-  playerPath: E:/TestGame/Share_Folder/werewolf.exe
+  playerPath: C:/Users/Admin/Downloads/Build/werewolf.exe
