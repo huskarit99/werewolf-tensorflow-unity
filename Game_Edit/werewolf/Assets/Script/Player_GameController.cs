@@ -960,13 +960,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             if (UIGameVote.getSecondsLeft() > 0)
             {
+                UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                 if (CheckVote4Player(Role4Player.Human) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                 {
                     Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                 }
                 else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
                 {
-                    UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                     if (!IsSkipVote)
                     {
                         for (int num = 0; num < 10; num++)
@@ -1002,7 +1002,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 Action
     void Vote4Action(string _action)
     {
-        Debug.Log(UIGameVote);
         if (UIGameVote.GetReady4ResetTime())
         {
             if (_action == Action4Player.Guilty)
@@ -1087,13 +1086,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
                 if (_action != Action4Player.Default)
                 {
+                    UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                     if (CheckVote4Player(_role) && !UIGameVote.GetAllVote()) // Kiểm tra tất cả player đã vote hết chưa
                     {
                         Cmd_AllVoteTime(); // thời gian chờ khi player đã vote hết
                     }
                     else if (!UIGameVote.GetAllVote()) // Khi chưa vote có thể sử dụng các hành động ở dưới
                     {
-                        UIGameVoted.SetVotedText(votes); // Gán số lần bị vote 
                         if (!IsSkipVote)
                         {
                             for (int num = 0; num < 10; num++)
@@ -1498,6 +1497,21 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     [Command]
     void Cmd_KillPlayer()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
+        if (players.Length > 1)
+        {
+            if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
+            {
+                players[0].GetComponent<PlayerNetworkBehavior>().IsKilled = true;
+            }
+        }
+        Rpc_KillPlayer();
+    }
+
+    [ClientRpc]
+    void Rpc_KillPlayer()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();

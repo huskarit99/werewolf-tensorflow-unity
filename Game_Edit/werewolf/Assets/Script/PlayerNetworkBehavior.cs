@@ -286,14 +286,14 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     }
                     else
                     {
-                        _player.GetComponent<PlayerNetworkBehavior>().votes -= 1;
+                        _player.GetComponent<PlayerNetworkBehavior>().votes -= 1; 
                     }
                     if (_player.GetComponent<PlayerNetworkBehavior>().votes < 0)
                     {
-                        _player.GetComponent<PlayerNetworkBehavior>().votes = 0;
+                        _player.GetComponent<PlayerNetworkBehavior>().votes = 0; 
                     }
                 }
-                if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0)
+                if (_player.GetComponent<PlayerNetworkBehavior>().votes == 0) 
                 {
                     _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
                 }
@@ -303,6 +303,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
                 _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
+                Debug.Log(_votes);
                 Rpc_UpdateVotes(_target,_isAddVote,_votes);
             }
         }
@@ -338,6 +339,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     _player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(true);
                 }
             }
+            
         }
     }
     #endregion
