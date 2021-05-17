@@ -4,7 +4,9 @@ ScriptsOnlyBuild:
     - CameraController
     - MyNetworkManager
     - PlayerNetworkBehavior
+    - UIGameDay
     - UIGameReady
+    - UIGameRole
     - UIGameSleep
     - UIGameTurn
     - UIGameVote
@@ -87,17 +89,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12378}
     - Class: 114
-      Script: {instanceID: 12764}
+      Script: {instanceID: 12616}
     - Class: 114
-      Script: {instanceID: 13266}
+      Script: {instanceID: 12766}
     - Class: 114
-      Script: {instanceID: 13338}
+      Script: {instanceID: 13268}
     - Class: 114
-      Script: {instanceID: 13708}
+      Script: {instanceID: 13340}
     - Class: 114
-      Script: {instanceID: 13820}
+      Script: {instanceID: 13430}
     - Class: 114
-      Script: {instanceID: 13910}
+      Script: {instanceID: 13712}
+    - Class: 114
+      Script: {instanceID: 13824}
+    - Class: 114
+      Script: {instanceID: 13914}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -186,29 +192,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12378}
     - Class: 114
-      Script: {instanceID: 12672}
+      Script: {instanceID: 12616}
     - Class: 114
-      Script: {instanceID: 12722}
+      Script: {instanceID: 12674}
     - Class: 114
-      Script: {instanceID: 12764}
+      Script: {instanceID: 12724}
     - Class: 114
-      Script: {instanceID: 12870}
+      Script: {instanceID: 12766}
     - Class: 114
-      Script: {instanceID: 13266}
+      Script: {instanceID: 12872}
     - Class: 114
-      Script: {instanceID: 13338}
+      Script: {instanceID: 13268}
     - Class: 114
-      Script: {instanceID: 13440}
+      Script: {instanceID: 13340}
     - Class: 114
-      Script: {instanceID: 13548}
+      Script: {instanceID: 13430}
     - Class: 114
-      Script: {instanceID: 13708}
+      Script: {instanceID: 13444}
     - Class: 114
-      Script: {instanceID: 13820}
+      Script: {instanceID: 13552}
     - Class: 114
-      Script: {instanceID: 13910}
+      Script: {instanceID: 13712}
     - Class: 114
-      Script: {instanceID: 13934}
+      Script: {instanceID: 13824}
+    - Class: 114
+      Script: {instanceID: 13914}
+    - Class: 114
+      Script: {instanceID: 13938}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -768,6 +778,12 @@ ScriptsOnlyBuild:
     className: TextContainer
   - hash:
       serializedVersion: 2
+      Hash: c1752da828ab35996c9d4cee2b6465c4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UIGameRole
+  - hash:
+      serializedVersion: 2
       Hash: ff4753395d726a7aadce9c48dcaf99d6
     assemblyName: Mirror.Examples.dll
     namespaceName: Mirror.Examples.NetworkRoom
@@ -1048,6 +1064,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror.Discovery
     className: NetworkDiscoveryHUD
+  - hash:
+      serializedVersion: 2
+      Hash: c63f7f9fa142de9c721039a43d802739
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UIGameDay
   - hash:
       serializedVersion: 2
       Hash: d03ad7dec9f66c244324f3c096a5e61b

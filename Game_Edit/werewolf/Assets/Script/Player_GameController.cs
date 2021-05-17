@@ -63,6 +63,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameSleep = FindObjectOfType<UIGameSleep>();
             UIGameTurn = FindObjectOfType<UIGameTurn>();
             UIGameWin = FindObjectOfType<UIGameWin>();
+            UIGameRole = FindObjectOfType<UIGameRole>();
+            UIGameDay = FindObjectOfType<UIGameDay>();
             // Gán thuộc tính isReady trong UIGameReady vào biến IsReady, IsStart mặc định là false
             if (IsReady == false)
             {
@@ -72,7 +74,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             // Thiết lập trạng thái sẵn sàng và tên của player và đồng bộ lên server
             if (IsReady && !IsStart)
             {
-                Cmd_Ready(gameObject.GetComponent<NetworkIdentity>(), IsReady);
+                Cmd_Ready(gameObject.GetComponent<NetworkIdentity>(), IsReady); 
                 Cmd_SetupPlayer(playerName);
             }           
             if(IsReady && IsStart)
@@ -81,6 +83,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     UIGameReady.ShowReadyPanel(false); // Ẩn panel khi IsReady và IsStart bằng true
                 }
+
+                UIGameRole.SetRoleText(this.Role); // Hiển thị role của player 
+                UIGameDay.SetDayText(this.Day); // Hiển thị ngày 
                 switch (Day) 
                 {
                     case 1:
