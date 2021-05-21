@@ -970,18 +970,26 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     if (!IsSkipVote)
                     {
-                        for (int num = 0; num < 10; num++)
+                        for (int num = 1; num <= 5; num++)
                         {
-                            if (Input.GetKeyDown(num.ToString()))
+                            if (Input.GetKeyDown(num.ToString())) // Vote player
                             {
-                                VotedTarget = Vote(num);
+                                Cmd_SetIndexOfPlayerVoted(num.ToString());
                             }
-                            if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
+                            if (Input.GetKeyDown(KeyCode.A)) // UnVote player
                             {
-                                Cmd_SkipVote(true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                                Cmd_SetIndexOfPlayerVoted("Dislike");
+                            }
+                            if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
+                            {
+                                Cmd_SetIndexOfPlayerVoted("Like");
                             }
                         }
-                        
+                        if (this.IndexOfPlayerVoted != string.Empty)
+                        {
+                            VotedTarget = Vote(this.IndexOfPlayerVoted);
+                            Cmd_SetIndexOfPlayerVoted(string.Empty);
+                        }
                     }
                     
                 }
@@ -1096,18 +1104,26 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         if (!IsSkipVote)
                         {
-                            for (int num = 0; num < 10; num++)
+                            for (int num = 1; num <= 5; num++)
                             {
-                                if (Input.GetKeyDown(num.ToString()))
+                                if (Input.GetKeyDown(num.ToString())) // Vote player
                                 {
-                                    VotedTarget = Vote(num);
+                                    Cmd_SetIndexOfPlayerVoted(num.ToString());
                                 }
-                                if (Input.GetKeyDown(KeyCode.W) && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf))
+                                if (Input.GetKeyDown(KeyCode.A)) // UnVote player
                                 {
-                                    Cmd_SkipVote(true); // Thay đổi biến IsSkipVote đồng bộ lên server
+                                    Cmd_SetIndexOfPlayerVoted("Dislike");
+                                }
+                                if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
+                                {
+                                    Cmd_SetIndexOfPlayerVoted("Like");
                                 }
                             }
-                            
+                            if (this.IndexOfPlayerVoted != string.Empty)
+                            {
+                                VotedTarget = Vote(this.IndexOfPlayerVoted);
+                                Cmd_SetIndexOfPlayerVoted(string.Empty);
+                            }
                         }
                     }
                 }
@@ -1387,6 +1403,21 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void SetRole4Player(string _role)
     {
         this.GetComponent<PlayerNetworkBehavior>().Role = string.Empty;
+    }
+    #endregion
+
+    #region Set IndexOfPlayerVoted
+    [Command]
+    void Cmd_SetIndexOfPlayerVoted(string _num)  // Set vị trí của player cần vote
+    {
+        this.IndexOfPlayerVoted = _num;
+        Rpc_SetIndexOfPlayerVoted(_num);
+    }
+
+    [ClientRpc]
+    void Rpc_SetIndexOfPlayerVoted(string _num)
+    {
+        this.IndexOfPlayerVoted = _num;
     }
     #endregion
 

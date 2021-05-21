@@ -30,6 +30,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
     [SyncVar]
     public bool IsSkipVote = false; // Trạng thái skip vote của player
+    [SyncVar]
+    string IndexOfPlayerVoted = string.Empty; // Số thứ tự player bị vote
+
 
     Vector3 target;
     DieAfterTime DieAfterTime; // Chết sau bao nhiêu giây
@@ -158,8 +161,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
 
     #region Action
-    GameObject Vote(int _index)
+    GameObject Vote(string _index)
     {
+        Cmd_SetIndexOfPlayerVoted(string.Empty);
         IsDefault = false;
         /*Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -182,11 +186,15 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 CancelVote(VotedTarget);
             }
         }*/
-        if(_index == 0) // Hành động bỏ vote
+        if (_index == "Dislike") // Hành động bỏ vote
         {
             CancelVote(VotedTarget);
         }
-        else if(index == _index) // Hành động player tự vote chính mình 
+        else if (_index == "Like" && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf)) // hành động bỏ qua lượt vote
+        {
+            Cmd_SkipVote(true);
+        }
+        else if (this.index.ToString() == _index) // Hành động player tự vote chính mình 
         {
             CheckVote(VotedTarget);
             Cmd_UpdateVotes(gameObject.GetComponent<NetworkIdentity>(), true);
@@ -197,7 +205,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         else // Hành động player vote 
         {
             var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player)
-            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == _index).ToArray();
+            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(_index)).ToArray();
+            Cmd_SetIndexOfPlayerVoted(string.Empty);
             if (players.Length > 0)
             {
                 foreach (var player in players)
