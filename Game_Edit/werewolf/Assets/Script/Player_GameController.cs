@@ -1505,7 +1505,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 if (player != null)
                 {
                     SetupForNewAction(Action4Player.Default);
-                    player.SetActive(false);
                     SetRole4Player(string.Empty);
                     UpdateApperance(Role4Player.Ghost);
                 }
@@ -1521,8 +1520,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 if (player != null)
                 {
                     SetupForNewAction(Action4Player.Default);
-                    player.SetActive(false);
                     SetRole4Player(string.Empty);
+                    UpdateApperance(Role4Player.Ghost);
                 }
             }
         }
