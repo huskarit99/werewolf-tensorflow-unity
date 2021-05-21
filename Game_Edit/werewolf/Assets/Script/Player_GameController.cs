@@ -44,10 +44,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
             }
-            if (string.IsNullOrEmpty(player.GetComponent<PlayerNetworkBehavior>().Role))
-            {
-                player.SetActive(false);
-            }
             if (player.GetComponent<PlayerNetworkBehavior>().IsKing)
             {
                 player.GetComponent<PlayerNetworkBehavior>().playerNameText.color = Color.yellow;
@@ -1480,6 +1476,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     SetupForNewAction(Action4Player.Default);
                     player.SetActive(false);
                     SetRole4Player(string.Empty);
+                    UpdateApperance(Role4Player.Ghost);
                 }
             }
         }
