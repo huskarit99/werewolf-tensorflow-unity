@@ -243,7 +243,14 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         }
                                         else
                                         {
-                                            Vote4Action(Action4Player.Guilty);
+                                            if (!string.IsNullOrEmpty(this.Role))
+                                            {
+                                                Vote4Action(Action4Player.Guilty);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetDone4Player(true);
+                                            }
                                         }
                                     }
                                 }
@@ -554,7 +561,14 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         }
                                         else
                                         {
-                                            Vote4Action(Action4Player.Guilty);
+                                            if (!string.IsNullOrEmpty(this.Role))
+                                            {
+                                                Vote4Action(Action4Player.Guilty);
+                                            }
+                                            else
+                                            {
+                                                Cmd_SetDone4Player(true);
+                                            }
                                         }
                                     }
                                 }
