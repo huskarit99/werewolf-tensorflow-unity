@@ -61,6 +61,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameWin = FindObjectOfType<UIGameWin>();
             UIGameRole = FindObjectOfType<UIGameRole>();
             UIGameDay = FindObjectOfType<UIGameDay>();
+            UIGameListPlayer = FindObjectOfType<UIGameListPlayer>();
             // Gán thuộc tính isReady trong UIGameReady vào biến IsReady, IsStart mặc định là false
             if (IsReady == false)
             {
@@ -75,6 +76,11 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }           
             if(IsReady && IsStart)
             {
+                if(UIGameListPlayer != null) // Hiển thị danh sách người chơi
+                {
+                    UIGameListPlayer.ShowListPlayer(players);
+                }
+
                 if (UIGameReady != null)
                 {
                     UIGameReady.ShowReadyPanel(false); // Ẩn panel khi IsReady và IsStart bằng true

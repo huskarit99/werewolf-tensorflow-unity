@@ -13,7 +13,7 @@ public class UIGameVote : NetworkBehaviour
     int secondsLeft = 100; // thời gian còn lại
     void OnSecondsChanged(int _old, int _new)
     {
-        TextDisplay.text = "Time Remaining: " + secondsLeft;
+        TextDisplay.text = secondsLeft.ToString();
     }
 
     int secondsWait = 0; // thời gian chờ
@@ -85,7 +85,7 @@ public class UIGameVote : NetworkBehaviour
         takingAway = true;
         yield return new WaitForSeconds(1);
         secondsLeft--;
-        TextDisplay.text = "Time Remaining: " + secondsLeft;
+        TextDisplay.text = secondsLeft.ToString();
         takingAway = false;
     }
     IEnumerator WaitingTime() // giảm 1 giây sử dụng hàm waitforsecond sau đó giảm secondWait đi 1 đơn vị 

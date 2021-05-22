@@ -53,6 +53,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameWin UIGameWin; // UI hiển thị khi player giành chiến thắng
     UIGameRole UIGameRole; // UI Hiển thị vai trò của player
     UIGameDay UIGameDay; // UI hiển thị ngày
+    UIGameListPlayer UIGameListPlayer; // UI hiển thị danh sách người chơi
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -79,6 +80,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameWin = FindObjectOfType<UIGameWin>();
             UIGameRole = FindObjectOfType<UIGameRole>();
             UIGameDay = FindObjectOfType<UIGameDay>();
+            UIGameListPlayer = FindObjectOfType<UIGameListPlayer>();
             // // định danh id cho player Player(Clone)
             string _ID = "Player" + netId;
             transform.name = _ID;
@@ -132,7 +134,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     //--- Thay đổi tên nhân vật
     public TextMesh playerNameText;
     [SyncVar(hook = nameof(OnNameChange))]
-    string playerName;
+    public string playerName;
     void OnNameChange(string _old, string _new)
     {
         playerNameText.text = playerName;
