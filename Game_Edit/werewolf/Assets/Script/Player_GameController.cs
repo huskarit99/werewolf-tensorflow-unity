@@ -980,24 +980,22 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         {
                             if (Input.GetKeyDown(num.ToString())) // Vote player
                             {
-                                Cmd_SetIndexOfPlayerVoted(num.ToString());
+                                this.IndexOfPlayerVoted = num.ToString();
                             }
                             if (Input.GetKeyDown(KeyCode.A)) // UnVote player
                             {
-                                Cmd_SetIndexOfPlayerVoted("Dislike");
+                                this.IndexOfPlayerVoted = "Dislike";
                             }
                             if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
                             {
-                                Cmd_SetIndexOfPlayerVoted("Like");
+                                this.IndexOfPlayerVoted = "Like";
                             }
                         }
                         if (this.IndexOfPlayerVoted != string.Empty)
                         {
-                            VotedTarget = Vote(this.IndexOfPlayerVoted);
-                            Cmd_SetIndexOfPlayerVoted(string.Empty);
+                            VotedTarget = Vote();
                         }
                     }
-                    
                 }
             }
             else
@@ -1114,21 +1112,20 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                             {
                                 if (Input.GetKeyDown(num.ToString())) // Vote player
                                 {
-                                    Cmd_SetIndexOfPlayerVoted(num.ToString());
+                                    this.IndexOfPlayerVoted = num.ToString();
                                 }
                                 if (Input.GetKeyDown(KeyCode.A)) // UnVote player
                                 {
-                                    Cmd_SetIndexOfPlayerVoted("Dislike");
+                                    this.IndexOfPlayerVoted = "Dislike";
                                 }
                                 if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
                                 {
-                                    Cmd_SetIndexOfPlayerVoted("Like");
+                                    this.IndexOfPlayerVoted = "Like";
                                 }
                             }
                             if (this.IndexOfPlayerVoted != string.Empty)
                             {
-                                VotedTarget = Vote(this.IndexOfPlayerVoted);
-                                Cmd_SetIndexOfPlayerVoted(string.Empty);
+                                VotedTarget = Vote();
                             }
                         }
                     }
@@ -1409,21 +1406,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void SetRole4Player(string _role)
     {
         this.GetComponent<PlayerNetworkBehavior>().Role = string.Empty;
-    }
-    #endregion
-
-    #region Set IndexOfPlayerVoted
-    [Command]
-    void Cmd_SetIndexOfPlayerVoted(string _num)  // Set vị trí của player cần vote
-    {
-        this.IndexOfPlayerVoted = _num;
-        Rpc_SetIndexOfPlayerVoted(_num);
-    }
-
-    [ClientRpc]
-    void Rpc_SetIndexOfPlayerVoted(string _num)
-    {
-        this.IndexOfPlayerVoted = _num;
     }
     #endregion
 

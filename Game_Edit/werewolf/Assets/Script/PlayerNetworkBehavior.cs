@@ -30,7 +30,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsStart = false; // Trạng thái bắt đầu để kiểm tra tất cả player đã sẵn sàng hay chưa  
     [SyncVar]
     public bool IsSkipVote = false; // Trạng thái skip vote của player
-    [SyncVar]
+
     string IndexOfPlayerVoted = string.Empty; // Số thứ tự player bị vote
 
 
@@ -163,9 +163,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
 
     #region Action
-    GameObject Vote(string _index)
+    GameObject Vote()
     {
-        Cmd_SetIndexOfPlayerVoted(string.Empty);
         IsDefault = false;
         /*Ray ray = CameraPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -188,16 +187,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 CancelVote(VotedTarget);
             }
         }*/
-        if (_index == "Dislike") // Hành động bỏ vote
+        if (this.IndexOfPlayerVoted == "Dislike") // Hành động bỏ vote
         {
+            this.IndexOfPlayerVoted = string.Empty;
             CancelVote(VotedTarget);
         }
-        else if (_index == "Like" && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf)) // hành động bỏ qua lượt vote
+        else if (this.IndexOfPlayerVoted == "Like" && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf)) // hành động bỏ qua lượt vote
         {
+            this.IndexOfPlayerVoted = string.Empty;
             Cmd_SkipVote(true);
         }
-        else if (this.index.ToString() == _index) // Hành động player tự vote chính mình 
+        else if (this.index.ToString() == this.IndexOfPlayerVoted) // Hành động player tự vote chính mình 
         {
+            this.IndexOfPlayerVoted = string.Empty;
             CheckVote(VotedTarget);
             Cmd_UpdateVotes(gameObject.GetComponent<NetworkIdentity>(), true);
             AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false);
@@ -207,8 +209,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         else // Hành động player vote 
         {
             var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player)
-            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(_index)).ToArray();
-            Cmd_SetIndexOfPlayerVoted(string.Empty);
+            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(this.IndexOfPlayerVoted)).ToArray();
+            this.IndexOfPlayerVoted = string.Empty;
             if (players.Length > 0)
             {
                 foreach (var player in players)
@@ -226,6 +228,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 return VotedTarget;
             }
         }
+        this.IndexOfPlayerVoted = string.Empty;
         return null;
     }
 
