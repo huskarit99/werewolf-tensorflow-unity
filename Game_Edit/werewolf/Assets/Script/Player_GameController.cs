@@ -938,7 +938,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
     private int CheckWin() // Kiểm tra còn lại 1 player và là sói hay người
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         if (players.Length == 1)
         {
             var _player = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Role == Role4Player.Wolf).ToArray();

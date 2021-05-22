@@ -17,7 +17,7 @@ public class UIGameListPlayer : MonoBehaviour
                 GameObject obj = Instantiate(PlayerItem); // Tạo ra game object
                 obj.name = player.GetComponent<PlayerNetworkBehavior>().index.ToString();
                 obj.transform.SetParent(this.gameObject.transform); // đưa vào trong content
-                obj.transform.GetChild(0).GetComponent<Text>().text = player.GetComponent<PlayerNetworkBehavior>().index.ToString(); // gán vị trí
+                obj.transform.GetChild(0).GetComponent<Text>().text = player.GetComponent<PlayerNetworkBehavior>().index.ToString() + ": "; // gán vị trí
                 obj.transform.GetChild(1).GetComponent<Text>().text = player.GetComponent<PlayerNetworkBehavior>().playerName; // gán tên
             }
         }
