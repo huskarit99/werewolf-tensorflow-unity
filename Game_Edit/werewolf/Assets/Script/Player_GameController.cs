@@ -35,7 +35,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     private void Update()
     {
         if (!hasAuthority) { return; }  // kiểm tra quyền client
-        Cmd_SetupPosition(this.index);
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         foreach (var player in players)
         {
@@ -67,6 +66,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 IsReady = UIGameReady.GetIsReady();
                 playerName = UIGameReady.GetPlayerName();
+                Cmd_SetupPosition(this.index);
             }
             // Thiết lập trạng thái sẵn sàng và tên của player và đồng bộ lên server
             if (IsReady && !IsStart)
@@ -204,7 +204,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                     else
                                     {
-                                        Vote4AKing();
+                                        if (!string.IsNullOrEmpty(this.Role))
+                                        {
+                                            Vote4AKing();
+                                        }
                                     }
                                 }
                                 else if (CheckAction4Players(Action4Player.Guilty))
@@ -522,7 +525,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                     else
                                     {
-                                        Vote4AKing();
+                                        if (!string.IsNullOrEmpty(this.Role))
+                                        {
+                                            Vote4AKing();
+                                        }
                                     }
                                 }
                                 else if (CheckAction4Players(Action4Player.Guilty))
