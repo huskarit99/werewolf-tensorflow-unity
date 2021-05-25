@@ -1,14 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Mirror;
+﻿using Mirror;
 using System;
+using UnityEngine;
 using System.Linq;
+using System.Collections;
+using Socket.Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-
+using Socket.Quobject.SocketIoClientDotNet.Client;
+public class ConnectServer
+{
+    public string Username { get; set; }
+}
+public class DetectFinger
+{
+    public string Username { get; set; }
+    public string ResultDetect { get; set; }
+}
+public class Player
+{
+    public string Username { get; set; }
+    public string Fullname { get; set; }
+}
+public class DetailRoom
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Wolf { get; set; }
+    public string Witch { get; set; }
+    public string Guard { get; set; }
+    public string Hunter { get; set; }
+    public List<Player> Member { get; set; }
+}
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
-
+    public QSocket socket { get; set; }
     public double Radius;
     public double Distance;
     //--- Các thành phần của playerObject
@@ -66,6 +91,24 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("start");
+        this.socket = IO.Socket("http://localhost:5000");
+        this.socket.On("server:detect-finger", data =>
+        {
+            DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
+      //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+            this.IndexOfPlayerVoted = detectFinger.ResultDetect;
+        });
+        this.socket.On("server:detail-room", data => {
+            DetailRoom detailRoom = (DetailRoom)JsonConvert.DeserializeObject<DetailRoom>(data.ToString());
+            Debug.Log("Id : " + detailRoom.Id);
+            Debug.Log("Name : " + detailRoom.Name);
+            Debug.Log("Wolf : " + detailRoom.Wolf);
+            Debug.Log("Witch : " + detailRoom.Witch);
+            Debug.Log("Guard : " + detailRoom.Guard);
+            Debug.Log("Hunter : " + detailRoom.Hunter);
+            Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
+        });
         if (isLocalPlayer)
         {
             IsDefault = true;

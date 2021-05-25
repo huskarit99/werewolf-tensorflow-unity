@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Socket.Newtonsoft.Json;
 
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
@@ -66,6 +66,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 IsReady = UIGameReady.GetIsReady();
                 playerName = UIGameReady.GetPlayerName();
+                if (playerName != string.Empty)
+                {
+                    var json = JsonConvert.SerializeObject(new ConnectServer { Username = playerName });
+                    Debug.Log(json);
+                    socket.Emit("unity:connect-server", json);
+                }
                 Cmd_SetupPosition(this.index);
             }
             // Thiết lập trạng thái sẵn sàng và tên của player và đồng bộ lên server
