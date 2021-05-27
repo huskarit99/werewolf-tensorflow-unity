@@ -30,8 +30,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsGuilty = false;
     #endregion
 
-
-    [ClientCallback]
     private void Update()
     {
         if (!hasAuthority) { return; }  // kiểm tra quyền client
@@ -230,8 +228,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                             else
                                             {
                                                 Cmd_SetGuilty4Player(false);
-                                                SetupForNewAction(Action4Player.GuardTurn);
-                                                Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                                SetupForNewAction(Action4Player.WolfTurn);
+                                                Cmd_ChangeScene(Action4Player.WolfTurn, GameScene.NightScene);
                                             }
                                         }
                                         else if (CheckWin() == 1) // Số người chơi = 1 và là sói
@@ -263,82 +261,87 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         }
                                     }
                                 }
-                                else if (CheckAction4Players(Action4Player.GuardTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        SetupForNewAction(Action4Player.SeerTurn);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Guard))
-                                        {
-                                            if (Role == Role4Player.Guard)
-                                            {
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.GuardTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (CheckAction4Players(Action4Player.SeerTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        SetupForNewAction(Action4Player.WolfTurn);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Seer))
-                                        {
-                                            if (Role == Role4Player.Seer)
-                                            {
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.SeerTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                #region GuardTurn
+                                //else if (CheckAction4Players(Action4Player.GuardTurn))
+                                //{
+                                //    if (CheckDone4Players(true))
+                                //    {
+                                //        SetupForNewAction(Action4Player.SeerTurn);
+                                //    }
+                                //    else
+                                //    {
+                                //        if (CheckRole(Role4Player.Guard))
+                                //        {
+                                //            if (Role == Role4Player.Guard)
+                                //            {
+                                //                UIGameSleep.ShowSleepPanel(false);
+                                //                Vote4Action(Action4Player.GuardTurn);
+                                //            }
+                                //            else
+                                //            {
+                                //                Cmd_SetDone4Player(true);
+                                //                UIGameSleep.ShowSleepPanel(true);
+                                //            }
+                                //        }
+                                //        else
+                                //        {
+                                //            UIGameSleep.ShowSleepPanel(true);
+                                //            if (UIGameVote.GetReady4ResetTime())
+                                //            {
+                                //                Cmd_VoteTime(5);
+                                //            }
+                                //            else
+                                //            {
+                                //                if (UIGameVote.getSecondsLeft() == 0)
+                                //                {
+                                //                    Cmd_SetDone4Player(true);
+                                //                }
+                                //            }
+                                //        }
+                                //    }
+                                //}
+                                #endregion
+
+                                #region SeerTurn
+                                //else if (CheckAction4Players(Action4Player.SeerTurn))
+                                //{
+                                //    if (CheckDone4Players(true))
+                                //    {
+                                //        SetupForNewAction(Action4Player.WolfTurn);
+                                //    }
+                                //    else
+                                //    {
+                                //        if (CheckRole(Role4Player.Seer))
+                                //        {
+                                //            if (Role == Role4Player.Seer)
+                                //            {
+                                //                UIGameSleep.ShowSleepPanel(false);
+                                //                Vote4Action(Action4Player.SeerTurn);
+                                //            }
+                                //            else
+                                //            {
+                                //                Cmd_SetDone4Player(true);
+                                //                UIGameSleep.ShowSleepPanel(true);
+                                //            }
+                                //        }
+                                //        else
+                                //        {
+                                //            UIGameSleep.ShowSleepPanel(true);
+                                //            if (UIGameVote.GetReady4ResetTime())
+                                //            {
+                                //                Cmd_VoteTime(5);
+                                //            }
+                                //            else
+                                //            {
+                                //                if (UIGameVote.getSecondsLeft() == 0)
+                                //                {
+                                //                    Cmd_SetDone4Player(true);
+                                //                }
+                                //            }
+                                //        }
+                                //    }
+                                //}
+                                #endregion
                                 else if (CheckAction4Players(Action4Player.WolfTurn))
                                 {
                                     if (CheckDone4Players(true))
@@ -377,47 +380,54 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         }
                                     }
                                 }
-                                else if (CheckAction4Players(Action4Player.WitchTurn))
-                                {
-                                    if (CheckDone4Players(true))
-                                    {
-                                        SetupForNewAction(Action4Player.Default);
-                                        Cmd_SetDay4Player(Day + 1);
-                                    }
-                                    else
-                                    {
-                                        if (CheckRole(Role4Player.Witch))
-                                        {
-                                            if (Role == Role4Player.Witch)
-                                            {
-                                                UIGameSleep.ShowSleepPanel(false);
-                                                Vote4Action(Action4Player.WitchTurn);
-                                            }
-                                            else
-                                            {
-                                                Cmd_SetDone4Player(true);
-                                                UIGameSleep.ShowSleepPanel(true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            UIGameSleep.ShowSleepPanel(true);
-                                            if (UIGameVote.GetReady4ResetTime())
-                                            {
-                                                Cmd_VoteTime(5);
-                                            }
-                                            else
-                                            {
-                                                if (UIGameVote.getSecondsLeft() == 0)
-                                                {
-                                                    Cmd_SetDone4Player(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                #region WitchTurn
+                                //else if (CheckAction4Players(Action4Player.WitchTurn))
+                                //{
+                                //    if (CheckDone4Players(true))
+                                //    {
+                                //        SetupForNewAction(Action4Player.Default);
+                                //        Cmd_SetDay4Player(Day + 1);
+                                //    }
+                                //    else
+                                //    {
+                                //        if (CheckRole(Role4Player.Witch))
+                                //        {
+                                //            if (Role == Role4Player.Witch)
+                                //            {
+                                //                UIGameSleep.ShowSleepPanel(false);
+                                //                Vote4Action(Action4Player.WitchTurn);
+                                //            }
+                                //            else
+                                //            {
+                                //                Cmd_SetDone4Player(true);
+                                //                UIGameSleep.ShowSleepPanel(true);
+                                //            }
+                                //        }
+                                //        else
+                                //        {
+                                //            UIGameSleep.ShowSleepPanel(true);
+                                //            if (UIGameVote.GetReady4ResetTime())
+                                //            {
+                                //                Cmd_VoteTime(5);
+                                //            }
+                                //            else
+                                //            {
+                                //                if (UIGameVote.getSecondsLeft() == 0)
+                                //                {
+                                //                    Cmd_SetDone4Player(true);
+                                //                }
+                                //            }
+                                //        }
+                                //    }
+                                //}
+                                #endregion
+
                                 else
                                 {
+                                    if (CheckKing())
+                                    {
+                                        SetupForNewAction(Action4Player.Guilty);
+                                    }
                                     if (IsDone)
                                     {
                                         if (this.Action == Action4Player.Default)
@@ -444,6 +454,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         }
                                         else if (this.Action == Action4Player.Guilty)
                                         {
+                                            Debug.Log("Guilty");
                                             if (CheckWin() == 0) // Số người chơi lớn hơn 1
                                             {
                                                 if (CheckDeath())
@@ -454,8 +465,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                                 else
                                                 {
                                                     Cmd_SetGuilty4Player(false);
-                                                    SetupForNewAction(Action4Player.GuardTurn);
-                                                    Cmd_ChangeScene(Action4Player.GuardTurn, GameScene.NightScene);
+                                                    SetupForNewAction(Action4Player.WolfTurn);
+                                                    Cmd_ChangeScene(Action4Player.WolfTurn, GameScene.NightScene);
                                                 }
                                             }
                                             else if (CheckWin() == 1) // Số người chơi = 1 và là sói
@@ -739,6 +750,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                 }
                                 else
                                 {
+                                    if (CheckKing())
+                                    {
+                                        SetupForNewAction(Action4Player.Guilty);
+                                    }
                                     if (IsDone)
                                     {
                                         if (this.Action == Action4Player.Default)
@@ -1002,7 +1017,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     if (!IsSkipVote)
                     {
-                        Debug.Log(this.IndexOfPlayerVoted);
                         this.socket.On("server:detect-finger", data =>
                         {
                             DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
@@ -1033,7 +1047,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             else
             {
-                UIGameVote.SetReady4ResetTime(true); 
+                if (CheckOutOfTime() && CheckKing())
+                {
+                    UIGameVote.SetReady4ResetTime(true);
+                }
                 Cmd_SetAllVote(false); // Thiết lập lại trạng thái chưa vote của tất cả player
                 Cmd_SetSkipVote(false); // Thiết lập lại trạng thái chưa skip vote của tất cả player
                 UIGameVoted.SetDefaultVotedText(); // Gán mặc định khi thời gian vote kết thúc
@@ -1141,7 +1158,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         if (!IsSkipVote)
                         {
-                            Debug.Log(this.IndexOfPlayerVoted);
                             this.socket.On("server:detect-finger", data =>
                             {
                                 DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
@@ -1466,8 +1482,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_SetDone4Player(bool _isDone)
     {
         this.IsDone = _isDone;
+        Rpc_SetDone4Player(_isDone);
     }
-
+    [ClientRpc]
+    void Rpc_SetDone4Player(bool _isDone)
+    {
+        this.IsDone = _isDone;
+    }
 
     [Command]
     void Cmd_SetDay4Player(int _day)
