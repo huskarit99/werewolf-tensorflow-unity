@@ -92,7 +92,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Start()
     {
         Debug.Log("start");
-        this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com/");
+        this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com");
         this.socket.On("server:detect-finger", data =>
         {
             DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
@@ -247,6 +247,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             Cmd_UpdateVotes(gameObject.GetComponent<NetworkIdentity>(), true);
             AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false);
             AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, true);
+            this.IndexOfPlayerVoted = string.Empty;
             return gameObject;
         }
         else // Hành động player vote 
@@ -263,11 +264,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, false);
                     AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
                     this.transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
+                    this.IndexOfPlayerVoted = string.Empty;
                     return player;
                 }
             }
             else // Nếu ko tìm thấy player thì sẽ trả về mục tiêu vote trước đó
             {
+                this.IndexOfPlayerVoted = string.Empty;
                 return VotedTarget;
             }
         }
