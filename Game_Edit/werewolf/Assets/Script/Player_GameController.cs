@@ -50,14 +50,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         if (isLocalPlayer)
         {
-            Debug.Log(this.IndexOfPlayerVoted);
-            this.socket.On("server:detect-finger", data =>
-            {
-                DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
-                //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
-                this.IndexOfPlayerVoted = detectFinger.ResultDetect;
-            });
-
             this.NameTag.SetActive(false);
             //AnimPlayer = GetComponent<Animator>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
@@ -1010,6 +1002,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     if (!IsSkipVote)
                     {
+                        Debug.Log(this.IndexOfPlayerVoted);
+                        this.socket.On("server:detect-finger", data =>
+                        {
+                            DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
+                            //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+                            this.IndexOfPlayerVoted = detectFinger.ResultDetect;
+                        });
                         for (int num = 1; num <= 5; num++)
                         {
                             if (Input.GetKeyDown(num.ToString())) // Vote player
@@ -1142,6 +1141,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         if (!IsSkipVote)
                         {
+                            Debug.Log(this.IndexOfPlayerVoted);
+                            this.socket.On("server:detect-finger", data =>
+                            {
+                                DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
+                                //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+                                this.IndexOfPlayerVoted = detectFinger.ResultDetect;
+                            });
                             for (int num = 1; num <= 5; num++)
                             {
                                 if (Input.GetKeyDown(num.ToString())) // Vote player
