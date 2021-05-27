@@ -78,35 +78,35 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11286}
+      Script: {instanceID: 11284}
     - Class: 114
-      Script: {instanceID: 11406}
+      Script: {instanceID: 11404}
     - Class: 114
-      Script: {instanceID: 11658}
+      Script: {instanceID: 11656}
     - Class: 114
-      Script: {instanceID: 12334}
+      Script: {instanceID: 12332}
     - Class: 114
-      Script: {instanceID: 12586}
+      Script: {instanceID: 12584}
     - Class: 114
-      Script: {instanceID: 12674}
+      Script: {instanceID: 12672}
     - Class: 114
-      Script: {instanceID: 12708}
+      Script: {instanceID: 12706}
     - Class: 114
-      Script: {instanceID: 13010}
+      Script: {instanceID: 13008}
     - Class: 114
-      Script: {instanceID: 13194}
+      Script: {instanceID: 13192}
     - Class: 114
-      Script: {instanceID: 13824}
+      Script: {instanceID: 13822}
     - Class: 114
-      Script: {instanceID: 13910}
+      Script: {instanceID: 13908}
     - Class: 114
-      Script: {instanceID: 14026}
+      Script: {instanceID: 14024}
     - Class: 114
-      Script: {instanceID: 14358}
+      Script: {instanceID: 14356}
     - Class: 114
-      Script: {instanceID: 14498}
+      Script: {instanceID: 14496}
     - Class: 114
-      Script: {instanceID: 14614}
+      Script: {instanceID: 14612}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -177,57 +177,57 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11282}
+      Script: {instanceID: 11280}
     - Class: 114
-      Script: {instanceID: 11286}
+      Script: {instanceID: 11284}
     - Class: 114
-      Script: {instanceID: 11398}
+      Script: {instanceID: 11396}
     - Class: 114
-      Script: {instanceID: 11402}
+      Script: {instanceID: 11400}
     - Class: 114
-      Script: {instanceID: 11406}
+      Script: {instanceID: 11404}
     - Class: 114
-      Script: {instanceID: 11444}
+      Script: {instanceID: 11442}
     - Class: 114
-      Script: {instanceID: 11588}
+      Script: {instanceID: 11586}
     - Class: 114
-      Script: {instanceID: 11658}
+      Script: {instanceID: 11656}
     - Class: 114
-      Script: {instanceID: 12334}
+      Script: {instanceID: 12332}
     - Class: 114
-      Script: {instanceID: 12586}
+      Script: {instanceID: 12584}
     - Class: 114
-      Script: {instanceID: 12674}
+      Script: {instanceID: 12672}
     - Class: 114
-      Script: {instanceID: 12708}
+      Script: {instanceID: 12706}
     - Class: 114
-      Script: {instanceID: 13010}
+      Script: {instanceID: 13008}
     - Class: 114
-      Script: {instanceID: 13080}
+      Script: {instanceID: 13078}
     - Class: 114
-      Script: {instanceID: 13138}
+      Script: {instanceID: 13136}
     - Class: 114
-      Script: {instanceID: 13194}
+      Script: {instanceID: 13192}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13334}
     - Class: 114
-      Script: {instanceID: 13824}
+      Script: {instanceID: 13822}
     - Class: 114
-      Script: {instanceID: 13910}
+      Script: {instanceID: 13908}
     - Class: 114
-      Script: {instanceID: 14026}
+      Script: {instanceID: 14024}
     - Class: 114
-      Script: {instanceID: 14040}
+      Script: {instanceID: 14038}
     - Class: 114
-      Script: {instanceID: 14164}
+      Script: {instanceID: 14162}
     - Class: 114
-      Script: {instanceID: 14358}
+      Script: {instanceID: 14356}
     - Class: 114
-      Script: {instanceID: 14498}
+      Script: {instanceID: 14496}
     - Class: 114
-      Script: {instanceID: 14614}
+      Script: {instanceID: 14612}
     - Class: 114
-      Script: {instanceID: 14640}
+      Script: {instanceID: 14638}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1311,4 +1311,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/NightScene.unity
-  playerPath: D:/Unity Project/demo/game/werewolf.exe
+  playerPath: E:/TestGame/Share_Folder/werewolf.exe
