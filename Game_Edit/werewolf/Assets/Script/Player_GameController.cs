@@ -1134,6 +1134,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     {
                         if (!IsSkipVote)
                         {
+                            this.socket.On("server:detect-finger", data =>
+                            {
+                                DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
+                                //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+                                this.IndexOfPlayerVoted = detectFinger.ResultDetect;
+                            });
                             for (int num = 1; num <= 5; num++)
                             {
                                 if (Input.GetKeyDown(num.ToString())) // Vote player
@@ -1623,6 +1629,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
         newPrefab.GetComponent<PlayerNetworkBehavior>().index = this.index;
         newPrefab.GetComponent<PlayerNetworkBehavior>().playerName = this.playerName;
+
+        newPrefab.GetComponent<PlayerNetworkBehavior>().socket = this.socket;
 
         newPrefab.GetComponent<PlayerNetworkBehavior>().Role = this.Role;
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsKing = this.IsKing;

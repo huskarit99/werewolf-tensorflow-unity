@@ -92,7 +92,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Start()
     {
         Debug.Log("start");
-        this.socket = IO.Socket("http://localhost:5000");
+        this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com/");
         this.socket.On("server:detect-finger", data =>
         {
             DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
