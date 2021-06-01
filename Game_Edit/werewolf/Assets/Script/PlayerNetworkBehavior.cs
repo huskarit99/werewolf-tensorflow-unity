@@ -125,8 +125,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             UIGameDay = FindObjectOfType<UIGameDay>();
             UIGameListPlayer = FindObjectOfType<UIGameListPlayer>();
             // // định danh id cho player Player(Clone)
-            string _ID = "Player" + netId;
-            transform.name = _ID;
             this.transform.LookAt(CentralPoint.transform);
         }
     }
