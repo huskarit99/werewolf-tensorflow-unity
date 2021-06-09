@@ -4,6 +4,7 @@ using Mirror;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using Socket.Newtonsoft.Json;
+using Socket.Quobject.SocketIoClientDotNet.Client;
 
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
@@ -13,6 +14,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public int Day = 1;
     [SyncVar]
     public string Action = Action4Player.Default;
+    public bool StopDetecting = true;
+    WaitForEndOfFrame endOfFrame;
 
     #region State
     [SyncVar]
@@ -30,6 +33,25 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     public bool IsGuilty = false;
     #endregion
 
+    void ServerDetectFinger()
+    {
+        if (playerName != string.Empty)
+        {
+            var json = JsonConvert.SerializeObject(new ConnectServer { Username = playerName });
+            socket.Emit("unity:connect-server", json);
+        }
+        this.socket.On("server:detect-finger", data =>
+        {
+            DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
+            Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+            this.IndexOfPlayerVoted = detectFinger.ResultDetect;
+            if (this.IndexOfPlayerVoted != string.Empty)
+            {
+                StopDetecting = true;
+                VotedTarget = Vote();
+            }
+        });
+    }
     private void Update()
     {
         if (!hasAuthority) { return; }  // kiểm tra quyền client
@@ -1048,6 +1070,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 A King
     bool Vote4AKing()
     {
+        ServerDetectFinger();
         if (UIGameVote.GetReady4ResetTime() == true)
         {
             Cmd_VoteTime(20);
@@ -1065,25 +1088,22 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     if (!IsSkipVote)
                     {
-                        this.socket.On("server:detect-finger", data =>
+                      if (this.IndexOfPlayerVoted == string.Empty)
                         {
-                            DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
-                            //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
-                            this.IndexOfPlayerVoted = detectFinger.ResultDetect;
-                        });
-                        for (int num = 1; num <= 5; num++)
-                        {
-                            if (Input.GetKeyDown(num.ToString())) // Vote player
-                            {
-                                this.IndexOfPlayerVoted = num.ToString();
-                            }
-                            if (Input.GetKeyDown(KeyCode.A)) // UnVote player
-                            {
-                                this.IndexOfPlayerVoted = "Dislike";
-                            }
-                            if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
-                            {
-                                this.IndexOfPlayerVoted = "Like";
+                            for (int num = 1; num <= 5; num++)
+                            {   
+                                if (Input.GetKeyDown(num.ToString())) // Vote player
+                                {
+                                    this.IndexOfPlayerVoted = num.ToString();
+                                }
+                                if (Input.GetKeyDown(KeyCode.A)) // UnVote player
+                                {
+                                    this.IndexOfPlayerVoted = "Dislike";
+                                }
+                                if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
+                                {
+                                    this.IndexOfPlayerVoted = "Like";
+                                }
                             }
                         }
                         if (this.IndexOfPlayerVoted != string.Empty)
@@ -1113,6 +1133,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 Action
     void Vote4Action(string _action)
     {
+        ServerDetectFinger();
         if (UIGameVote == null)
         {
             UIGameVote = FindObjectOfType<UIGameVote>();
@@ -1212,12 +1233,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                         {
                             if (!IsSkipVote)
                             {
-                                this.socket.On("server:detect-finger", data =>
-                                {
-                                    DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
-                                    //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
-                                    this.IndexOfPlayerVoted = detectFinger.ResultDetect;
-                                });
                                 for (int num = 1; num <= 5; num++)
                                 {
                                     if (Input.GetKeyDown(num.ToString())) // Vote player

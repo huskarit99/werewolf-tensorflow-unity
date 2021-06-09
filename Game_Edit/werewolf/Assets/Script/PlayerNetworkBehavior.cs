@@ -93,12 +93,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         Debug.Log("start");
         this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com");
-        this.socket.On("server:detect-finger", data =>
-        {
-            DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
-      //      Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
-            this.IndexOfPlayerVoted = detectFinger.ResultDetect;
-        });
         this.socket.On("server:detail-room", data => {
             DetailRoom detailRoom = (DetailRoom)JsonConvert.DeserializeObject<DetailRoom>(data.ToString());
             Debug.Log("Id : " + detailRoom.Id);
@@ -268,10 +262,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             else // Nếu ko tìm thấy player thì sẽ trả về mục tiêu vote trước đó
             {
+                StopDetecting = false;
                 this.IndexOfPlayerVoted = string.Empty;
                 return VotedTarget;
             }
         }
+        StopDetecting = false;
         this.IndexOfPlayerVoted = string.Empty;
         return null;
     }
