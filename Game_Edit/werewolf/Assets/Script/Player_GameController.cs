@@ -1040,7 +1040,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         return false;
     }
-
+    
     private int CheckWin() // Kiểm tra còn lại 1 player và là sói hay người
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
@@ -1621,6 +1621,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         if (this.GetComponent<PlayerNetworkBehavior>().IsKilled)
         {
+            SetRole4Player(string.Empty);
             this.AnimPlayer.SetBool(Param_4_Anim.IsDead, true);
         }
         var _anim = this.AnimPlayer.runtimeAnimatorController.animationClips.Where(t => t.name == Param_4_Anim.IsDead).FirstOrDefault();
@@ -1635,7 +1636,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 if (player != null)
                 {
                     SetupForNewAction(Action4Player.Default);
-                    SetRole4Player(string.Empty);
                     UpdateApperance(Role4Player.Ghost);
                 }
             }
@@ -1650,7 +1650,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 if (player != null)
                 {
                     SetupForNewAction(Action4Player.Default);
-                    SetRole4Player(string.Empty);
                     UpdateApperance(Role4Player.Ghost);
                 }
             }

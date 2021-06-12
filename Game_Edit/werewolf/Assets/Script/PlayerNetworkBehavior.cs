@@ -103,6 +103,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             Debug.Log("Hunter : " + detailRoom.Hunter);
             Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
         });
+        this.socket.On("server:detect-finger", data =>
+        {
+            DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
+            Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+            this.IndexOfPlayerVoted = detectFinger.ResultDetect;
+        });
         if (isLocalPlayer)
         {
             IsDefault = true;
@@ -265,7 +271,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 this.transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
                 this.IndexOfPlayerVoted = string.Empty;
                 VotedTarget = player;
-                Debug.Log(VotedTarget);
                 return player;
             }
             else // Nếu ko tìm thấy player thì sẽ trả về mục tiêu vote trước đó
@@ -286,11 +291,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             if (_votedTarget != null)
             {
-                var _votes = _votedTarget.GetComponent<PlayerNetworkBehavior>().votes;
-                if (_votes > 0)
-                {
-                    Cmd_UpdateVotes(_votedTarget.GetComponent<NetworkIdentity>(), false);
-                }
+                Cmd_UpdateVotes(_votedTarget.GetComponent<NetworkIdentity>(), false);
             }
         } 
         VotedTarget = null;
