@@ -198,6 +198,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
 
     #region Action
+    private bool IsProcessVoting = false;
     GameObject Vote()
     {
         IsDefault = false;
@@ -224,13 +225,17 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }*/
         if (this.IndexOfPlayerVoted == "Dislike") // Hành động bỏ vote
         {
+            CheckVote(VotedTarget);
             this.IndexOfPlayerVoted = string.Empty;
             CancelVote(VotedTarget);
+            VotedTarget = null;
         }
         else if (this.IndexOfPlayerVoted == "Like" && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf)) // hành động bỏ qua lượt vote
         {
+            CheckVote(VotedTarget);
             this.IndexOfPlayerVoted = string.Empty;
             Cmd_SkipVote(true);
+            VotedTarget = null;
         }
         else if (this.index.ToString() == this.IndexOfPlayerVoted) // Hành động player tự vote chính mình 
         {
@@ -240,25 +245,28 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false);
             AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, true);
             this.IndexOfPlayerVoted = string.Empty;
+            VotedTarget = this.gameObject;
             return gameObject;
         }
         else // Hành động player vote 
         {
-            var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player)
-            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(this.IndexOfPlayerVoted)).ToArray();
-            this.IndexOfPlayerVoted = string.Empty;
-            if (players.Length > 0)
+            if (VotedTarget != null)
             {
-                foreach (var player in players)
-                {
-                    CheckVote(VotedTarget);
-                    Cmd_UpdateVotes(player.GetComponent<NetworkIdentity>(), true);
-                    AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, false);
-                    AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
-                    this.transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
-                    this.IndexOfPlayerVoted = string.Empty;
-                    return player;
-                }
+                CheckVote(VotedTarget);
+            }
+            var player = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player)
+            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(this.IndexOfPlayerVoted)).FirstOrDefault();
+            this.IndexOfPlayerVoted = string.Empty;
+            if (player != null)
+            {
+                Cmd_UpdateVotes(player.GetComponent<NetworkIdentity>(), true);
+                AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, false);
+                AnimPlayer.SetBool(Param_4_Anim.VoteLeft, true);
+                this.transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
+                this.IndexOfPlayerVoted = string.Empty;
+                VotedTarget = player;
+                Debug.Log(VotedTarget);
+                return player;
             }
             else // Nếu ko tìm thấy player thì sẽ trả về mục tiêu vote trước đó
             {

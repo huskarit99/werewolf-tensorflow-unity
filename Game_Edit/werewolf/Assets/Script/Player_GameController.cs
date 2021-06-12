@@ -32,7 +32,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [SyncVar]
     public bool IsGuilty = false;
     #endregion
-
     void ServerDetectFinger()
     {
         if (playerName != string.Empty)
@@ -45,11 +44,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
             Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
             this.IndexOfPlayerVoted = detectFinger.ResultDetect;
-            if (this.IndexOfPlayerVoted != string.Empty)
-            {
-                StopDetecting = true;
-                VotedTarget = Vote();
-            }
         });
     }
     private void Update()
@@ -1070,7 +1064,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 A King
     bool Vote4AKing()
     {
-        ServerDetectFinger();
+        if (isClientOnly)
+        {
+            ServerDetectFinger();
+        }
         if (UIGameVote.GetReady4ResetTime() == true)
         {
             Cmd_VoteTime(20);
@@ -1088,22 +1085,19 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     if (!IsSkipVote)
                     {
-                      if (this.IndexOfPlayerVoted == string.Empty)
+                        for (int num = 1; num <= 5; num++)
                         {
-                            for (int num = 1; num <= 5; num++)
-                            {   
-                                if (Input.GetKeyDown(num.ToString())) // Vote player
-                                {
-                                    this.IndexOfPlayerVoted = num.ToString();
-                                }
-                                if (Input.GetKeyDown(KeyCode.A)) // UnVote player
-                                {
-                                    this.IndexOfPlayerVoted = "Dislike";
-                                }
-                                if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
-                                {
-                                    this.IndexOfPlayerVoted = "Like";
-                                }
+                            if (Input.GetKeyDown(num.ToString())) // Vote player
+                            {
+                                this.IndexOfPlayerVoted = num.ToString();
+                            }
+                            if (Input.GetKeyDown(KeyCode.A)) // UnVote player
+                            {
+                                this.IndexOfPlayerVoted = "Dislike";
+                            }
+                            if (Input.GetKeyDown(KeyCode.W)) // Skip Vote
+                            {
+                                this.IndexOfPlayerVoted = "Like";
                             }
                         }
                         if (this.IndexOfPlayerVoted != string.Empty)
@@ -1133,7 +1127,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 Action
     void Vote4Action(string _action)
     {
-        ServerDetectFinger();
+        if (isClientOnly)
+        {
+            ServerDetectFinger();
+        }
         if (UIGameVote == null)
         {
             UIGameVote = FindObjectOfType<UIGameVote>();
@@ -1729,6 +1726,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Update Player Prefab
     void UpdateApperance(string _role)
     {
+        Destroy(this.gameObject);
         Cmd_UpdateApperance(_role);
     }
 
@@ -1760,7 +1758,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsKilledByWitch = this.IsKilledByWitch;
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsGuilty = this.IsGuilty;
 
-        Destroy(oldPrefab.identity.gameObject);
+        Object.Destroy(oldPrefab.identity.gameObject);
         NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPrefab,true);
         Rpc_UpdateApperance();
     }
