@@ -250,18 +250,15 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                     if (CheckDone4Players(true))
                                     {
-                                        Debug.Log("Guilty");
                                         if (CheckWin() == 0) // Số người chơi lớn hơn 1
                                         {
                                             if (CheckDeath())
                                             {
-                                                Debug.Log("Death");
                                                 SetupForNewAction(Action4Player.Default);
                                                 Cmd_SetGuilty4Player(true);
                                             }
                                             else
                                             {
-                                                Debug.Log("Wolf");
                                                 SetupForNewAction(Action4Player.WolfTurn);
                                                 Cmd_ChangeScene(Action4Player.WolfTurn, GameScene.NightScene);
                                                 Cmd_SetGuilty4Player(false);
@@ -279,7 +276,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                     else
                                     {
-                                        Debug.Log("Guilty_01");
                                         if (CheckIsGuilty())
                                         {
                                             Cmd_SetDone4Player(true);
@@ -461,7 +457,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
                                 else
                                 {
-                                    if (CheckKing())
+                                    if (this.Action == Action4Player.VoteKing && CheckKing())
                                     {
                                         SetupForNewAction(Action4Player.Guilty);
                                     }
@@ -598,18 +594,15 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                     if (CheckDone4Players(true))
                                     {
-                                        Debug.Log("Guilty");
                                         if (CheckWin() == 0) // Số người chơi lớn hơn 1
                                         {
                                             if (CheckDeath())
                                             {
-                                                Debug.Log("Death");
                                                 SetupForNewAction(Action4Player.Default);
                                                 Cmd_SetGuilty4Player(true);
                                             }
                                             else
                                             {
-                                                Debug.Log("Wolf");
                                                 SetupForNewAction(Action4Player.WolfTurn);
                                                 Cmd_ChangeScene(Action4Player.WolfTurn, GameScene.NightScene);
                                                 Cmd_SetGuilty4Player(false);
@@ -627,7 +620,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                     }
                                     else
                                     {
-                                        Debug.Log("Guilty_01");
                                         if (CheckIsGuilty())
                                         {
                                             Cmd_SetDone4Player(true);
@@ -809,7 +801,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
                                 else
                                 {
-                                    if (CheckKing())
+                                    if (this.Action == Action4Player.VoteKing && CheckKing())
                                     {
                                         SetupForNewAction(Action4Player.Guilty);
                                     }
@@ -1310,6 +1302,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #endregion
     void SetupForNewAction(string _newAction)
     {
+        Debug.Log(_newAction);
         CancelVote(VotedTarget);
         Cmd_SetAction4Player(_newAction);
         Cmd_SetDone4Player(false);
@@ -1334,14 +1327,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     void Cmd_ChangeScene(string _action, string _scene)
     {
-        if (CheckAction4Players(_action))
+        var currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name != _scene && currentScene.isLoaded)
         {
-            var currentScene = SceneManager.GetActiveScene();
-            if (currentScene.name != _scene && currentScene.isLoaded)
-            {
-                NetworkManager.singleton.ServerChangeScene(_scene);
-            }
-
+            NetworkManager.singleton.ServerChangeScene(_scene);
         }
     }
     #endregion
@@ -1545,7 +1534,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_SetAction4Player(string _action)
     {
         this.Action = _action;
-        Rpc_SetAction4Player(_action);
+        //Rpc_SetAction4Player(_action);
     }
     [ClientRpc]
     void Rpc_SetAction4Player(string _action)
@@ -1563,7 +1552,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_SetDone4Player(bool _isDone)
     {
         this.IsDone = _isDone;
-        Rpc_SetDone4Player(_isDone);
+        //Rpc_SetDone4Player(_isDone);
     }
     [ClientRpc]
     void Rpc_SetDone4Player(bool _isDone)
