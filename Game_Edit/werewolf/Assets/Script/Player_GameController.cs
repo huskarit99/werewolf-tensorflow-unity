@@ -1571,7 +1571,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     void Cmd_Be_A_Great_King()
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
         if (players.Length  > 0)
         {
@@ -1582,9 +1582,12 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             else
             {
-                var _index = Random.Range(0, players.Length);
-                players[_index].GetComponent<PlayerNetworkBehavior>().IsKing = true;
-                Rpc_Be_A_Great_King(players[_index].GetComponent<NetworkIdentity>());
+                if(this.index == players[0].GetComponent<PlayerNetworkBehavior>().index)
+                {
+                    var _index = Random.Range(0, players.Length);
+                    players[_index].GetComponent<PlayerNetworkBehavior>().IsKing = true;
+                    Rpc_Be_A_Great_King(players[_index].GetComponent<NetworkIdentity>());
+                }
             }
         }
     }

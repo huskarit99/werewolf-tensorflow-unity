@@ -261,7 +261,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 CheckVote(VotedTarget);
             }
             var player = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player)
-            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(this.IndexOfPlayerVoted)).FirstOrDefault();
+            .Where(t => t.GetComponent<PlayerNetworkBehavior>().index == Int32.Parse(this.IndexOfPlayerVoted) && !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).FirstOrDefault();
             this.IndexOfPlayerVoted = string.Empty;
             if (player != null)
             {
