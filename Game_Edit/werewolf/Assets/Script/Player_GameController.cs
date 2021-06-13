@@ -116,8 +116,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     UIGameReady.ShowReadyPanel(false); // Ẩn panel khi IsReady và IsStart bằng true
                 }
-
-                UIGameRole.SetRoleText(this.Role); // Hiển thị role của player 
+                UIGameRole.SetRoleText(this.Role, this.IsKing); // Hiển thị role của player 
                 UIGameDay.SetDayText(this.Day); // Hiển thị ngày 
                 switch (Day) 
                 {
