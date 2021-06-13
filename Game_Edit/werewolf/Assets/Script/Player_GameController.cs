@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using Socket.Newtonsoft.Json;
 using Socket.Quobject.SocketIoClientDotNet.Client;
+using System.Collections.Generic;
 
 public partial class PlayerNetworkBehavior : NetworkBehaviour
 {
@@ -64,6 +65,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         if (isLocalPlayer)
         {
+
+
             this.NameTag.SetActive(false);
             //AnimPlayer = GetComponent<Animator>();
             UIGameVoted = FindObjectOfType<UIGameVoted>();
@@ -487,18 +490,15 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         }
                                         else if (this.Action == Action4Player.Guilty)
                                         {
-                                            Debug.Log("Guilty_else");
                                             if (CheckWin() == 0) // Số người chơi lớn hơn 1
                                             {
                                                 if (CheckDeath())
                                                 {
-                                                    Debug.Log("CheckDead");
                                                     Cmd_SetGuilty4Player(true);
                                                     SetupForNewAction(Action4Player.Default);
                                                 }
                                                 else
                                                 {
-                                                    Debug.Log("Wolf_else");
                                                     Cmd_SetGuilty4Player(false);
                                                     SetupForNewAction(Action4Player.WolfTurn);
                                                     Cmd_ChangeScene(Action4Player.WolfTurn, GameScene.NightScene);
@@ -884,8 +884,17 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             }
             else if (IsReady)
             {
+
                 UIGameReady.ShowReadyPanel(true); // Hiện panel khi IsStart = false
-                Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
+                if (this.Roles.Count > 0 && isClient == true && isServer == true)
+                {
+                    Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
+                }
+                else
+                {
+                    Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
+                }
+
                 if (IsDefault)
                 {
                     this.transform.LookAt(CentralPoint.transform);
@@ -1036,10 +1045,10 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     private int CheckWin() // Kiểm tra còn lại 1 player và là sói hay người
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
-        if (players.Length == 1)
+        if (players.Length > 0)
         {
             var _player = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Role == Role4Player.Wolf).ToArray();
-            if (_player.Length == 1)
+            if (_player.Length == players.Length)
             {
                 return 1; // Sói thắng
             }
@@ -1424,16 +1433,37 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     public void Cmd_Start()
     {
+
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         if (players.Length > 0)
         {
             var _players_isReady = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsReady == true).ToArray();
-            Debug.Log(_players_isReady.Length);
             if (_players_isReady.Length == players.Length)
             {
+
+
+                if (Roles.Count == 0)
+                {
+                    Roles = new List<string>();
+                    for (var i = 0; i < 1; i++)
+                    {
+                        Roles.Add(Role4Player.Wolf);
+                    }
+                    for (var i = 0; i < NetworkServer.connections.Count - 1; i++)
+                    {
+                        Roles.Add(Role4Player.Human);
+                    }
+
+                }
                 for (var i = 0; i < _players_isReady.Length; i++)
                 {
                     _players_isReady[i].GetComponent<PlayerNetworkBehavior>().IsStart = true;
+                    if (isClient == true && isServer == true)
+                    {
+                        var tmp = RandomRole4Player(Roles, out Roles);
+                        _players_isReady[i].GetComponent<PlayerNetworkBehavior>().Role = tmp;
+                    }
+
                     //Rpc_Start(_players_isReady[i].GetComponent<NetworkIdentity>());
                 }
             }

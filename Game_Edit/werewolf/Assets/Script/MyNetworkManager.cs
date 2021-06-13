@@ -4,6 +4,8 @@ using UnityEngine;
 using Mirror;
 using System;
 using System.Linq;
+using Socket.Quobject.SocketIoClientDotNet.Client;
+using Socket.Newtonsoft.Json;
 
 public class MyNetworkManager : NetworkManager
 {
@@ -11,6 +13,7 @@ public class MyNetworkManager : NetworkManager
     public double Distance;
     public GameObject CentralPoint;
     public List<string> roles;
+    public QSocket socket { get; set; }
 
     public override void OnStartServer()
     {
@@ -33,15 +36,17 @@ public class MyNetworkManager : NetworkManager
     {
         base.OnServerConnect(conn);
     }
+    public override void OnStartHost()
+    {
+        base.OnStartHost();
 
+    }
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
-        Debug.Log("Added");
         //--- Set VoteText cho người chơi
         var player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 800), Quaternion.identity);
         player.GetComponent<PlayerNetworkBehavior>().index = NetworkServer.connections.Count;
-        player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false);
-        player.GetComponent<PlayerNetworkBehavior>().Role = RandomRole4Player(roles, out roles); 
+        player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false); 
         NetworkServer.AddPlayerForConnection(conn, player);
     }
     private string RandomRole4Player(List<string> _roles, out List<string> _arr)

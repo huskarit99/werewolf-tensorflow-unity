@@ -79,6 +79,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameRole UIGameRole; // UI Hiển thị vai trò của player
     UIGameDay UIGameDay; // UI hiển thị ngày
     UIGameListPlayer UIGameListPlayer; // UI hiển thị danh sách người chơi
+    List<string> Roles;
 
     public GameObject CentralPoint;
     bool IsDefault;
@@ -91,7 +92,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("start");
+        Roles = new List<string>();
         this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com");
         this.socket.On("server:detail-room", data => {
             DetailRoom detailRoom = (DetailRoom)JsonConvert.DeserializeObject<DetailRoom>(data.ToString());
@@ -102,6 +103,18 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             Debug.Log("Guard : " + detailRoom.Guard);
             Debug.Log("Hunter : " + detailRoom.Hunter);
             Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
+
+            var _roles = new List<string>();
+            for (var i = 0; i < System.Int64.Parse(detailRoom.Wolf); i++)
+            {
+                _roles.Add(Role4Player.Wolf);
+            }
+            for (var i = 0; i < NetworkServer.connections.Count - System.Int64.Parse(detailRoom.Wolf); i++)
+            {
+                _roles.Add(Role4Player.Human);
+            }
+            this.Roles = _roles;
+            Debug.Log(this.Roles.Count);
         });
         this.socket.On("server:detect-finger", data =>
         {
@@ -128,6 +141,59 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             this.transform.LookAt(CentralPoint.transform);
         }
     }
+
+    #region SetupRole
+    private string RandomRole4Player(List<string> _roles, out List<string> _arr)
+    {
+        if (_roles.Count > 0)
+        {
+            var _index = UnityEngine.Random.Range(0, _roles.Count - 1);
+            var item = _roles[_index];
+            _roles.RemoveAt(_index);
+            _arr = _roles;
+            return item;
+        }
+        _arr = _roles;
+        return Role4Player.Human;
+    }
+    [Command]
+    void Cmd_SetRole()
+    {
+        //if (Roles.Count == 0)
+        //{
+        //    Roles = new List<string>()
+        //    {
+        //        Role4Player.Human,
+        //        Role4Player.Human,
+        //        Role4Player.Human,
+        //        Role4Player.Human,
+        //        Role4Player.Wolf,
+        //    };
+        //}
+
+        Debug.Log(Roles.Count);
+        if (Roles.Count > 0)
+        {
+            Debug.Log("Set Role");
+            var RolesInServer = new List<String>();
+            Roles.ForEach(item => RolesInServer.Add(item));
+
+            var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
+            foreach (var player in players)
+            {
+                var tmp = RandomRole4Player(RolesInServer, out RolesInServer);
+                player.GetComponent<PlayerNetworkBehavior>().Role = tmp;
+                Rpc_SetRole(player, tmp);
+            }
+        }
+        
+    }
+    [ClientRpc]
+    void Rpc_SetRole(GameObject _player,string _role)
+    {
+        _player.GetComponent<PlayerNetworkBehavior>().Role = _role;
+    }
+    #endregion
 
     #region Set up character
     /// <summary>
@@ -370,7 +436,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
                 var _votes = _player.GetComponent<PlayerNetworkBehavior>().votes;
                 _player.GetComponent<PlayerNetworkBehavior>().playerVotesText.text = _votes.ToString();
-                Debug.Log(_votes);
                 Rpc_UpdateVotes(_target,_isAddVote,_votes);
             }
         }
