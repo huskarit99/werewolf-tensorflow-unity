@@ -119,8 +119,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 {
                     UIGameReady.ShowReadyPanel(false); // Ẩn panel khi IsReady và IsStart bằng true
                 }
-
-                UIGameRole.SetRoleText(this.Role); // Hiển thị role của player 
+                UIGameRole.SetRoleText(this.Role, this.IsKing); // Hiển thị role của player 
                 UIGameDay.SetDayText(this.Day); // Hiển thị ngày 
                 switch (Day) 
                 {
@@ -1440,21 +1439,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             var _players_isReady = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().IsReady == true).ToArray();
             if (_players_isReady.Length == players.Length)
             {
-
-
-                if (Roles.Count == 0)
-                {
-                    Roles = new List<string>();
-                    for (var i = 0; i < 1; i++)
-                    {
-                        Roles.Add(Role4Player.Wolf);
-                    }
-                    for (var i = 0; i < NetworkServer.connections.Count - 1; i++)
-                    {
-                        Roles.Add(Role4Player.Human);
-                    }
-
-                }
                 for (var i = 0; i < _players_isReady.Length; i++)
                 {
                     _players_isReady[i].GetComponent<PlayerNetworkBehavior>().IsStart = true;
