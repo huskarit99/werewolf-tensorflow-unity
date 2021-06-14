@@ -885,11 +885,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
 
                 UIGameReady.ShowReadyPanel(true); // Hiện panel khi IsStart = false
-                if (this.Roles.Count > 0 && isClient == true && isServer == true)
-                {
-                    Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
-                }
-                else
+                if (this.Roles.Count > 0)
                 {
                     Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
                 }
@@ -1432,7 +1428,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     public void Cmd_Start()
     {
-
+        Debug.Log(this.Roles.Count);
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         if (players.Length > 0)
         {

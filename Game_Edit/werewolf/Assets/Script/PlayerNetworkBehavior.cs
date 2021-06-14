@@ -114,7 +114,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 _roles.Add(Role4Player.Human);
             }
             this.Roles = _roles;
-            Debug.Log(this.Roles.Count);
         });
         this.socket.On("server:detect-finger", data =>
         {
