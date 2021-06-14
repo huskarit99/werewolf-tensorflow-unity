@@ -1047,9 +1047,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
                 return 1; // Sói thắng
             }
-            else
+            else if (_player.Length == 0)
             {
                 return 2; // Các hệ còn lại khác sói thắng
+            }
+            else
+            {
+                return 0;
             }
         }
         return 0;
@@ -1060,10 +1064,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 A King
     bool Vote4AKing()
     {
-        if (isClientOnly)
-        {
-            ServerDetectFinger();
-        }
+        ServerDetectFinger();
         if (UIGameVote.GetReady4ResetTime() == true)
         {
             Cmd_VoteTime(20);
@@ -1123,10 +1124,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Vote 4 Action
     void Vote4Action(string _action)
     {
-        if (isClientOnly)
-        {
-            ServerDetectFinger();
-        }
+        ServerDetectFinger();
         if (UIGameVote == null)
         {
             UIGameVote = FindObjectOfType<UIGameVote>();
@@ -1241,8 +1239,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                                         this.IndexOfPlayerVoted = "Like";
                                     }
                                 }
-                                if (this.IndexOfPlayerVoted != string.Empty)
+                                if (!string.IsNullOrEmpty(this.IndexOfPlayerVoted))
                                 {
+                                    Debug.Log(this.IndexOfPlayerVoted);
                                     VotedTarget = Vote();
                                 }
                             }
@@ -1277,11 +1276,11 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     }
                     else if (_action == Action4Player.WolfTurn)
                     {
+                        Cmd_KillPlayer();
                         if (Role == Role4Player.Wolf)
                         {
                             UpdateApperance(Role4Player.Human);
                         }
-                        Cmd_KillPlayer();
                     }
                     else if (_action == Action4Player.WitchTurn)
                     {
@@ -1663,7 +1662,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 1)
+        if (players.Length > 0)
         {
             if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
             {
@@ -1678,7 +1677,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 1)
+        if (players.Length > 0)
         {
             if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
             {

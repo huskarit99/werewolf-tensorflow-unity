@@ -118,7 +118,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         this.socket.On("server:detect-finger", data =>
         {
             DetectFinger detectFinger = (DetectFinger)JsonConvert.DeserializeObject<DetectFinger>(data.ToString());
-            Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
+            //Debug.Log("data : " + detectFinger.Username + " " + detectFinger.ResultDetect);
             this.IndexOfPlayerVoted = detectFinger.ResultDetect;
         });
         if (isLocalPlayer)
@@ -312,7 +312,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         {
             this.IndexOfPlayerVoted = string.Empty;
             CheckVote(VotedTarget);
-            Cmd_UpdateVotes(gameObject.GetComponent<NetworkIdentity>(), true);
+            Cmd_UpdateVotes(this.GetComponent<NetworkIdentity>(), true);
             AnimPlayer.SetBool(Param_4_Anim.VoteLeft, false);
             AnimPlayer.SetBool(Param_4_Anim.VoteYourSelf, true);
             this.IndexOfPlayerVoted = string.Empty;
