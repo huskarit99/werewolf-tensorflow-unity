@@ -36,11 +36,6 @@ public class MyNetworkManager : NetworkManager
     {
         base.OnServerConnect(conn);
     }
-    public override void OnStartHost()
-    {
-        base.OnStartHost();
-
-    }
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         //--- Set VoteText cho người chơi

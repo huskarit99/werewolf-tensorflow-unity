@@ -885,9 +885,31 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             {
 
                 UIGameReady.ShowReadyPanel(true); // Hiện panel khi IsStart = false
+                this.socket.On("server:detail-room", data => {
+                    DetailRoom detailRoom = (DetailRoom)JsonConvert.DeserializeObject<DetailRoom>(data.ToString());
+                    Debug.Log("Id : " + detailRoom.Id);
+                    Debug.Log("Name : " + detailRoom.Name);
+                    Debug.Log("Wolf : " + detailRoom.Wolf);
+                    Debug.Log("Witch : " + detailRoom.Witch);
+                    Debug.Log("Guard : " + detailRoom.Guard);
+                    Debug.Log("Hunter : " + detailRoom.Hunter);
+                    Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
+
+                    var _roles = new List<string>();
+                    for (var i = 0; i < System.Int64.Parse(detailRoom.Wolf); i++)
+                    {
+                        _roles.Add(Role4Player.Wolf);
+                    }
+                    for (var i = 0; i < NetworkServer.connections.Count - System.Int64.Parse(detailRoom.Wolf); i++)
+                    {
+                        _roles.Add(Role4Player.Human);
+                    }
+                    this.Roles = _roles;
+                });
+                Debug.Log(this.Roles.Count);
                 if (this.Roles.Count > 0)
                 {
-                    Cmd_Start(); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
+                    Cmd_Start(this.Roles); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
                 }
 
                 if (IsDefault)
@@ -1425,9 +1447,9 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     */
 
     [Command]
-    public void Cmd_Start()
+    public void Cmd_Start(List<string> _roles)
     {
-        Debug.Log(this.Roles.Count);
+        Debug.Log(_roles.Count);
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
         if (players.Length > 0)
         {
@@ -1437,11 +1459,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 for (var i = 0; i < _players_isReady.Length; i++)
                 {
                     _players_isReady[i].GetComponent<PlayerNetworkBehavior>().IsStart = true;
-                    if (isClient == true && isServer == true)
-                    {
-                        var tmp = RandomRole4Player(Roles, out Roles);
-                        _players_isReady[i].GetComponent<PlayerNetworkBehavior>().Role = tmp;
-                    }
+                    var tmp = RandomRole4Player(_roles, out _roles);
+                    _players_isReady[i].GetComponent<PlayerNetworkBehavior>().Role = tmp;
 
                     //Rpc_Start(_players_isReady[i].GetComponent<NetworkIdentity>());
                 }
@@ -1660,7 +1679,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     [Command]
     void Cmd_KillPlayer()
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
         if (players.Length > 0)
         {

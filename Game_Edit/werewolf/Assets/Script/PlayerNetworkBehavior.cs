@@ -80,7 +80,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     UIGameDay UIGameDay; // UI hiển thị ngày
     UIGameListPlayer UIGameListPlayer; // UI hiển thị danh sách người chơi
     List<string> Roles;
-
     public GameObject CentralPoint;
     bool IsDefault;
     GameObject VotedTarget = null;
@@ -92,6 +91,8 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+        Debug.Log("start");
         Roles = new List<string>();
         this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com");
         this.socket.On("server:detail-room", data => {
@@ -140,7 +141,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             this.transform.LookAt(CentralPoint.transform);
         }
     }
-
     #region SetupRole
     private string RandomRole4Player(List<string> _roles, out List<string> _arr)
     {
