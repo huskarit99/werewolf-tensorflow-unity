@@ -106,13 +106,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
 
             var _roles = new List<string>();
-            for (var i = 0; i < System.Int64.Parse(detailRoom.Wolf); i++)
-            {
-                _roles.Add(Role4Player.Wolf);
-            }
             for (var i = 0; i < NetworkServer.connections.Count - System.Int64.Parse(detailRoom.Wolf); i++)
             {
                 _roles.Add(Role4Player.Human);
+            }
+            for (var i = 0; i < System.Int64.Parse(detailRoom.Wolf); i++)
+            {
+                _roles.Add(Role4Player.Wolf);
             }
             this.Roles = _roles;
         });
@@ -300,6 +300,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             this.IndexOfPlayerVoted = string.Empty;
             CancelVote(VotedTarget);
             VotedTarget = null;
+            IsDefault = true;
         }
         else if (this.IndexOfPlayerVoted == "Like" && !AnimPlayer.GetBool(Param_4_Anim.VoteLeft) && !AnimPlayer.GetBool(Param_4_Anim.VoteYourSelf)) // hành động bỏ qua lượt vote
         {
@@ -307,6 +308,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             this.IndexOfPlayerVoted = string.Empty;
             Cmd_SkipVote(true);
             VotedTarget = null;
+            IsDefault = true;
         }
         else if (this.index.ToString() == this.IndexOfPlayerVoted) // Hành động player tự vote chính mình 
         {

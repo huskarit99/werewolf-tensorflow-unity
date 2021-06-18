@@ -896,13 +896,13 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
 
                     var _roles = new List<string>();
-                    for (var i = 0; i < System.Int64.Parse(detailRoom.Wolf); i++)
-                    {
-                        _roles.Add(Role4Player.Wolf);
-                    }
                     for (var i = 0; i < NetworkServer.connections.Count - System.Int64.Parse(detailRoom.Wolf); i++)
                     {
                         _roles.Add(Role4Player.Human);
+                    }
+                    for (var i = 0; i < System.Int64.Parse(detailRoom.Wolf); i++)
+                    {
+                        _roles.Add(Role4Player.Wolf);
                     }
                     this.Roles = _roles;
                 });
@@ -1334,13 +1334,23 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         if (UIGameVote == null)
         {
             UIGameVote = FindObjectOfType<UIGameVote>();
+            UIGameVote.SetReady4ResetTime(true);
         }
-        UIGameVote.SetReady4ResetTime(true);
+        else
+        {
+            UIGameVote.SetReady4ResetTime(true);
+        }
+
         if (UIGameTurn == null)
         {
             UIGameTurn = FindObjectOfType<UIGameTurn>();
+            UIGameTurn.SetTurnText(_newAction);
         }
-        UIGameTurn.SetTurnText(_newAction);
+        else
+        {
+            UIGameTurn.SetTurnText(_newAction);
+        }
+
         if (CheckAction4Players(_newAction))
         {
             UIGameVote.SetReady4ResetTime(true);
@@ -1464,6 +1474,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
 
                     //Rpc_Start(_players_isReady[i].GetComponent<NetworkIdentity>());
                 }
+
             }
         }
     }
@@ -1601,16 +1612,17 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
         players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length  > 0)
+        var _player = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).FirstOrDefault();
+        if (_player != null)
         {
-            if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
+            if (_player.GetComponent<PlayerNetworkBehavior>().votes > 0)
             {
-                players[0].GetComponent<PlayerNetworkBehavior>().IsKing = true;
-                Rpc_Be_A_Great_King(players[0].GetComponent<NetworkIdentity>());
+                _player.GetComponent<PlayerNetworkBehavior>().IsKing = true;
+                Rpc_Be_A_Great_King(_player.GetComponent<NetworkIdentity>());
             }
             else
             {
-                if(this.index == players[0].GetComponent<PlayerNetworkBehavior>().index)
+                if (this.index == _player.GetComponent<PlayerNetworkBehavior>().index)
                 {
                     var _index = Random.Range(0, players.Length);
                     players[_index].GetComponent<PlayerNetworkBehavior>().IsKing = true;
@@ -1618,6 +1630,25 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                 }
             }
         }
+        #region Code cũ
+        //if (players.Length  > 0)
+        //{
+        //    if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
+        //    {
+        //        players[0].GetComponent<PlayerNetworkBehavior>().IsKing = true;
+        //        Rpc_Be_A_Great_King(players[0].GetComponent<NetworkIdentity>());
+        //    }
+        //    else
+        //    {
+        //        if(this.index == players[0].GetComponent<PlayerNetworkBehavior>().index)
+        //        {
+        //            var _index = Random.Range(0, players.Length);
+        //            players[_index].GetComponent<PlayerNetworkBehavior>().IsKing = true;
+        //            Rpc_Be_A_Great_King(players[_index].GetComponent<NetworkIdentity>());
+        //        }
+        //    }
+        //}
+        #endregion
     }
     [ClientRpc]
     void Rpc_Be_A_Great_King(NetworkIdentity _target)
@@ -1680,29 +1711,42 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_KillPlayer()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();
-        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 0)
+        var _player = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().votes > 0).OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).FirstOrDefault();
+        foreach(var player in players)
         {
-            if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
-            {
-                players[0].GetComponent<PlayerNetworkBehavior>().IsKilled = true;
-            }
+            Debug.Log(player.GetComponent<PlayerNetworkBehavior>().votes);
         }
-        Rpc_KillPlayer();
+        if (_player != null)
+        {
+            _player.GetComponent<PlayerNetworkBehavior>().IsKilled = true;
+        }
+        #region Code cũ
+        //if (players.Length > 0)
+        //{
+        //    if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
+        //    {
+        //        players[0].GetComponent<PlayerNetworkBehavior>().IsKilled = true;
+        //    }
+        //}
+        #endregion
+        Rpc_KillPlayer(players[0]);
     }
 
     [ClientRpc]
-    void Rpc_KillPlayer()
+    void Rpc_KillPlayer(GameObject _player)
     {
-        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
-        players = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().votes).ToArray();
-        if (players.Length > 0)
+        if (this.index == _player.GetComponent<PlayerNetworkBehavior>().index)
         {
-            if (players[0].GetComponent<PlayerNetworkBehavior>().votes > 0)
-            {
-                players[0].GetComponent<PlayerNetworkBehavior>().IsKilled = true;
-            }
+            this.IsKilled = true;
         }
+        #region Code cũ
+        //var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player);
+        //var player = players.OrderByDescending(t => t.GetComponent<PlayerNetworkBehavior>().index == _player.GetComponent<PlayerNetworkBehavior>().index).FirstOrDefault();
+        //if (player != null)
+        //{
+        //    player.GetComponent<PlayerNetworkBehavior>().IsKilled = true;
+        //}
+        #endregion
     }
     string ShowRole(GameObject _target)
     {
@@ -1745,7 +1789,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     #region Update Player Prefab
     void UpdateApperance(string _role)
     {
-        Destroy(this.gameObject);
         Cmd_UpdateApperance(_role);
     }
 
@@ -1777,7 +1820,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsKilledByWitch = this.IsKilledByWitch;
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsGuilty = this.IsGuilty;
 
-        Object.Destroy(oldPrefab.identity.gameObject);
+        Destroy(oldPrefab.identity.gameObject);
         NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPrefab,true);
         Rpc_UpdateApperance();
     }
