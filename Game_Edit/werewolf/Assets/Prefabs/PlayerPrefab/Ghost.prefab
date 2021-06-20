@@ -12,12 +12,10 @@ GameObject:
   - component: {fileID: 1205189208064342740}
   - component: {fileID: 521608765286845979}
   - component: {fileID: 7220600166852253759}
-  - component: {fileID: 5528605490232972730}
   - component: {fileID: 1585583489512552783}
   - component: {fileID: 4900517130725117923}
-  - component: {fileID: 6637794662861662630}
   m_Layer: 0
-  m_Name: ghost
+  m_Name: Ghost
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,7 +89,7 @@ MonoBehaviour:
   syncInterval: 0.1
   Radius: 125
   Distance: 650
-  AnimPlayer: {fileID: 6637794662861662630}
+  AnimPlayer: {fileID: 0}
   CameraPlayer: {fileID: 5731170193816683551}
   NameTag: {fileID: 7236677147221010672}
   VoteText: {fileID: 6925282787114253812}
@@ -105,34 +103,20 @@ MonoBehaviour:
   CentralPoint: {fileID: 145611696260718479, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
     type: 3}
   playerNameText: {fileID: 7236677147972652508}
+  playerName: 
   playerIndexText: {fileID: 7236677148603905491}
   index: 0
   playerVotesText: {fileID: 2274439053469309065}
   MyNetworkManager: {fileID: 0}
   Day: 1
   Action: Default
+  StopDetecting: 1
   IsDone: 0
   IsSavedByGuard: 0
   IsSavedByWitch: 0
   IsKilledByWitch: 0
   IsKilled: 0
   IsGuilty: 0
---- !u!114 &5528605490232972730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731170193323824710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  animator: {fileID: 0}
 --- !u!136 &1585583489512552783
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -159,25 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &6637794662861662630
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731170193323824710}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9c2db2ae2e71011409d2b56f9927dff9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5731170193816683548
 GameObject:
   m_ObjectHideFlags: 0

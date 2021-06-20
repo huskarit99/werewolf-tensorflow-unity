@@ -94,6 +94,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         
         Debug.Log("start");
         Roles = new List<string>();
+        var _players = GameObject.FindGameObjectsWithTag(Role4Player.Player).ToArray();
         this.socket = IO.Socket("https://werewolf-tensorflow-server.herokuapp.com");
         this.socket.On("server:detail-room", data => {
             DetailRoom detailRoom = (DetailRoom)JsonConvert.DeserializeObject<DetailRoom>(data.ToString());
@@ -106,7 +107,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
             Debug.Log("Member : " + detailRoom.Member[0].Username + " " + detailRoom.Member[0].Fullname);
 
             var _roles = new List<string>();
-            for (var i = 0; i < NetworkServer.connections.Count - System.Int64.Parse(detailRoom.Wolf); i++)
+            for (var i = 0; i < _players.Length - System.Int64.Parse(detailRoom.Wolf); i++)
             {
                 _roles.Add(Role4Player.Human);
             }
@@ -154,43 +155,6 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
         _arr = _roles;
         return Role4Player.Human;
-    }
-    [Command]
-    void Cmd_SetRole()
-    {
-        //if (Roles.Count == 0)
-        //{
-        //    Roles = new List<string>()
-        //    {
-        //        Role4Player.Human,
-        //        Role4Player.Human,
-        //        Role4Player.Human,
-        //        Role4Player.Human,
-        //        Role4Player.Wolf,
-        //    };
-        //}
-
-        Debug.Log(Roles.Count);
-        if (Roles.Count > 0)
-        {
-            Debug.Log("Set Role");
-            var RolesInServer = new List<String>();
-            Roles.ForEach(item => RolesInServer.Add(item));
-
-            var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
-            foreach (var player in players)
-            {
-                var tmp = RandomRole4Player(RolesInServer, out RolesInServer);
-                player.GetComponent<PlayerNetworkBehavior>().Role = tmp;
-                Rpc_SetRole(player, tmp);
-            }
-        }
-        
-    }
-    [ClientRpc]
-    void Rpc_SetRole(GameObject _player,string _role)
-    {
-        _player.GetComponent<PlayerNetworkBehavior>().Role = _role;
     }
     #endregion
 
