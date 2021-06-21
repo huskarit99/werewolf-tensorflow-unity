@@ -147,7 +147,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     {
         if (_roles.Count > 0)
         {
-            var _index = UnityEngine.Random.Range(0, _roles.Count - 1);
+            var _index = UnityEngine.Random.Range(0, _roles.Count);
             var item = _roles[_index];
             _roles.RemoveAt(_index);
             _arr = _roles;

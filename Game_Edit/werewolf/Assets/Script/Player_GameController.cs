@@ -1806,7 +1806,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     void Cmd_UpdateApperance(string _role)
     {
         var oldPrefab = GetComponent<NetworkIdentity>().connectionToClient;
-        NetworkServer.DestroyPlayerForConnection(oldPrefab);
+
 
         var _rolePrefab = FindObjectOfType<NetworkManager>().spawnPrefabs.Where(t => t.name == _role).FirstOrDefault();
         GameObject newPrefab = (GameObject)Instantiate(_rolePrefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
@@ -1831,6 +1831,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsKilledByWitch = this.IsKilledByWitch;
         newPrefab.GetComponent<PlayerNetworkBehavior>().IsGuilty = this.IsGuilty;
 
+        Destroy(oldPrefab.identity.gameObject);
         NetworkServer.ReplacePlayerForConnection(this.connectionToClient, newPrefab,true);
         //Rpc_UpdateApperance(oldPrefab);
     }
