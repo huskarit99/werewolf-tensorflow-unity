@@ -906,7 +906,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
                     }
                     this.Roles = _roles;
                 });
-                Debug.Log(this.Roles.Count);
+                SetDefaultRoles();
                 if (this.Roles.Count > 0)
                 {
                     Cmd_Start(this.Roles); // Kiểm tra player đã sẵn sàng hết thì set IsStart = true sau đó vào màn chơi
@@ -931,6 +931,7 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
     }
 
     #region Check_Something
+
     private bool CheckKing()
     {
         var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).Where(t => !string.IsNullOrEmpty(t.GetComponent<PlayerNetworkBehavior>().Role)).ToArray();

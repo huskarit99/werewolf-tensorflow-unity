@@ -19,13 +19,6 @@ public class MyNetworkManager : NetworkManager
     {
         DontDestroyOnLoad(this);
         //--- Set role cho người chơi
-        roles = new List<string>(){
-                                  Role4Player.Seer,
-                                  //Role4Player.Guard,
-                                  Role4Player.Wolf,
-                                  //Role4Player.Witch,
-                                  //Role4Player.Hunter
-                                   };
         Debug.Log("Start Server");
     }
     public override void OnStopServer()
@@ -43,19 +36,6 @@ public class MyNetworkManager : NetworkManager
         player.GetComponent<PlayerNetworkBehavior>().index = NetworkServer.connections.Count;
         player.GetComponent<PlayerNetworkBehavior>().VoteText.SetActive(false); 
         NetworkServer.AddPlayerForConnection(conn, player);
-    }
-    private string RandomRole4Player(List<string> _roles, out List<string> _arr)
-    {
-        if (_roles.Count > 0)
-        {
-            var _index = UnityEngine.Random.Range(0, _roles.Count - 1);
-            var item = _roles[_index];
-            _roles.RemoveAt(_index);
-            _arr = _roles;
-            return item;
-        }
-        _arr = _roles;
-        return Role4Player.Human;
     }
 
 }

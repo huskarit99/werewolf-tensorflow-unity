@@ -143,6 +143,27 @@ public partial class PlayerNetworkBehavior : NetworkBehaviour
         }
     }
     #region SetupRole
+
+    private void SetDefaultRoles()
+    {
+        var players = GameObject.FindGameObjectsWithTag(Tags_4_Object.Player).ToArray();
+        var _players = players.Where(t => t.GetComponent<PlayerNetworkBehavior>().Roles.Count == 0 && t.GetComponent<PlayerNetworkBehavior>().IsReady).ToArray();
+        if (players.Length == _players.Length)
+        {
+            var _roles = new List<string>();
+            for (var i = 0; i < _players.Length - 1; i++)
+            {
+                _roles.Add(Role4Player.Human);
+            }
+            for (var i = 0; i < 1; i++)
+            {
+                _roles.Add(Role4Player.Wolf);
+            }
+            this.Roles = _roles;
+
+        }
+    }
+
     private string RandomRole4Player(List<string> _roles, out List<string> _arr)
     {
         if (_roles.Count > 0)
