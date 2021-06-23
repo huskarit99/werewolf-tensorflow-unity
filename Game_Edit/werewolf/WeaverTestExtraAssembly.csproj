@@ -254,28 +254,28 @@
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.28f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="Mono.CecilX">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll</HintPath>
  </Reference>
  <Reference Include="Mono.CecilX.Mdb">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Mdb.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Mdb.dll</HintPath>
  </Reference>
  <Reference Include="Mono.CecilX.Pdb">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Pdb.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="Mono.CecilX.Rocks">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll</HintPath>
  </Reference>
  <Reference Include="Castle.Core">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Tests/Common/Castle.Core.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Tests/Common/Castle.Core.dll</HintPath>
  </Reference>
  <Reference Include="NSubstitute">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Tests/Common/NSubstitute.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Tests/Common/NSubstitute.dll</HintPath>
  </Reference>
  <Reference Include="System.Threading.Tasks.Extensions">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Tests/Common/System.Threading.Tasks.Extensions.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Assets/Mirror/Tests/Common/System.Threading.Tasks.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.28f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -635,16 +635,16 @@
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.28f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.TestRunner">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.TestRunner">
- <HintPath>D:/Study/Year_4/Sem_2/Thesis/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+ <HintPath>D:/DATN/werewolf-tensorflow-unity/Game_Edit/werewolf/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
