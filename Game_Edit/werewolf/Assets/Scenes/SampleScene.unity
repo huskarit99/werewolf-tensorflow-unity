@@ -4695,6 +4695,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayGround_Main
       objectReference: {fileID: 0}
+    - target: {fileID: 6877476350376008592, guid: 741182cc5479ef74099ce4c69fdb5b73,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: db96e04f47f6c2a44bc6bb90f93602ec, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741182cc5479ef74099ce4c69fdb5b73, type: 3}
 --- !u!4 &997601179 stripped
@@ -8542,6 +8547,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 670616040798111029, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 670616040798111029, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 670616040798111029, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 670616040798111029, guid: 998451a7a00e8ee47a7b91e8b250eb0c,
         type: 3}
